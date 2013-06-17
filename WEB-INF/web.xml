@@ -21,7 +21,7 @@
 	<!-- system default -->
 	<filter>
 		<filter-name>LogFilter</filter-name>
-		<filter-class>com.astrider.sfc.app.filter.LogFilter</filter-class>
+		<filter-class>com.astrider.sfc.src.filter.LogFilter</filter-class>
 	</filter>
 	
 	<filter-mapping>
@@ -31,7 +31,7 @@
     
     <filter>
         <filter-name>LoginFilter</filter-name>
-        <filter-class>com.astrider.sfc.app.filter.LoginFilter</filter-class>
+        <filter-class>com.astrider.sfc.src.filter.LoginFilter</filter-class>
     </filter>
     
     <filter-mapping>

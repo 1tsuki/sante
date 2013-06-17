@@ -1,5 +1,5 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
-<%@ page import="com.astrider.sfc.app.helper.ViewUtils"%>
+<%@ page import="com.astrider.sfc.src.helper.ViewUtils"%>
 <section id="sidebar">
     <c:if test="${ isLoggedIn }">
     <aside>

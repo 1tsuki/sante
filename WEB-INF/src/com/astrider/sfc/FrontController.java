@@ -9,10 +9,10 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
-import com.astrider.sfc.app.command.UnknownCommand;
-import com.astrider.sfc.lib.Command;
-import com.astrider.sfc.lib.helper.StringUtils;
-import com.astrider.sfc.lib.helper.annotation.Title;
+import com.astrider.sfc.app.lib.Command;
+import com.astrider.sfc.app.lib.helper.StringUtils;
+import com.astrider.sfc.app.lib.helper.annotation.Title;
+import com.astrider.sfc.src.command.UnknownCommand;
 
 
 /**
@@ -115,7 +115,7 @@ public class FrontController extends HttpServlet {
     protected String getCommandClassName(HttpServletRequest request) {
         StringBuilder sb = new StringBuilder();
         sb.append(this.getClass().getPackage().getName());
-        sb.append(".app.command");
+        sb.append(".src.command");
         String[] extracted = request.getServletPath().split("/");
         for (int i = 0; i < extracted.length; i++) {
             String item = extracted[i];

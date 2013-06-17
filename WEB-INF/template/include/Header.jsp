@@ -2,10 +2,10 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%@ page import="java.util.*"%>
-<%@ page import="com.astrider.sfc.app.model.vo.db.*"%>
-<%@ page import="com.astrider.sfc.app.model.vo.form.*"%>
-<%@ page import="com.astrider.sfc.app.helper.ViewUtils"%>
-<%@ page import="com.astrider.sfc.lib.helper.StringUtils"%>
+<%@ page import="com.astrider.sfc.src.model.vo.db.*"%>
+<%@ page import="com.astrider.sfc.src.model.vo.form.*"%>
+<%@ page import="com.astrider.sfc.src.helper.ViewUtils"%>
+<%@ page import="com.astrider.sfc.app.lib.helper.StringUtils"%>
 <%	
     request.setCharacterEncoding("UTF-8");
     ViewUtils v = new ViewUtils(pageContext, session, request);
