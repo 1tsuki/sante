@@ -44,21 +44,15 @@ public class BaseDao {
     public BaseDao(Connection con) {
         this.con = con;
     }
-
-    public <T extends BaseVo> boolean insert(T vo) {
+    
+    public <T extends BaseVo> boolean insertWithoutCommit(T vo) {
         boolean succeed = false;
         PreparedStatement pstmt = null;
-
         try {
             QueryBuilder<T> qb = new QueryBuilder<T>(vo, con);
             pstmt = qb.getInsertPstmt();
             int resultCount = pstmt.executeUpdate();
-            if (resultCount == 1) {
-                con.commit();
-                succeed = true;
-            } else {
-                con.rollback();
-            }
+            succeed = resultCount == 1;
         } catch (Exception e) {
             e.printStackTrace();
         } finally {
@@ -69,8 +63,17 @@ public class BaseDao {
                 e.printStackTrace();
             }
         }
-
         return succeed;
+    }
+
+    public <T extends BaseVo> boolean insert(T vo) {
+    	boolean succeed = insertWithoutCommit(vo);
+    	if (succeed) {
+    		commit();
+    	} else {
+    		rollback();
+    	}
+    	return succeed;
     }
 
     public <T extends BaseVo> boolean update(T vo) {
@@ -99,6 +102,23 @@ public class BaseDao {
         }
         return succeed;
     }
+
+    public void commit() {
+    	try {
+	    	con.commit();
+    	} catch (SQLException e) {
+    		e.printStackTrace();
+    	}
+    }
+
+    public void rollback() {
+    	try {
+	    	con.rollback();
+    	} catch (SQLException e) {
+    		e.printStackTrace();
+    	}
+    }
+
 
     public void close() {
         if (con != null) {

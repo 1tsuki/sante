@@ -11,9 +11,6 @@ public class MaterialQuantityVo extends BaseVo {
     @Column(physic="recipe_id", logic="レシピID")
     @Valid(isNotNull=true, isMin=true, min=0)
     private int recipeId;
-    @Column(physic="material_id", logic="素材ID")
-    @Valid(isNotNull=true, isMin=true, min=0)
-    private int materialId;
     @Column(physic="material_name", logic="素材名")
     @Valid(isNotNull=true, isNotBlank=true)
     private String materialName;
@@ -37,13 +34,6 @@ public class MaterialQuantityVo extends BaseVo {
     }
     public void setRecipeId(int recipeId) {
         this.recipeId = recipeId;
-    }
-
-    public int getMaterialId() {
-        return materialId;
-    }
-    public void setMaterialId(int materialId) {
-        this.materialId = materialId;
     }
     public String getMaterialName() {
         return materialName;

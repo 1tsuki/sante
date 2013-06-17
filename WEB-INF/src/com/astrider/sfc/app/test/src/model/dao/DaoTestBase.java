@@ -24,21 +24,13 @@ public class DaoTestBase {
     protected UserDao userDao;
     protected UserStatsDao userStatsDao;
     protected WeeklyLogDao weeklyLogDao;
-    private static final String TEST_DATAFILE = "sante.xls";
+    
 
     private TestDataManager testDataManager;
 
     @Before
     public void before() throws Exception {
-        testDataManager = new TestDataManager(
-                TestDataManager.getWebInfPath(),
-                "oracle.jdbc.driver.OracleDriver",
-                "jdbc:oracle:thin:@192.168.150.131:1521:XE",
-                "sante",
-                "password",
-                "sante");
-
-        testDataManager.loadTestDataInXLS(TEST_DATAFILE);
+    	testDataManager = TestDataManager.getInstance();
         Connection con = testDataManager.getConnection();
         cookLogDao = new CookLogDao(con);
         mealLogDao = new MealLogDao(con);

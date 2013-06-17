@@ -1,33 +1,27 @@
 package com.astrider.sfc.src.model.vo.db;
 
+import com.astrider.sfc.app.lib.helper.StringUtils;
 import com.astrider.sfc.app.lib.helper.annotation.*;
 import com.astrider.sfc.app.lib.model.vo.BaseVo;
 
 @Table("materials")
 public class MaterialVo extends BaseVo {
     private static final long serialVersionUID = -4318950366299339701L;
-    @Column(physic="material_id", logic="素材ID", isPrimaryKey=true)
-    @Valid(isNotNull=true, isMin=true, min=0)
-    private int materialId;
-    @Column(physic="material_name", logic="素材名")
+    @Column(physic="material_name", logic="素材名", isPrimaryKey=true)
     @Valid(isNotNull=true, isNotBlank=true)
-    private String materialName;
+    private String materialName = " ";
     @Column(physic="gram_per_quantity", logic="単位あたりグラム数")
     @Valid(isNotNull=true, isMin=true, min=0)
     private int gramPerQuantity;
-    @Column(physic="prefix", logic="接頭辞")
-    private String prefix;
-    @Column(physic="postfix", logic="接尾辞")
-    private String postfix;
+    @Column(physic="prefix", logic="接頭辞", isPrimaryKey=true)
+    @Valid(isNotNull=true)
+    private String prefix = " ";
+    @Column(physic="postfix", logic="接尾辞", isPrimaryKey=true)
+    @Valid(isNotNull=true)
+    private String postfix = " ";
     @Column(physic="nutrient_id", logic="栄養素ID")
     private int nutrientId;
 
-    public int getMaterialId() {
-        return materialId;
-    }
-    public void setMaterialId(int materialId) {
-        this.materialId = materialId;
-    }
     public String getMaterialName() {
         return materialName;
     }
@@ -44,12 +38,18 @@ public class MaterialVo extends BaseVo {
         return prefix;
     }
     public void setPrefix(String prefix) {
+    	if (StringUtils.isEmpty(prefix)) {
+    		prefix = " ";
+    	}
         this.prefix = prefix;
     }
     public String getPostfix() {
         return postfix;
     }
     public void setPostfix(String postfix) {
+    	if (StringUtils.isEmpty(postfix)) {
+    		postfix = " ";
+    	}
         this.postfix = postfix;
     }
     public int getNutrientId() {

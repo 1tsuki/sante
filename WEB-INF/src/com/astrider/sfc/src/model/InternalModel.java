@@ -87,12 +87,20 @@ public class InternalModel extends BaseModel {
         recipeDao.close();
 
         RecipeNutAmountsDao recipeNutDao = new RecipeNutAmountsDao();
+        boolean succeed = false;
+        System.out.println(recipes.size());
         for (RecipeVo recipe : recipes) {
+        	System.out.println(recipe.getRecipeId());
             RecipeNutAmountsVo amounts = recipeNutDao.selectById(recipe.getRecipeId());
             if (amounts == null) {
                 amounts = SanteUtils.generateRecipeNutrientAmounts(recipe.getRecipeId());
-                recipeNutDao.insert(amounts);
+                succeed = recipeNutDao.insertWithoutCommit(amounts) && succeed;
             }
+        }
+        if (succeed) {
+        	recipeNutDao.commit();
+        } else {
+        	recipeNutDao.rollback();
         }
         recipeNutDao.close();
     }
@@ -105,38 +113,36 @@ public class InternalModel extends BaseModel {
             BufferedReader br = new BufferedReader(new FileReader(csv));
             String line = "";
             int recipeId = -1;
-            String materialName = "";
-            String prefix = "";
             float quantity = -1;
-            String postfix = "";
 
             while ((line = br.readLine()) != null) {
                 String[] splitted = line.split(",");
-                recipeId = Integer.parseInt(splitted[0]);
-                materialName = splitted[1];
-                prefix = splitted[2];
-                quantity = Float.parseFloat(splitted[3]);
-                postfix = splitted[4];
+                MaterialVo arg = new MaterialVo();
+                arg.setMaterialName(splitted[1]);
+                arg.setPrefix(splitted[2]);
+                if (5 <= splitted.length) {
+                	arg.setPostfix(splitted[4]);
+                }
 
-                MaterialVo material = materialDao.selectByNameAndPrePostfix(materialName, prefix, postfix);
+                recipeId = Integer.parseInt(splitted[0]);
+                quantity = Float.parseFloat(splitted[3]);
+
+                MaterialVo material = materialDao.selectByNameAndPrePostfix(arg);
                 if (material == null) {
-                    System.out.println("inserting item " + materialName + " " + "prefix" + " " + postfix);
-                    material = new MaterialVo();
-                    material.setGramPerQuantity(1);
-                    material.setPrefix(prefix);
-                    material.setMaterialName(materialName);
-                    material.setPostfix(postfix);
-                    material.setNutrientId(12);
-                    materialDao.insert(material);
-                    material = materialDao.selectByNameAndPrePostfix(materialName, prefix, postfix);
+                	arg.setGramPerQuantity(1);
+                    arg.setNutrientId(12);
+                    materialDao.insert(arg);
+                    material = materialDao.selectByNameAndPrePostfix(arg);
                 }
                 RecipeMaterialVo recipeMaterialVo = new RecipeMaterialVo();
                 recipeMaterialVo.setRecipeId(recipeId);
                 recipeMaterialVo.setQuantity(quantity);
-                recipeMaterialVo.setMaterialId(material.getMaterialId());
-                materialDao.insert(recipeMaterialVo);
+                recipeMaterialVo.setMaterialName(material.getMaterialName());
+                recipeMaterialVo.setPrefix(material.getPrefix());
+                recipeMaterialVo.setPostfix(material.getPostfix());
+                materialDao.insertWithoutCommit(recipeMaterialVo);
             }
-            materialDao.close();
+            materialDao.commit();
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         } catch (IOException e) {

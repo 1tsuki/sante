@@ -9,37 +9,19 @@ import com.astrider.sfc.app.lib.model.dao.BaseDao;
 import com.astrider.sfc.src.model.vo.db.MaterialVo;
 
 public class MaterialDao extends BaseDao {
-    public MaterialVo selectByNameAndPrePostfix(String name, String prefix, String postfix) {
+    public MaterialVo selectByNameAndPrePostfix(MaterialVo arg) {
         MaterialVo material = null;
         PreparedStatement pstmt = null;
         try {
-            StringBuilder sb = new StringBuilder();
-            sb.append("SELECT * FROM materials WHERE material_name = ? AND ");
-            if (prefix.equals("")) {
-                sb.append(" prefix IS NULL AND ");
-            } else {
-                sb.append(" prefix = ? AND ");
-            }
-            if (postfix.equals("")) {
-                sb.append(" postfix IS NULL");
-            } else {
-                sb.append(" postfix = ?");
-            }
-            pstmt = con.prepareStatement(sb.toString());
-            pstmt.setString(1, name);
-
-            int i = 2;
-            if (prefix.equals("")) {
-                pstmt.setString(i++, prefix);
-            }
-            if (postfix.equals("")) {
-                pstmt.setString(i++, postfix);
-            }
+            String sql = "SELECT * FROM materials WHERE material_name = ? AND prefix = ? AND postfix = ?";
+            pstmt = con.prepareStatement(sql);
+            pstmt.setString(1, arg.getMaterialName());
+            pstmt.setString(2, arg.getPrefix());
+            pstmt.setString(3, arg.getPostfix());
             ResultSet rs = pstmt.executeQuery();
             while (rs.next()) {
                 Mapper<MaterialVo> mapper = new Mapper<MaterialVo>();
                 material = mapper.fromResultSet(rs);
-                System.out.println(material.getMaterialId());
             }
         } catch (SQLException e) {
             e.printStackTrace();

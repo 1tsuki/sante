@@ -34,11 +34,8 @@ public class MealLogDaoTest extends DaoTestBase {
     public void 今週の食事回数を取得() {
         int userId = 1;
         int recipeId = 1;
-        int counter = 5;
-        for (int i = 0; i < counter; i++) {
-            assertTrue(mealLogDao.insertFromRecipeNutAmounts(userId, recipeId));
-        }
-        assertTrue(mealLogDao.countMealOfThisWeek(userId) == counter);
+        assertTrue(mealLogDao.insertFromRecipeNutAmounts(userId, recipeId));
+        assertTrue(mealLogDao.countMealOfThisWeek(userId) == 3);
     }
 
     private void compareRecipeNutWithMealLog(RecipeNutAmountsVo recipeNut, MealLogVo mealLog) {

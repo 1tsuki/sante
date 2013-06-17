@@ -25,17 +25,18 @@ public class TestDataManager {
     private String databaseUserName;
     private String databasePassword;
     private String databaseScheme;
-    private String[] tables = {
+    private String[] triggers = {
         "TRI_COOK_LOGS_COOK_LOG_ID",
-        "TRI_MATERIALS_MATERIAL_ID",
         "TRI_MEAL_NUT_AMOUNTS_MEAL_ID",
         "TRI_NUTRIENTS_NUTRIENT_ID",
         "TRI_RECIPES_RECIPE_ID",
         "TRI_USERS_USER_ID",
         "TRI_WEEKLY_NUT_AMOUNTS_WEEK_ID"
     };
+    private static final String TEST_DATAFILE = "sante.xls";
+    private static TestDataManager testDataManager = null;
 
-    public TestDataManager(String testDataDirectory, String driverClassName,
+    private TestDataManager(String testDataDirectory, String driverClassName,
             String databaseURL, String databaseUserName,
             String databasePassword, String databaseScheme) {
         this.testDataDirectory = testDataDirectory;
@@ -44,6 +45,20 @@ public class TestDataManager {
         this.databaseUserName = databaseUserName;
         this.databasePassword = databasePassword;
         this.databaseScheme = databaseScheme;
+    }
+
+    public static TestDataManager getInstance() throws Exception {
+    	if (testDataManager == null) {
+    		testDataManager = new TestDataManager(
+                    TestDataManager.getWebInfPath(),
+                    "oracle.jdbc.driver.OracleDriver",
+                    "jdbc:oracle:thin:@192.168.150.131:1521:XE",
+                    "sante",
+                    "password",
+                    "sante");
+    		testDataManager.loadTestDataInXLS(TEST_DATAFILE);
+    	}
+		return testDataManager;
     }
 
     public IDatabaseConnection getIDatabaseConnection()
@@ -121,7 +136,7 @@ public class TestDataManager {
     public void disableTriggers() {
         try {
             Connection con = getConnection();
-            for (String t : tables) {
+            for (String t : triggers) {
                 String sql = "ALTER TRIGGER " + t + " DISABLE";
                 PreparedStatement pstmt = con.prepareStatement(sql);
                 pstmt.execute();
@@ -142,7 +157,7 @@ public class TestDataManager {
     public void enableTriggers() {
         try {
             Connection con = getConnection();
-            for (String t : tables) {
+            for (String t : triggers) {
                 String sql = "ALTER TRIGGER " + t + " ENABLE";
                 PreparedStatement pstmt = con.prepareStatement(sql);
                 pstmt.execute();
@@ -163,7 +178,7 @@ public class TestDataManager {
     public void refreshSequences() {
         try {
             Connection con = getConnection();
-            for (String t : tables) {
+            for (String t : triggers) {
                 String sql = "ALTER TRIGGER " + t + " ENABLE";
                 PreparedStatement pstmt = con.prepareStatement(sql);
                 pstmt.execute();
