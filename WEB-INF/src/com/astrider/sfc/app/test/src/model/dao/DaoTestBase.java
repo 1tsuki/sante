@@ -5,7 +5,7 @@ import java.sql.Connection;
 import org.junit.After;
 import org.junit.Before;
 
-import com.astrider.sfc.app.test.lib.TestDataManager;
+import com.astrider.sfc.app.lib.helper.TestDataManager;
 import com.astrider.sfc.src.model.dao.CookLogDao;
 import com.astrider.sfc.src.model.dao.MealLogDao;
 import com.astrider.sfc.src.model.dao.NutrientDao;
@@ -33,7 +33,7 @@ public class DaoTestBase {
         testDataManager = new TestDataManager(
                 TestDataManager.getWebInfPath(),
                 "oracle.jdbc.driver.OracleDriver",
-                "jdbc:oracle:thin:@localhost:51064:xe",
+                "jdbc:oracle:thin:@192.168.150.131:1521:XE",
                 "sante",
                 "password",
                 "sante");
