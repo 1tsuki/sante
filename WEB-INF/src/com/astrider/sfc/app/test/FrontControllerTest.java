@@ -16,18 +16,18 @@ import org.junit.Test;
 
 import com.astrider.sfc.FrontController;
 import com.astrider.sfc.app.lib.Command;
-import com.astrider.sfc.app.test.app.command.test.FooCommand;
+import com.astrider.sfc.src.command.IndexCommand;
 
 public class FrontControllerTest {
     @Test
     public void 存在するパスを要求() {
         HttpServletRequest request = mock(HttpServletRequest.class);
-        when(request.getServletPath()).thenReturn("/test/Foo");
+        when(request.getServletPath()).thenReturn("/Index");
         HttpSession session = mock(HttpSession.class);
         when(request.getSession()).thenReturn(session);
         FrontController frontController = new FrontController();
         Command command = frontController.getCommand(request);
-        assertEquals(command.getClass(), FooCommand.class);
+        assertEquals(command.getClass(), IndexCommand.class);
     }
 
     @Test
@@ -59,7 +59,7 @@ public class FrontControllerTest {
         ServletContext contextMock = mock(ServletContext.class);
         HttpSession sessionMock = mock(HttpSession.class);
         FrontController frontControllerMock = mock(FrontController.class);
-        FooCommand commandMock = mock(FooCommand.class);
+        IndexCommand commandMock = mock(IndexCommand.class);
         when(requestMock.getSession()).thenReturn(sessionMock);
         when(frontControllerMock.getServletContext()).thenReturn(contextMock);
         when(frontControllerMock.getCommand(requestMock)).thenReturn(commandMock);

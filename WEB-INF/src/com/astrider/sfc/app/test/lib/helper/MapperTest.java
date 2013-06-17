@@ -11,7 +11,7 @@ import javax.servlet.http.HttpServletRequest;
 import org.junit.Test;
 
 import com.astrider.sfc.app.lib.helper.Mapper;
-import com.astrider.sfc.app.test.app.model.vo.TestVo;
+import com.astrider.sfc.app.test.src.model.vo.TestVo;
 
 public class MapperTest {
 
