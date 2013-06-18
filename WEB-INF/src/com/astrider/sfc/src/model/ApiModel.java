@@ -21,7 +21,7 @@ public class ApiModel extends BaseModel {
         UserVo user = (UserVo) session.getAttribute("loginUser");
         
         if (user == null) {
-        	return returnFailStatus(session);
+        	return returnFailStatus(request);
         }
 
         UserStatsVo userStats = null;
@@ -29,11 +29,11 @@ public class ApiModel extends BaseModel {
         userStats = userStatsDao.selectByUserId(user.getUserId());
         userStatsDao.close();
         if (userStats == null) {
-            return returnFailStatus(session);
+        	return returnFailStatus(request);
         }
 
-        session.setAttribute("userStats", userStats);
-        session.setAttribute("success", true);
+        request.setAttribute("userStats", userStats);
+        request.setAttribute("success", true);
         return true;
     }
 
@@ -42,7 +42,7 @@ public class ApiModel extends BaseModel {
         UserVo user = (UserVo) session.getAttribute("loginUser");
         
         if (user == null) {
-        	return returnFailStatus(session);
+        	return returnFailStatus(request);
         }
 
         WeeklyLogVo weekVo = null;
@@ -51,9 +51,9 @@ public class ApiModel extends BaseModel {
         ArrayList<NutrientVo> nutrients = nutrientDao.selectAll();
         nutrientDao.close();
 
-        session.setAttribute("ingested", weekVo);
-        session.setAttribute("desired", nutrients);
-        session.setAttribute("success", true);
+        request.setAttribute("ingested", weekVo);
+        request.setAttribute("desired", nutrients);
+        request.setAttribute("success", true);
         return true;
     }
 
@@ -62,19 +62,19 @@ public class ApiModel extends BaseModel {
 		UserVo user = (UserVo) session.getAttribute("loginUser");
 		
 		if (user == null) {
-        	return returnFailStatus(session);
+        	return returnFailStatus(request);
         }
 
 		
 		double[] items = SanteUtils.getNutrientBalances(user.getUserId());
-        session.setAttribute("items", items);
-        session.setAttribute("success", true);
+        request.setAttribute("items", items);
+        request.setAttribute("success", true);
         return true;
 	}
 
-	private boolean returnFailStatus(HttpSession session) {
-		session.setAttribute("success", false);
-        session.setAttribute("message", "failed");
+	private boolean returnFailStatus(HttpServletRequest request) {
+		request.setAttribute("success", false);
+        request.setAttribute("message", "failed");
         return false;
 	}
 }

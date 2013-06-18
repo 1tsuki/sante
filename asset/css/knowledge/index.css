@@ -10895,6 +10895,8 @@ fieldset {
   float: right;
 }
 body {
+  font-family: "Open Sans", "Hiragino Kaku Gothic ProN", "Meiryo", sans-serif;
+  text-rendering: optimizeLegibility;
   min-width: 1200px;
   width: 100%;
   margin: 0;
@@ -12267,12 +12269,13 @@ header #header #header-lower .header-inner .header-control ul li {
   -webkit-box-sizing: border-box;
   box-sizing: border-box;
   display: inline;
+  float: left;
   width: 32.142857142857146%;
   margin: 0 0.5952380952380952%;
   *zoom: 1;
   height: 60px;
   display: block;
-  float: left;
+  float: right;
   list-style: none;
   border-left: 1px solid #ebe6d0;
   margin: 0;
@@ -13518,7 +13521,7 @@ header #header #header-lower .header-inner .header-control ul li:after {
 }
 #wrapper #sidebar > aside {
   padding: 5px;
-  border: 1px solid #ebe6d0;
+  border: 1px solid #f0f0e0;
 }
 #wrapper #sidebar > aside * {
   padding: 5px;
@@ -13528,15 +13531,14 @@ header #header #header-lower .header-inner .header-control ul li:after {
   -moz-border-left-colors: none;
   -moz-border-right-colors: none;
   -moz-border-top-colors: none;
-  border-left: 5px solid #000000;
-  border-bottom: 1px solid #000000;
+  border-bottom: 5px solid #eee;
   box-shadow: 0 1px 0 #ffffff;
   -webkit-box-shadow: 0 1px 0 #ffffff;
   moz-box-shadow: 0 1px 0 #ffffff;
   color: #333333;
   display: block;
   font-weight: bold;
-  font-size: 16px;
+  font-size: 20px;
   line-height: 30px;
   margin: 0 0 10px;
   padding: 0 0 0 5px;
@@ -13785,8 +13787,7 @@ h1 {
   -moz-border-left-colors: none;
   -moz-border-right-colors: none;
   -moz-border-top-colors: none;
-  border-left: 5px solid #000000;
-  border-bottom: 1px solid #000000;
+  border-bottom: 5px solid #eee;
   box-shadow: 0 1px 0 #ffffff;
   -webkit-box-shadow: 0 1px 0 #ffffff;
   moz-box-shadow: 0 1px 0 #ffffff;
@@ -13807,8 +13808,7 @@ h2 {
   -moz-border-left-colors: none;
   -moz-border-right-colors: none;
   -moz-border-top-colors: none;
-  border-left: 5px solid #000000;
-  border-bottom: 1px solid #000000;
+  border-bottom: 5px solid #eee;
   box-shadow: 0 1px 0 #ffffff;
   -webkit-box-shadow: 0 1px 0 #ffffff;
   moz-box-shadow: 0 1px 0 #ffffff;
@@ -13839,7 +13839,7 @@ h2 {
   border-radius: 8px;
   -webkit-border-radius: 8px;
   -moz-border-radius: 8px;
-  background-color: #f1f1f1;
+  border: 2px solid #f0f0e0;
   padding: 5px;
 }
 .knowledges .index:after {

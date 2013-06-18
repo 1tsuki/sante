@@ -3,37 +3,42 @@
 
 <div id="content">
 	<section class="recommended-recipes">
-	  <h1>おすすめレシピ一覧</h1>
+	  <h1><c:out value="${query}" />レシピ一覧</h1>
 	  <section class="control">
 	    <div class="sort-menu">
-	      <div class="sort">おすすめ順</div>
-	      <div class="sort">調理時間順</div>
 	    </div>
 	
 	    <aside class="search">
-	      <input class="input-small" type="search" placeholder="使いたい食材名を入力" required>
-	      <input class="btn btn-primary" type="submit" value="検索">
+            <form action="<% v.getPath("/user/recipe/Search"); %>" method="post">
+                <input class="input-small" type="search" placeholder="使いたい食材名を入力" name="material_name" value="<c:out value="${materialName}" />" required>
+                <input class="btn btn-primary" type="submit" value="検索">
+            </form>
 	    </aside>
 	
 	    <aside class="materials">
-	      <span>食材分類から絞込み</span>
+	      <span>食材分類絞込</span>
 	      <div class="material-list">
-	        <a class="material" href="./recipe/list.html"><span>乳製品</span></a>
-	        <a class="material" href="./recipe/list.html"><span>卵</span></a>
-	        <a class="material" href="./recipe/list.html"><span>魚類</span></a>
-	        <a class="material" href="./recipe/list.html"><span>肉類</span></a>
-	        <a class="material" href="./recipe/list.html"><span>豆類</span></a>
-	        <a class="material" href="./recipe/list.html"><span>野菜</span></a>
-	        <a class="material" href="./recipe/list.html"><span>イモ類</span></a>
-	        <a class="material" href="./recipe/list.html"><span>海藻・きのこ</span></a>
-	        <a class="material" href="./recipe/list.html"><span>穀物</span></a>
-	        <a class="material" href="./recipe/list.html"><span>甘味</span></a>
-	        <a class="material" href="./recipe/list.html"><span>果物</span></a>
+	        <a class="material <c:if test="${materialId == 1}">selected</c:if>" href="<% v.getPath("/user/recipe/Search?nutrient_id=1"); %>"><span>乳製品</span></a>
+	        <a class="material <c:if test="${materialId == 2}">selected</c:if>" href="<% v.getPath("/user/recipe/Search?nutrient_id=2"); %>"><span>卵</span></a>
+	        <a class="material <c:if test="${materialId == 3}">selected</c:if>" href="<% v.getPath("/user/recipe/Search?nutrient_id=3"); %>"><span>肉・魚類</span></a>
+	        <a class="material <c:if test="${materialId == 4}">selected</c:if>" href="<% v.getPath("/user/recipe/Search?nutrient_id=4"); %>"><span>豆類</span></a>
+	        <a class="material <c:if test="${materialId == 5}">selected</c:if>" href="<% v.getPath("/user/recipe/Search?nutrient_id=5"); %>"><span>野菜</span></a>
+	        <a class="material <c:if test="${materialId == 6}">selected</c:if>" href="<% v.getPath("/user/recipe/Search?nutrient_id=6"); %>"><span>果物</span></a>
+	        <a class="material <c:if test="${materialId == 7}">selected</c:if>" href="<% v.getPath("/user/recipe/Search?nutrient_id=7"); %>"><span>海藻・茸</span></a>
+	        <a class="material <c:if test="${materialId == 8}">selected</c:if>" href="<% v.getPath("/user/recipe/Search?nutrient_id=8"); %>"><span>穀物</span></a>
+	        <a class="material <c:if test="${materialId == 9}">selected</c:if>" href="<% v.getPath("/user/recipe/Search?nutrient_id=9"); %>"><span>イモ類</span></a>
+	        <a class="material <c:if test="${materialId == 10}">selected</c:if>" href="<% v.getPath("/user/recipe/Search?nutrient_id=10"); %>"><span>油分</span></a>
+	        <a class="material <c:if test="${materialId == 11}">selected</c:if>" href="<% v.getPath("/user/recipe/Search?nutrient_id=11"); %>"><span>糖分</span></a>
 	      </div>
 	    </aside>
 	  </section>
 	
 	  <section class="recipes">
+        <c:if test="${fn:length(recipes) == 0}">
+            <article class="recipe">
+                <p>条件に該当するレシピは見つかりませんでした</p>
+            </recipe>
+        </c:if>
 	    <c:forEach var="recipe" items="${recipes}" varStatus="status">
 	       <% RecipeVo recipe = (RecipeVo) pageContext.getAttribute("recipe"); %>
 	       <article class="recipe">

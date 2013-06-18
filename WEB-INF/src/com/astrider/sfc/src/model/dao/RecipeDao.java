@@ -20,20 +20,18 @@ public class RecipeDao extends BaseDao {
     public RecipeDao(Connection con) {
         super(con);
     }
-
-    public ArrayList<MaterialQuantityVo> selectMaterialQuantitiesByRecipeId(int recipeId) {
-        ArrayList<MaterialQuantityVo> materialQuantities = new ArrayList<MaterialQuantityVo>();
+    
+    public ArrayList<RecipeVo> selectAll() {
+        ArrayList<RecipeVo> recipes = new ArrayList<RecipeVo>();
         PreparedStatement pstmt = null;
 
         try {
-            String sql =  "SELECT * FROM RECIPE_MATERIAL_QUANTITIES WHERE recipe_id = ? ORDER BY nutrient_id";
+            String sql = "SELECT * FROM recipes";
             pstmt = con.prepareStatement(sql);
-            pstmt.setInt(1, recipeId);
             ResultSet rs = pstmt.executeQuery();
             while (rs.next()) {
-                Mapper<MaterialQuantityVo> mapper = new Mapper<MaterialQuantityVo>();
-                MaterialQuantityVo materialQuantity = mapper.fromResultSet(rs);
-                materialQuantities.add(materialQuantity);
+                Mapper<RecipeVo> mapper = new Mapper<RecipeVo>();
+                recipes.add(mapper.fromResultSet(rs));
             }
         } catch (SQLException e) {
             e.printStackTrace();
@@ -46,37 +44,10 @@ public class RecipeDao extends BaseDao {
                 e.printStackTrace();
             }
         }
-        return materialQuantities;
+
+        return recipes;
     }
-
-    public ArrayList<StepVo> selectStepsByRecipeId(int recipeId) {
-        ArrayList<StepVo> steps = new ArrayList<StepVo>();
-        PreparedStatement pstmt = null;
-
-        try {
-            String sql = "SELECT * FROM steps WHERE recipe_id = ? ORDER BY STEP";
-            pstmt = con.prepareStatement(sql);
-            pstmt.setInt(1, recipeId);
-            ResultSet rs = pstmt.executeQuery();
-            while (rs.next()) {
-                Mapper<StepVo> mapper = new Mapper<StepVo>();
-                StepVo step = mapper.fromResultSet(rs);
-                steps.add(step);
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
-        } finally {
-            try {
-                if (pstmt != null) {
-                    pstmt.close();
-                }
-            } catch (SQLException e) {
-                e.printStackTrace();
-            }
-        }
-        return steps;
-    }
-
+    
     public RecipeVo selectByRecipeId(int recipeId) {
         RecipeVo recipe = null;
         PreparedStatement pstmt = null;
@@ -110,14 +81,9 @@ public class RecipeDao extends BaseDao {
         PreparedStatement pstmt = null;
 
         try {
-            StringBuilder sb = new StringBuilder();
-            sb.append("SELECT * FROM (recipes INNER JOIN recipe_materials ON ");
-            sb.append("(recipes.recipe_id = recipe_materials.recipe_id))");
-            sb.append("INNER JOIN materials ON (recipe_materials.material_id = materials.material_id) ");
-            sb.append("WHERE materials.material_name = ?");
-            String sql = sb.toString();
+            String sql = "SELECT * FROM recipes WHERE recipe_id IN (SELECT DISTINCT recipe_id FROM RECIPE_MATERIALS WHERE material_name LIKE ?)";
             pstmt = con.prepareStatement(sql);
-            pstmt.setString(1, materialName);
+            pstmt.setString(1, "%" + materialName + "%");
             ResultSet rs = pstmt.executeQuery();
             while (rs.next()) {
                 Mapper<RecipeVo> mapper = new Mapper<RecipeVo>();
@@ -139,17 +105,18 @@ public class RecipeDao extends BaseDao {
         return recipes;
     }
 
-    public ArrayList<Integer> selectRecipeIdByNutrientId(int nutrientId) {
-        ArrayList<Integer> recipes = new ArrayList<Integer>();
+	public ArrayList<RecipeVo> selectByNutrientId(int nutrientId) {
+		ArrayList<RecipeVo> recipes = new ArrayList<RecipeVo>();
         PreparedStatement pstmt = null;
 
         try {
-            String sql = "SELECT DISTINCT recipe_id FROM RECIPE_MATERIAL_QUANTITIES WHERE nutrient_id = ?";
+            String sql = "SELECT * FROM recipes WHERE recipe_id IN (SELECT DISTINCT recipe_id FROM RECIPE_MATERIAL_QUANTITIES WHERE nutrient_id = ?)";
             pstmt = con.prepareStatement(sql);
             pstmt.setInt(1, nutrientId);
             ResultSet rs = pstmt.executeQuery();
+            Mapper<RecipeVo> mapper = new Mapper<RecipeVo>();
             while (rs.next()) {
-                recipes.add(rs.getInt(1));
+                recipes.add(mapper.fromResultSet(rs));
             }
         } catch (SQLException e) {
             e.printStackTrace();
@@ -163,8 +130,37 @@ public class RecipeDao extends BaseDao {
             }
         }
         return recipes;
-    }
+	}
 
+
+    public ArrayList<MaterialQuantityVo> selectMaterialQuantitiesByRecipeId(int recipeId) {
+        ArrayList<MaterialQuantityVo> materialQuantities = new ArrayList<MaterialQuantityVo>();
+        PreparedStatement pstmt = null;
+
+        try {
+            String sql =  "SELECT * FROM RECIPE_MATERIAL_QUANTITIES WHERE recipe_id = ? ORDER BY nutrient_id";
+            pstmt = con.prepareStatement(sql);
+            pstmt.setInt(1, recipeId);
+            ResultSet rs = pstmt.executeQuery();
+            Mapper<MaterialQuantityVo> mapper = new Mapper<MaterialQuantityVo>();
+            while (rs.next()) {
+                MaterialQuantityVo materialQuantity = mapper.fromResultSet(rs);
+                materialQuantities.add(materialQuantity);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            try {
+                if (pstmt != null) {
+                    pstmt.close();
+                }
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
+        return materialQuantities;
+    }
+    
     public ArrayList<MaterialQuantityVo> selectMaterialQuantitiesByNutrientId(int nutrientId) {
         ArrayList<MaterialQuantityVo> materials = new ArrayList<MaterialQuantityVo>();
         PreparedStatement pstmt = null;
@@ -174,8 +170,8 @@ public class RecipeDao extends BaseDao {
             pstmt = con.prepareStatement(sql);
             pstmt.setInt(1, nutrientId);
             ResultSet rs = pstmt.executeQuery();
+            Mapper<MaterialQuantityVo> mapper = new Mapper<MaterialQuantityVo>();
             while (rs.next()) {
-                Mapper<MaterialQuantityVo> mapper = new Mapper<MaterialQuantityVo>();
                 MaterialQuantityVo material = mapper.fromResultSet(rs);
                 materials.add(material);
             }
@@ -193,17 +189,19 @@ public class RecipeDao extends BaseDao {
         return materials;
     }
 
-    public ArrayList<RecipeVo> selectAll() {
-        ArrayList<RecipeVo> recipes = new ArrayList<RecipeVo>();
+    public ArrayList<StepVo> selectStepsByRecipeId(int recipeId) {
+        ArrayList<StepVo> steps = new ArrayList<StepVo>();
         PreparedStatement pstmt = null;
 
         try {
-            String sql = "SELECT * FROM recipes";
+            String sql = "SELECT * FROM steps WHERE recipe_id = ? ORDER BY STEP";
             pstmt = con.prepareStatement(sql);
+            pstmt.setInt(1, recipeId);
             ResultSet rs = pstmt.executeQuery();
+            Mapper<StepVo> mapper = new Mapper<StepVo>();
             while (rs.next()) {
-                Mapper<RecipeVo> mapper = new Mapper<RecipeVo>();
-                recipes.add(mapper.fromResultSet(rs));
+                StepVo step = mapper.fromResultSet(rs);
+                steps.add(step);
             }
         } catch (SQLException e) {
             e.printStackTrace();
@@ -216,7 +214,33 @@ public class RecipeDao extends BaseDao {
                 e.printStackTrace();
             }
         }
+        return steps;
+    }
 
-        return recipes;
+    
+    public ArrayList<Integer> selectRecipeIdByNutrientId(int nutrientId) {
+        ArrayList<Integer> recipeIds = new ArrayList<Integer>();
+        PreparedStatement pstmt = null;
+
+        try {
+            String sql = "SELECT DISTINCT recipe_id FROM RECIPE_MATERIAL_QUANTITIES WHERE nutrient_id = ?";
+            pstmt = con.prepareStatement(sql);
+            pstmt.setInt(1, nutrientId);
+            ResultSet rs = pstmt.executeQuery();
+            while (rs.next()) {
+                recipeIds.add(rs.getInt(1));
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            try {
+                if (pstmt != null) {
+                    pstmt.close();
+                }
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
+        return recipeIds;
     }
 }

@@ -17,6 +17,8 @@ public class SearchCommand extends Command {
 
     @Override
     public void doPost() throws ServletException, IOException {
+    	RecipeModel model = new RecipeModel();
+    	model.searchRecipes(request);
     	render();
     }
 }

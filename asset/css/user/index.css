@@ -12269,12 +12269,13 @@ header #header #header-lower .header-inner .header-control ul li {
   -webkit-box-sizing: border-box;
   box-sizing: border-box;
   display: inline;
+  float: left;
   width: 32.142857142857146%;
   margin: 0 0.5952380952380952%;
   *zoom: 1;
   height: 60px;
   display: block;
-  float: left;
+  float: right;
   list-style: none;
   border-left: 1px solid #ebe6d0;
   margin: 0;
@@ -14663,6 +14664,9 @@ h3 {
 }
 #wrapper .tips:after {
   clear: both;
+}
+#wrapper .tips ul li {
+  font-size: 20px;
 }
 #wrapper .recommends-wrapper {
   -moz-box-sizing: border-box;

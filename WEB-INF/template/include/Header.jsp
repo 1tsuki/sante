@@ -1,6 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
 <%@ page import="java.util.*"%>
 <%@ page import="com.astrider.sfc.src.model.vo.db.*"%>
 <%@ page import="com.astrider.sfc.src.model.vo.form.*"%>
@@ -60,7 +61,13 @@
             <div class="header-logo">
               <a href="<%v.getPath("/Index");%>">sante</a><p>-自炊を楽しむすべての人に、手軽で健康的な料理生活を-</p>
             </div>
+            
             <nav class="header-control">
+            <c:if test="${ isLoggedIn }" >
+              <ul>
+                <li><a href="<% v.getPath("/knowledge/Index"); %>"><i></i>栄養知識</a></li>
+              </ul>
+            </c:if>
             </nav>
           </div>
         </section>

@@ -21,10 +21,10 @@ public class UserModel extends BaseModel {
         }
 
         InsufficientNutrients nutrients = SanteUtils.getInsufficientNutrients(user.getUserId());
-        session.setAttribute("nutrients", nutrients);
+        request.setAttribute("nutrients", nutrients);
 
         ArrayList<RecipeVo> recipes = SanteUtils.getRecommendedRecipes(user.getUserId());
-        session.setAttribute("recommendedRecipes", recipes);
+        request.setAttribute("recommendedRecipes", recipes);
         return true;
     }
 }

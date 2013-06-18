@@ -12269,12 +12269,13 @@ header #header #header-lower .header-inner .header-control ul li {
   -webkit-box-sizing: border-box;
   box-sizing: border-box;
   display: inline;
+  float: left;
   width: 32.142857142857146%;
   margin: 0 0.5952380952380952%;
   *zoom: 1;
   height: 60px;
   display: block;
-  float: left;
+  float: right;
   list-style: none;
   border-left: 1px solid #ebe6d0;
   margin: 0;
@@ -13998,7 +13999,7 @@ h1 {
   margin: 0 0.5952380952380952%;
   *zoom: 1;
   position: relative
-		;
+        ;
 }
 .recommended-recipes .control:after {
   clear: both;
@@ -15694,6 +15695,13 @@ h1 {
 .recommended-recipes .control .materials .material-list:after {
   clear: both;
 }
+.recommended-recipes .control .materials .material-list .material {
+  color: #0000FF;
+}
+.recommended-recipes .control .materials .material-list .selected {
+  color: #000000;
+  font-weight: bold;
+}
 .recommended-recipes .recipes {
   -moz-box-sizing: border-box;
   -webkit-box-sizing: border-box;
@@ -15884,6 +15892,11 @@ h1 {
   height: 150px;
   border-top: 1px solid #555555;
   border-bottom: 1px solid #ebe6d0;
+}
+.recommended-recipes .recipes .recipe > p {
+  text-align: center;
+  line-height: 150px;
+  font-size: 20px;
 }
 .recommended-recipes .recipes .recipe a {
   display: block;
