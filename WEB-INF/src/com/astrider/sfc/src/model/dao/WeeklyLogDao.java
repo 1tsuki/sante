@@ -74,5 +74,36 @@ public class WeeklyLogDao extends BaseDao {
         }
         return week;
     }
+    
+    public WeeklyLogVo selectByWeekAgo(int userId, int weekAgo) {
+    	WeeklyLogVo week = null;
+        PreparedStatement pstmt = null;
+        try {
+        	int start = 7 * weekAgo;
+        	int end = start - 6;
+            StringBuilder sb = new StringBuilder();
+            sb.append("SELECT * FROM weekly_nut_amounts WHERE user_id = ? AND first_date BETWEEN ");
+            sb.append("(SELECT TRUNC(SYSDATE -" + start + ", 'Day') FROM dual) AND ");
+            sb.append("(SELECT TRUNC(SYSDATE -" + end + ", 'Day') FROM dual)");
+            pstmt = con.prepareStatement(sb.toString());
+            pstmt.setInt(1, userId);
+            ResultSet rs = pstmt.executeQuery();
+            while (rs.next()) {
+                Mapper<WeeklyLogVo> mapper = new Mapper<WeeklyLogVo>();
+                week = mapper.fromResultSet(rs);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            try {
+                if (pstmt != null) {
+                    pstmt.close();
+                }
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
+        return week;
+    }
 
 }

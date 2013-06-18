@@ -4,15 +4,15 @@
 <section class="status">
     <nav class="status-nav">
         <ul>
-            <li><a href="#">今週</a></li>
-            <li><a href="#">1週前</a></li>
-            <li><a href="#">2週前</a></li>
-            <li><a href="#">3週前</a></li>
+            <li><a href="#" onClick="santeUserNutrients.interface.exec(0)">今週</a></li>
+            <li><a href="#" onClick="santeUserNutrients.interface.exec(1)">1週前</a></li>
+            <li><a href="#" onClick="santeUserNutrients.interface.exec(2)">2週前</a></li>
+            <li><a href="#" onClick="santeUserNutrients.interface.exec(3)">3週前</a></li>
         </ul>
     </nav>
     <div class="status-contents">
         <div class="calendar">
-            <span class="today">5/24 - 5/27</span>
+            <span class="today">日付</span>
             <!-- <span class="title">自炊履歴</span>
             <ul>
                 <li class="cooked">SUN</li>

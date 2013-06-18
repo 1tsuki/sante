@@ -84,7 +84,7 @@ public final class SanteUtils {
     }
 
     public static InsufficientNutrients getInsufficientNutrients(int userId) {
-        double[] balances = getNutrientBalances(userId);
+        double[] balances = getChartSource(userId);
         // 値が空ならば肉と野菜を返す
         boolean allZero = true;
         for (double item : balances) {
@@ -182,7 +182,6 @@ public final class SanteUtils {
     }
 
     public static ArrayList<RecipeVo> getRecommendedRecipes(int userId, int limit) {
-        // TODO nasty method
         InsufficientNutrients nutrients = getInsufficientNutrients(userId);
         ArrayList<RecipeVo> recipes = getRecipesContainBothNutrients(nutrients, limit);
         return recipes;
@@ -224,27 +223,41 @@ public final class SanteUtils {
     }
 
     public static void updateTotalBalanceOfCurrentWeekLog(int userId) {
-    	double[] nutrientBalances = getNutrientBalances(userId);
-    	double diff = 0;
-    	for (int i = 0; i < nutrientBalances.length; i++) {
-    		if (1 < nutrientBalances[i]) {
-    			nutrientBalances[i] = 1;
-    		}
-    		diff += 1 - nutrientBalances[i];
-    	}
-    	int totalBalance = (int) (diff / nutrientBalances.length * 100);
-    	System.out.println(totalBalance);
+    	int[] ingested = getIngestedNutrients(userId);
+    	int[] desired = getDesiredNutrients();
+    	double ingestedAverage = getAverage(ingested);
+        double desiredAverage = getAverage(desired);
+
+        // 係数を揃える
+        for (int i = 0; i < ingested.length; i++) {
+        	double coefficient = desiredAverage / ingestedAverage;
+        	ingested[i] = (int) (ingested[i] * coefficient);
+        }
+
+        // 差の二乗検定
+        double[] diffs = new double[11];
+        for (int j = 0; j < ingested.length; j++) {
+        	diffs[j] = 0;
+        	if (desired[j] != 0) {
+        		diffs[j] = Math.sqrt(Math.pow(desired[j] - ingested[j], 2)) / desired[j];
+        	}
+        }
+        double balance = (1 - getAverage(diffs)) * 100;
 
     	WeeklyLogVo weekLog = getWeeklyLogOfThisWeek(userId);
-    	weekLog.setTotalBalance(totalBalance);
+    	weekLog.setTotalBalance((int) balance);
     	WeeklyLogDao dao = new WeeklyLogDao();
     	dao.update(weekLog);
     	dao.close();
     }
+    
+    public static double[] getChartSource(int userId) {
+    	return getChartSource(userId, 0);
+    }
 
-    public static double[] getNutrientBalances(int userId) {
+    public static double[] getChartSource(int userId, int week) {
     	// 現在の栄養摂取量と理想量を取得
-    	int[] ingested = getIngestedNutrients(userId);
+    	int[] ingested = getIngestedNutrients(userId, week);
     	int[] desired = getDesiredNutrients();
 
     	// 理想割合から飛び抜けた値を丸める
@@ -258,7 +271,7 @@ public final class SanteUtils {
         		ingested[i] = limit;
         	}
         }
-
+        
         // 栄養バランスを再計算
         ingestedAverage = getAverage(ingested);
         desiredAverage = getAverage(desired);
@@ -280,9 +293,29 @@ public final class SanteUtils {
     	}
     	return amount / items.length;
     }
-
+    
+    private static double getAverage(double[] items) {
+    	double amount = 0;
+    	for (int i=0; i < items.length; i++) {
+    		amount += items[i];
+    	}
+    	return amount / items.length;
+    }
+    
     private static int[] getIngestedNutrients(int userId) {
-    	WeeklyLogVo weekVo = SanteUtils.getWeeklyLogOfThisWeek(userId);
+    	return getIngestedNutrients(userId, 0);
+    }
+
+    private static int[] getIngestedNutrients(int userId, int weekAgo) {
+    	WeeklyLogVo weekVo = null;
+    	if (weekAgo == 0) {
+    		weekVo = SanteUtils.getWeeklyLogOfThisWeek(userId);
+    	} else {
+    		WeeklyLogDao weekDao = new WeeklyLogDao();
+    		weekVo = weekDao.selectByWeekAgo(userId, weekAgo);
+    		weekDao.close();
+    	}
+
         int[] ingested = {
         		weekVo.getMilk(), weekVo.getEgg(), weekVo.getMeat(), weekVo.getBean(),
         		weekVo.getVegetable(), weekVo.getFruit(), weekVo.getMineral(), 

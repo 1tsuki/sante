@@ -65,8 +65,13 @@ public class ApiModel extends BaseModel {
         	return returnFailStatus(request);
         }
 
-		
-		double[] items = SanteUtils.getNutrientBalances(user.getUserId());
+		int week = 0;
+		try {
+			week = Integer.valueOf(request.getParameter("week"));
+		} catch (NumberFormatException e) {
+			e.printStackTrace();
+		}
+		double[] items = SanteUtils.getChartSource(user.getUserId(), week);
         request.setAttribute("items", items);
         request.setAttribute("success", true);
         return true;

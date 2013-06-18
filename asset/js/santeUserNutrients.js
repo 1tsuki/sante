@@ -16,9 +16,22 @@ if (!window.santeUserNutrients) santeUserNutrients = {};
 		}
 	};
 	santeUserNutrients.interface = {
-		"exec": function() {
+		"exec": function(week) {
+            if (!week) week = 0;
+            var now = new Date;
+            var tmp = new Date();
+            tmp.setTime(now.getTime() - 86400000 * week * 7);
+			var first = tmp.getDate() - tmp.getDay();
+			var last = first + 6;
+			var firstday = new Date(tmp.setDate(first));
+			var lastday = new Date(tmp.setDate(last));
+			
+			var dayString = firstday.getMonth() + "/" + firstday.getDate() + " - " + lastday.getMonth() + "/" + lastday.getDate();
+			$('.today').html(dayString);
+			
 			$.ajax({
 				url: "http://localhost:8080/sante/api/user/GetChartSource",
+				data: "week=" + week,
 				async: true,
 				dataType: "json",
 				success: function(data) {
