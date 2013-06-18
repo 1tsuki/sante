@@ -10,37 +10,37 @@ import com.astrider.sfc.app.lib.model.dao.BaseDao;
 import com.astrider.sfc.src.model.vo.db.UserStatsVo;
 
 public class UserStatsDao extends BaseDao {
-    public UserStatsDao() {
-        super();
-    }
+	public UserStatsDao() {
+		super();
+	}
 
-    public UserStatsDao(Connection con) {
-        super(con);
-    }
+	public UserStatsDao(Connection con) {
+		super(con);
+	}
 
-    public UserStatsVo selectByUserId(int userId) {
-        UserStatsVo stats = null;
-        PreparedStatement pstmt = null;
+	public UserStatsVo selectByUserId(int userId) {
+		UserStatsVo stats = null;
+		PreparedStatement pstmt = null;
 
-        try {
-            String sql = "SELECT * FROM user_stats WHERE user_id = ?";
-            pstmt = con.prepareStatement(sql);
-            pstmt.setInt(1, userId);
-            ResultSet rs = pstmt.executeQuery();
-            while (rs.next()) {
-                Mapper<UserStatsVo> mapper = new Mapper<UserStatsVo>();
-                stats = mapper.fromResultSet(rs);
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
-        } finally {
-            try {
-                if (pstmt != null)
-                    pstmt.close();
-            } catch (SQLException e) {
-                e.printStackTrace();
-            }
-        }
-        return stats;
-    }
+		try {
+			String sql = "SELECT * FROM user_stats WHERE user_id = ?";
+			pstmt = con.prepareStatement(sql);
+			pstmt.setInt(1, userId);
+			ResultSet rs = pstmt.executeQuery();
+			while (rs.next()) {
+				Mapper<UserStatsVo> mapper = new Mapper<UserStatsVo>();
+				stats = mapper.fromResultSet(rs);
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			try {
+				if (pstmt != null)
+					pstmt.close();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+		}
+		return stats;
+	}
 }

@@ -11,14 +11,14 @@ import com.astrider.sfc.src.model.vo.db.UserVo;
 
 @Title("トップページ")
 public class IndexCommand extends Command {
-    @Override
-    public void doGet() throws ServletException, IOException {
-        HttpSession session = request.getSession();
-        UserVo user = (UserVo) session.getAttribute("loginUser");
-        if (user != null) {
-            redirect("/user/Index");
-        } else {
-            render();
-        }
-    }
+	@Override
+	public void doGet() throws ServletException, IOException {
+		HttpSession session = request.getSession();
+		UserVo user = (UserVo) session.getAttribute("loginUser");
+		if (user != null) {
+			redirect("/user/Index");
+		} else {
+			render();
+		}
+	}
 }

@@ -21,68 +21,70 @@ import com.astrider.sfc.src.model.vo.form.SearchQueryVo;
 
 public class RecipeModel extends BaseModel {
 
-    public boolean getRecipeDetail(HttpServletRequest request) {
-        // レシピID取得
-        int recipeId = Integer.parseInt(request.getParameter("recipe_id"));
-        if (recipeId == 0) {
-            flashMessage.addMessage("該当するレシピは存在しませんでした");
-            flashMessage.setMessageType(Type.WARNING);
-            return false;
-        }
+	public boolean showDetail(HttpServletRequest request) {
+		// レシピID取得
+		int recipeId = Integer.parseInt(request.getParameter("recipe_id"));
+		if (recipeId == 0) {
+			flashMessage.addMessage("該当するレシピは存在しませんでした");
+			flashMessage.setMessageType(Type.WARNING);
+			return false;
+		}
 
-        // レシピ取得
-        RecipeDao recipeDao = new RecipeDao();
-        RecipeVo recipe = recipeDao.selectByRecipeId(recipeId);
-        if (recipe == null) {
-            flashMessage.addMessage("該当するレシピは存在しませんでした");
-            flashMessage.setMessageType(Type.WARNING);
-            return false;
-        }
+		// レシピ取得
+		RecipeDao recipeDao = new RecipeDao();
+		RecipeVo recipe = recipeDao.selectByRecipeId(recipeId);
+		if (recipe == null) {
+			flashMessage.addMessage("該当するレシピは存在しませんでした");
+			flashMessage.setMessageType(Type.WARNING);
+			return false;
+		}
 
-        // 手順＆素材情報
-        ArrayList<StepVo> steps = recipeDao.selectStepsByRecipeId(recipeId);
-        ArrayList<MaterialQuantityVo> materialQuantities = recipeDao.selectMaterialQuantitiesByRecipeId(recipeId);
-        recipeDao.close();
+		// 手順＆素材情報
+		ArrayList<StepVo> steps = recipeDao.selectStepsByRecipeId(recipeId);
+		ArrayList<MaterialQuantityVo> materialQuantities = recipeDao
+				.selectMaterialQuantitiesByRecipeId(recipeId);
+		recipeDao.close();
 
-        // requestに格納
-        request.setAttribute("recipe", recipe);
-        request.setAttribute("steps", steps);
-        request.setAttribute("materialQuantities", materialQuantities);
+		// requestに格納
+		request.setAttribute("recipe", recipe);
+		request.setAttribute("steps", steps);
+		request.setAttribute("materialQuantities", materialQuantities);
 
-        return true;
-    }
+		return true;
+	}
 
-    public boolean searchRecipes(HttpServletRequest request) {
-    	HttpSession session = request.getSession();
-    	UserVo loginUser = (UserVo) session.getAttribute("loginUser");
-    	if (loginUser == null) {
-    		return false;
-    	}
+	public boolean searchRecipes(HttpServletRequest request) {
+		HttpSession session = request.getSession();
+		UserVo loginUser = (UserVo) session.getAttribute("loginUser");
+		if (loginUser == null) {
+			return false;
+		}
 
-    	Mapper<SearchQueryVo> mapper = new Mapper<SearchQueryVo>();
-    	SearchQueryVo query = mapper.fromHttpRequest(request);
+		Mapper<SearchQueryVo> mapper = new Mapper<SearchQueryVo>();
+		SearchQueryVo query = mapper.fromHttpRequest(request);
 
-    	ArrayList<RecipeVo> recipes = null;
-    	if (0 < query.getNutrientId()) {
-    		RecipeDao recipeDao = new RecipeDao();
-    		recipes = recipeDao.selectByNutrientId(query.getNutrientId());
-    		recipeDao.close();
-    		request.setAttribute("materialId", query.getNutrientId());
-    		NutrientDao nutrientDao = new NutrientDao();
-    		NutrientVo nutrient = nutrientDao.selectById(query.getNutrientId());
-    		nutrientDao.close();
-    		request.setAttribute("query", SanteUtils.convertPnameToLname(nutrient.getNutrientName()) + "を使った");
-    	} else if (StringUtils.isNotEmpty(query.getMaterialName())) {
-    		RecipeDao dao = new RecipeDao();
-    		recipes = dao.selectByMaterialName(query.getMaterialName());
-    		dao.close();
-    		request.setAttribute("materialName", query.getMaterialName());
-    		request.setAttribute("query", query.getMaterialName() + "を使った");
-    	} else {
-    		recipes = SanteUtils.getRecommendedRecipes(loginUser.getUserId(), 10);
-    		request.setAttribute("query", "おすすめ");
-    	}
-    	request.setAttribute("recipes", recipes);
-        return true;
-    }
+		ArrayList<RecipeVo> recipes = null;
+		if (0 < query.getNutrientId()) {
+			RecipeDao recipeDao = new RecipeDao();
+			recipes = recipeDao.selectByNutrientId(query.getNutrientId());
+			recipeDao.close();
+			request.setAttribute("materialId", query.getNutrientId());
+			NutrientDao nutrientDao = new NutrientDao();
+			NutrientVo nutrient = nutrientDao.selectById(query.getNutrientId());
+			nutrientDao.close();
+			request.setAttribute("query", nutrient.getLogicalName() + "を使った");
+		} else if (StringUtils.isNotEmpty(query.getMaterialName())) {
+			RecipeDao dao = new RecipeDao();
+			recipes = dao.selectByMaterialName(query.getMaterialName());
+			dao.close();
+			request.setAttribute("materialName", query.getMaterialName());
+			request.setAttribute("query", query.getMaterialName() + "を使った");
+		} else {
+			recipes = SanteUtils.getRecommendedRecipes(loginUser.getUserId(),
+					10);
+			request.setAttribute("query", "おすすめ");
+		}
+		request.setAttribute("recipes", recipes);
+		return true;
+	}
 }

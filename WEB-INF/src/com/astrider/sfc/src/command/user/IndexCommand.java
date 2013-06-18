@@ -10,10 +10,10 @@ import com.astrider.sfc.src.model.UserModel;
 
 @Title("マイページ")
 public class IndexCommand extends Command {
-    @Override
-    public void doGet() throws ServletException, IOException {
-        UserModel userModel = new UserModel();
-        userModel.getRecommendedRecipes(request);
-        render();
-    }
+	@Override
+	public void doGet() throws ServletException, IOException {
+		UserModel userModel = new UserModel();
+		userModel.getRecommendedRecipes(request);
+		render();
+	}
 }

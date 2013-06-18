@@ -1,423 +1,241 @@
 package com.astrider.sfc.src.helper;
 
-import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Method;
 import java.util.ArrayList;
 
+import com.astrider.sfc.app.lib.helper.MathUtils;
 import com.astrider.sfc.src.model.dao.NutrientDao;
 import com.astrider.sfc.src.model.dao.RecipeDao;
 import com.astrider.sfc.src.model.dao.WeeklyLogDao;
-import com.astrider.sfc.src.model.vo.db.MaterialQuantityVo;
-import com.astrider.sfc.src.model.vo.db.MealLogVo;
-import com.astrider.sfc.src.model.vo.db.NutrientVo;
-import com.astrider.sfc.src.model.vo.db.RecipeNutAmountsVo;
 import com.astrider.sfc.src.model.vo.db.RecipeVo;
 import com.astrider.sfc.src.model.vo.db.WeeklyLogVo;
-import com.sun.xml.internal.ws.util.StringUtils;
 
+/**
+ * @author Itsuki Sakitsu 汎用ヘルパークラス。
+ */
 public final class SanteUtils {
 	private static final int NUT_COUNT = 11;
-    public static class InsufficientNutrients {
-        private int primaryKey;
-        private int secondaryKey;
-        private String primaryNutrientName;
-        private String secondaryNutrientName;
-        public int getPrimaryKey() {
-            return primaryKey;
-        }
-        public void setPrimaryKey(int primaryKey) {
-            this.primaryKey = primaryKey;
-        }
-        public int getSecondaryKey() {
-            return secondaryKey;
-        }
-        public void setSecondKey(int secondKey) {
-            this.secondaryKey = secondKey;
-        }
+
+	/**
+	 * @author Itsuki Sakitsu 不足している栄養素情報を格納するためのBean
+	 */
+	public static class InsufficientNutrients {
+		private int primaryKey;
+		private int secondaryKey;
+		private String primaryNutrientName;
+		private String secondaryNutrientName;
+
+		public int getPrimaryKey() {
+			return primaryKey;
+		}
+
+		public void setPrimaryKey(int primaryKey) {
+			this.primaryKey = primaryKey;
+		}
+
+		public int getSecondaryKey() {
+			return secondaryKey;
+		}
+
+		public void setSecondKey(int secondKey) {
+			this.secondaryKey = secondKey;
+		}
+
 		public String getPrimaryNutrientName() {
 			return primaryNutrientName;
 		}
+
 		public void setPrimaryNutrientName(String priamryNutrientName) {
 			this.primaryNutrientName = priamryNutrientName;
 		}
+
 		public String getSecondaryNutrientName() {
 			return secondaryNutrientName;
 		}
+
 		public void setSecondaryNutrientName(String secondaryNutrientName) {
 			this.secondaryNutrientName = secondaryNutrientName;
 		}
-    }
-    private SanteUtils() {
-    }
+	}
 
-    public static int calcTotalBalance(RecipeNutAmountsVo recipeNut) {
-        NutrientDao nutrientDao = new NutrientDao();
-        ArrayList<NutrientVo> nutrients = nutrientDao.selectAll();
-
-        float sum = 0;
-        int counter = 0;
-        for (NutrientVo nutrient : nutrients) {
-            try {
-                String name = nutrient.getNutrientName();
-                if (name.equals("mineral")) {
-                    continue;
-                }
-
-                Method m = recipeNut.getClass().getMethod("get" + StringUtils.capitalize(name));
-                int actual = (Integer) m.invoke(recipeNut);
-                int required = nutrient.getDailyRequiredAmount();
-                sum += Math.abs((actual / required) - 1);
-                counter++;
-            } catch (NoSuchMethodException e) {
-                e.printStackTrace();
-            } catch (SecurityException e) {
-                e.printStackTrace();
-            } catch (IllegalAccessException e) {
-                e.printStackTrace();
-            } catch (IllegalArgumentException e) {
-                e.printStackTrace();
-            } catch (InvocationTargetException e) {
-                e.printStackTrace();
-            }
-        }
-        return (int) (sum / counter);
-    }
-
-    public static InsufficientNutrients getInsufficientNutrients(int userId) {
-        double[] balances = getChartSource(userId);
-        // 値が空ならば肉と野菜を返す
-        boolean allZero = true;
-        for (double item : balances) {
-        	allZero = Double.isNaN(item) && allZero;
-        }
-        if (allZero) {
-        	int primaryKey = 3;
-        	int secondaryKey = 5;
-        	NutrientDao nutrientDao = new NutrientDao();
-            String primaryNutrientName = nutrientDao.selectById(primaryKey).getNutrientName();
-            String secondaryNutrientName = nutrientDao.selectById(secondaryKey).getNutrientName();
-            nutrientDao.close();
-            InsufficientNutrients nutrients = new InsufficientNutrients();
-            nutrients.setPrimaryKey(primaryKey);
-            nutrients.setSecondKey(secondaryKey);
-            nutrients.setPrimaryNutrientName(convertPnameToLname(primaryNutrientName));
-            nutrients.setSecondaryNutrientName(convertPnameToLname(secondaryNutrientName));
-            
-            return nutrients;
-        }
-        
-        // 最小値を取得
-        double primary = 1;
-        int primaryIndex = 0;
-        for (int i = 0; i < balances.length; i++) {
-        	if (balances[i] < primary) {
-        		primary = balances[i];
-        		primaryIndex = i;
-        	}
+	/**
+	 * @param userId
+	 * @return InsufficientNutrients 最新の栄養素状態から、不足している栄養素2種を割り出す
+	 */
+	public static InsufficientNutrients getInsufficientNutrients(int userId) {
+		double[] balances = getNutrientBalances(userId, 0);
+		// 値が空ならば肉と野菜を返す
+		boolean allZero = true;
+		for (double item : balances) {
+			allZero = Double.isNaN(item) && allZero;
+		}
+		if (allZero) {
+			NutrientDao nutrientDao = new NutrientDao();
+			InsufficientNutrients nutrients = new InsufficientNutrients();
+			nutrients.setPrimaryKey(3);
+			nutrients.setSecondKey(5);
+			nutrients.setPrimaryNutrientName(nutrientDao.selectById(3)
+					.getLogicalName());
+			nutrients.setSecondaryNutrientName(nutrientDao.selectById(5)
+					.getLogicalName());
+			nutrientDao.close();
+			return nutrients;
 		}
 
-        // 二番目の最小値を取得
-        double secondary = 1;
-        int secondaryIndex = 0;
-        for (int j=0; j < balances.length; j++) {
-        	if (primary < balances[j] && balances[j] < secondary) {
-        		secondary = balances[j];
-        		secondaryIndex = j;
-        	}
-        }
-        
-        // 値を取得
-        int primaryKey = primaryIndex + 1;
-        int secondaryKey = secondaryIndex + 1;
-        NutrientDao nutrientDao = new NutrientDao();
-        String primaryNutrientName = nutrientDao.selectById(primaryKey).getNutrientName();
-        String secondaryNutrientName = nutrientDao.selectById(secondaryKey).getNutrientName();
-        nutrientDao.close();
-        
-        // 値をセット
-        InsufficientNutrients nutrients = new InsufficientNutrients();
-        nutrients.setPrimaryKey(primaryKey);
-        nutrients.setSecondKey(secondaryKey);
-        nutrients.setPrimaryNutrientName(convertPnameToLname(primaryNutrientName));
-        nutrients.setSecondaryNutrientName(convertPnameToLname(secondaryNutrientName));
-        
-        return nutrients;
-    }
+		// 最も不足している栄養素2種を取得
+		double primary = 1;
+		double secondary = 1;
+		int primaryIndex = 0;
+		int secondaryIndex = 0;
 
-    public static String convertPnameToLname(String arg) {
-    	if (arg.equals("milk")) {
-    		return "乳製品";
-    	}
-    	if (arg.equals("egg")) {
-    		return "卵";
-    	}
-    	if (arg.equals("meat")) {
-    		return "肉・魚類";
-    	}
-    	if (arg.equals("bean")) {
-    		return "豆類";
-    	}
-    	if (arg.equals("vegetable")) {
-    		return "野菜類";
-    	}
-    	if (arg.equals("fruit")) {
-    		return "果物類";
-    	}
-    	if (arg.equals("mineral")) {
-    		return "きのこ・海藻類";
-    	}
-    	if (arg.equals("crop")) {
-    		return "炭水化物";
-    	}
-    	if (arg.equals("potato")) {
-    		return "イモ類";
-    	}
-    	if (arg.equals("fat")) {
-    		return "油脂";
-    	}
-    	if (arg.equals("suguar")) {
-    		return "糖分";
-    	}
-    	return "不明な食材";
-    }
+		for (int i = 0; i < balances.length; i++) {
+			if (balances[i] < primary) {
+				primary = balances[i];
+				primaryIndex = i;
+			}
+		}
+		for (int j = 0; j < balances.length; j++) {
+			if (primary < balances[j] && balances[j] < secondary) {
+				secondary = balances[j];
+				secondaryIndex = j;
+			}
+		}
 
-    public static ArrayList<RecipeVo> getRecommendedRecipes(int userId, int limit) {
-        InsufficientNutrients nutrients = getInsufficientNutrients(userId);
-        ArrayList<RecipeVo> recipes = getRecipesContainBothNutrients(nutrients, limit);
-        return recipes;
-    }
+		// 値を取得
+		int primaryKey = primaryIndex + 1;
+		int secondaryKey = secondaryIndex + 1;
+		NutrientDao nutrientDao = new NutrientDao();
+		String primaryNutrientName = nutrientDao.selectById(primaryKey)
+				.getLogicalName();
+		String secondaryNutrientName = nutrientDao.selectById(secondaryKey)
+				.getLogicalName();
+		nutrientDao.close();
 
-    public static ArrayList<RecipeVo> getRecommendedRecipes(int userId) {
-        return getRecommendedRecipes(userId, 4);
-    }
+		// 値をセット
+		InsufficientNutrients nutrients = new InsufficientNutrients();
+		nutrients.setPrimaryKey(primaryKey);
+		nutrients.setSecondKey(secondaryKey);
+		nutrients.setPrimaryNutrientName(primaryNutrientName);
+		nutrients.setSecondaryNutrientName(secondaryNutrientName);
 
-    public static WeeklyLogVo getWeeklyLogOfThisWeek(int userId) {
-        WeeklyLogDao dao = new WeeklyLogDao();
-        WeeklyLogVo vo = dao.selectItemOfThisWeek(userId);
-        if (vo == null) {
-            vo = new WeeklyLogVo();
-            vo.setUserId(userId);
-            dao.insert(vo);
-        }
-        dao.close();
-        return vo;
-    }
+		return nutrients;
+	}
 
-    public static void addMealToCurrentWeekLog(int userId, MealLogVo meal) {
-    	WeeklyLogVo week = getWeeklyLogOfThisWeek(userId);
-        week.setMilk(week.getMilk() + meal.getMilk());
-        week.setEgg(week.getEgg() + meal.getEgg());
-        week.setMeat(week.getMeat() + meal.getMeat());
-        week.setBean(week.getBean() + meal.getBean());
-        week.setVegetable(week.getVegetable() + meal.getVegetable());
-        week.setFruit(week.getFruit() + meal.getFruit());
-        week.setMineral(week.getMineral() + meal.getMineral());
-        week.setCrop(week.getCrop() + meal.getCrop());
-        week.setPotato(week.getPotato() + meal.getPotato());
-        week.setFat(week.getFat() + meal.getFat());
-        week.setSuguar(week.getSuguar() + meal.getSuguar());
+	/**
+	 * @param userId
+	 * @param weekAgo
+	 * @return 栄養素別バランス 理想量に対して現在の各摂取栄養素を％で取得
+	 */
+	public static double[] getNutrientBalances(int userId, int weekAgo) {
+		// 現在の栄養摂取量と理想量を取得
+		int[] ingested = getIngestedNutrients(userId, weekAgo);
+		int[] desired = getDesiredNutrients();
 
-        WeeklyLogDao weeklyNutAmountsDao = new WeeklyLogDao();
-        weeklyNutAmountsDao.update(week);
-        weeklyNutAmountsDao.close();
-    }
+		// 理想割合から飛び抜けた値を丸める
+		double ingestedAverage = MathUtils.getAverage(ingested);
+		double desiredAverage = MathUtils.getAverage(desired);
+		double coefficient = ingestedAverage / desiredAverage;
+		for (int i = 0; i < NUT_COUNT; i++) {
+			// 丸め処理
+			int limit = (int) (desired[i] * coefficient);
+			if (limit < ingested[i]) {
+				ingested[i] = limit;
+			}
+		}
 
-    public static void updateTotalBalanceOfCurrentWeekLog(int userId) {
-    	int[] ingested = getIngestedNutrients(userId);
-    	int[] desired = getDesiredNutrients();
-    	double ingestedAverage = getAverage(ingested);
-        double desiredAverage = getAverage(desired);
+		// 栄養バランスを再計算
+		ingestedAverage = MathUtils.getAverage(ingested);
+		desiredAverage = MathUtils.getAverage(desired);
+		double[] items = new double[NUT_COUNT];
+		for (int j = 0; j < NUT_COUNT; j++) {
+			double desiredDiff = (desired[j] - desiredAverage) / desiredAverage;
+			double ingestedDiff = (ingested[j] - ingestedAverage)
+					/ ingestedAverage;
+			double diff = (ingestedDiff - desiredDiff) / 2 + 0.5;
+			items[j] = diff;
+		}
 
-        // 係数を揃える
-        for (int i = 0; i < ingested.length; i++) {
-        	double coefficient = desiredAverage / ingestedAverage;
-        	ingested[i] = (int) (ingested[i] * coefficient);
-        }
+		return items;
+	}
 
-        // 差の二乗検定
-        double[] diffs = new double[11];
-        for (int j = 0; j < ingested.length; j++) {
-        	diffs[j] = 0;
-        	if (desired[j] != 0) {
-        		diffs[j] = Math.sqrt(Math.pow(desired[j] - ingested[j], 2)) / desired[j];
-        	}
-        }
-        double balance = (1 - getAverage(diffs)) * 100;
+	/**
+	 * @param userId
+	 * @param weekAgo
+	 * @return 栄養素別摂取総量
+	 */
+	public static int[] getIngestedNutrients(int userId, int weekAgo) {
+		WeeklyLogVo weekVo = null;
+		if (weekAgo == 0) {
+			weekVo = WeeklyLogUtils.getCurrentLog(userId);
+		} else {
+			WeeklyLogDao weekDao = new WeeklyLogDao();
+			weekVo = weekDao.selectByWeekAgo(userId, weekAgo);
+			weekDao.close();
+		}
 
-    	WeeklyLogVo weekLog = getWeeklyLogOfThisWeek(userId);
-    	weekLog.setTotalBalance((int) balance);
-    	WeeklyLogDao dao = new WeeklyLogDao();
-    	dao.update(weekLog);
-    	dao.close();
-    }
-    
-    public static double[] getChartSource(int userId) {
-    	return getChartSource(userId, 0);
-    }
+		int[] ingested = { weekVo.getMilk(), weekVo.getEgg(), weekVo.getMeat(),
+				weekVo.getBean(), weekVo.getVegetable(), weekVo.getFruit(),
+				weekVo.getMineral(), weekVo.getCrop(), weekVo.getPotato(),
+				weekVo.getFat(), weekVo.getSuguar() };
+		return ingested;
+	}
 
-    public static double[] getChartSource(int userId, int week) {
-    	// 現在の栄養摂取量と理想量を取得
-    	int[] ingested = getIngestedNutrients(userId, week);
-    	int[] desired = getDesiredNutrients();
+	/**
+	 * @return 栄養素別目標摂取量
+	 */
+	public static int[] getDesiredNutrients() {
+		int[] desired = new int[NUT_COUNT];
+		NutrientDao nutrientDao = new NutrientDao();
+		for (int i = 1; i < desired.length; i++) {
+			desired[i] = nutrientDao.selectById(i + 1).getDailyRequiredAmount();
+		}
+		nutrientDao.close();
+		return desired;
+	}
 
-    	// 理想割合から飛び抜けた値を丸める
-        double ingestedAverage = getAverage(ingested);
-        double desiredAverage = getAverage(desired);
-        double coefficient = ingestedAverage / desiredAverage;
-        for (int i = 0; i < NUT_COUNT; i++) {
-        	// 丸め処理
-        	int limit = (int) (desired[i] * coefficient);
-        	if (limit < ingested[i]) {
-        		ingested[i] = limit;
-        	}
-        }
-        
-        // 栄養バランスを再計算
-        ingestedAverage = getAverage(ingested);
-        desiredAverage = getAverage(desired);
-        double[] items = new double[NUT_COUNT];
-        for (int j = 0; j < NUT_COUNT; j++) {
-        	double desiredDiff = (desired[j] - desiredAverage) / desiredAverage;
-        	double ingestedDiff = (ingested[j] - ingestedAverage) / ingestedAverage;
-        	double diff = (ingestedDiff - desiredDiff) / 2 + 0.5;
-        	items[j] = diff;
-        }
-    	
-        return items;
-    }
-    
-    private static double getAverage(int[] items) {
-    	int amount = 0;
-    	for (int i=0; i < items.length; i++) {
-    		amount += items[i];
-    	}
-    	return amount / items.length;
-    }
-    
-    private static double getAverage(double[] items) {
-    	double amount = 0;
-    	for (int i=0; i < items.length; i++) {
-    		amount += items[i];
-    	}
-    	return amount / items.length;
-    }
-    
-    private static int[] getIngestedNutrients(int userId) {
-    	return getIngestedNutrients(userId, 0);
-    }
+	/**
+	 * @param userId
+	 * @param 取得件数上限
+	 * @return おすすめレシピVO
+	 */
+	public static ArrayList<RecipeVo> getRecommendedRecipes(int userId,
+			int limit) {
+		InsufficientNutrients nutrients = getInsufficientNutrients(userId);
+		ArrayList<RecipeVo> recipes = getRecipesContainBothNutrients(nutrients,
+				limit);
+		return recipes;
+	}
 
-    private static int[] getIngestedNutrients(int userId, int weekAgo) {
-    	WeeklyLogVo weekVo = null;
-    	if (weekAgo == 0) {
-    		weekVo = SanteUtils.getWeeklyLogOfThisWeek(userId);
-    	} else {
-    		WeeklyLogDao weekDao = new WeeklyLogDao();
-    		weekVo = weekDao.selectByWeekAgo(userId, weekAgo);
-    		weekDao.close();
-    	}
+	private static ArrayList<RecipeVo> getRecipesContainBothNutrients(
+			InsufficientNutrients nutrients, int limit) {
+		ArrayList<RecipeVo> recipes = new ArrayList<RecipeVo>();
+		RecipeDao recipeDao = new RecipeDao();
+		ArrayList<Integer> recipesContainsBoth = getDuplicateKeys(recipeDao
+				.selectRecipeIdByNutrientId(nutrients.getPrimaryKey()),
+				recipeDao.selectRecipeIdByNutrientId(nutrients
+						.getSecondaryKey()));
+		if (recipesContainsBoth.size() < limit) {
+			limit = recipesContainsBoth.size();
+		}
+		for (int i = 0; i < limit; i++) {
+			int recipeId = recipesContainsBoth.get(i);
+			RecipeVo recipe = recipeDao.selectByRecipeId(recipeId);
+			recipes.add(recipe);
+		}
+		recipeDao.close();
 
-        int[] ingested = {
-        		weekVo.getMilk(), weekVo.getEgg(), weekVo.getMeat(), weekVo.getBean(),
-        		weekVo.getVegetable(), weekVo.getFruit(), weekVo.getMineral(), 
-        		weekVo.getCrop(), weekVo.getPotato(), weekVo.getFat(), weekVo.getSuguar()
-        };
-        return ingested;
-    }
+		return recipes;
+	}
 
-    private static int[] getDesiredNutrients() {
-    	int[] desired = new int[NUT_COUNT];
-    	NutrientDao nutrientDao = new NutrientDao();
-        for (int i = 1; i < desired.length; i++) {
-        	desired[i] = nutrientDao.selectById(i+1).getDailyRequiredAmount();
-        }
-        nutrientDao.close();
-        return desired;
-    }
-
-    public static RecipeNutAmountsVo generateRecipeNutrientAmounts(int recipeId) {
-        RecipeDao recipeDao = new RecipeDao();
-        ArrayList<MaterialQuantityVo> materials = recipeDao.selectMaterialQuantitiesByRecipeId(recipeId);
-        recipeDao.close();
-        RecipeNutAmountsVo recipeNutrients = new RecipeNutAmountsVo();
-        recipeNutrients.setRecipeId(recipeId);
-        for (MaterialQuantityVo material : materials) {
-            int nutrientId = material.getNutrientId();
-            float amount = material.getGramPerQuantity() * material.getQuantity();
-            addNutrientToAmountById(nutrientId, (int) amount, recipeNutrients);
-        }
-        return recipeNutrients;
-    }
-
-    private static void addNutrientToAmountById(int nutrientId, int gram, RecipeNutAmountsVo recipeNutrients) {
-        switch (nutrientId) {
-            case 1:
-                recipeNutrients.setMilk(recipeNutrients.getMilk() + gram);
-                break;
-            case 2:
-                recipeNutrients.setEgg(recipeNutrients.getEgg() + gram);
-                break;
-            case 3:
-                recipeNutrients.setMeat(recipeNutrients.getMeat() + gram);
-                break;
-            case 4:
-                recipeNutrients.setBean(recipeNutrients.getBean() + gram);
-                break;
-            case 5:
-                recipeNutrients.setVegetable(recipeNutrients.getVegetable() + gram);
-                break;
-            case 6:
-            	recipeNutrients.setFruit(recipeNutrients.getFruit() + gram);
-                break;
-            case 7:
-                recipeNutrients.setMineral(recipeNutrients.getMineral() + gram);
-                break;
-            case 8:
-                recipeNutrients.setCrop(recipeNutrients.getCrop() + gram);
-                break;
-            case 9:
-                recipeNutrients.setPotato(recipeNutrients.getPotato() + gram);
-                break;
-            case 10:
-                recipeNutrients.setFat(recipeNutrients.getFat() + gram);
-                break;
-            case 11:
-                recipeNutrients.setSuguar(recipeNutrients.getSuguar() + gram);
-                break;
-            default:
-                break;
-        }
-    }
-
-    private static ArrayList<RecipeVo> getRecipesContainBothNutrients(InsufficientNutrients nutrients, int limit) {
-        ArrayList<RecipeVo> recipes = new ArrayList<RecipeVo>();
-        RecipeDao recipeDao = new RecipeDao();
-        ArrayList<Integer> recipesContainsBoth = extractDuplicateKeys(
-                recipeDao.selectRecipeIdByNutrientId(nutrients.getPrimaryKey()),
-                recipeDao.selectRecipeIdByNutrientId(nutrients.getSecondaryKey()));
-        if (recipesContainsBoth.size() < limit) {
-            limit = recipesContainsBoth.size();
-        }
-        for (int i = 0; i < limit; i++) {
-            int recipeId = recipesContainsBoth.get(i);
-            RecipeVo recipe = recipeDao.selectByRecipeId(recipeId);
-            recipes.add(recipe);
-        }
-        recipeDao.close();
-
-        return recipes;
-    }
-
-    private static ArrayList<Integer> extractDuplicateKeys(
-            ArrayList<Integer> firstKeys, ArrayList<Integer> secondKeys) {
-        ArrayList<Integer> duplicate = new ArrayList<Integer>();
-        for (int first : firstKeys) {
-            for (int second : secondKeys) {
-                if (first == second) {
-                    duplicate.add(first);
-                }
-            }
-        }
-        return duplicate;
-    }
-
+	private static ArrayList<Integer> getDuplicateKeys(
+			ArrayList<Integer> firstKeys, ArrayList<Integer> secondKeys) {
+		ArrayList<Integer> duplicate = new ArrayList<Integer>();
+		for (int first : firstKeys) {
+			for (int second : secondKeys) {
+				if (first == second) {
+					duplicate.add(first);
+				}
+			}
+		}
+		return duplicate;
+	}
 }

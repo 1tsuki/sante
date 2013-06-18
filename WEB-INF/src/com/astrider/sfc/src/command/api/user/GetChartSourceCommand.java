@@ -9,9 +9,9 @@ import com.astrider.sfc.src.model.ApiModel;
 
 public class GetChartSourceCommand extends Command {
 	@Override
-    public void doGet() throws ServletException, IOException {
-        ApiModel apiModel = new ApiModel();
-        apiModel.getChartSource(request);
-        render();
-    }
+	public void doGet() throws ServletException, IOException {
+		ApiModel apiModel = new ApiModel();
+		apiModel.getChartSource(request);
+		render();
+	}
 }

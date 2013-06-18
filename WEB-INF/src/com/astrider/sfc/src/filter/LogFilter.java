@@ -11,25 +11,28 @@ import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
 import javax.servlet.http.HttpServletRequest;
 
+/**
+ * @author Itsuki Sakitsu ファイルアクセスがある度にコンソールにログを出力する
+ */
 public class LogFilter implements Filter {
 
-    @Override
-    public void doFilter(ServletRequest request, ServletResponse response,
-            FilterChain chain) throws IOException, ServletException {
-        Date now = new Date();
-        String body = "[" + now.toString() + "] "
-                + ((HttpServletRequest) request).getRequestURL();
+	@Override
+	public void doFilter(ServletRequest request, ServletResponse response,
+			FilterChain chain) throws IOException, ServletException {
+		Date now = new Date();
+		String body = "[" + now.toString() + "] "
+				+ ((HttpServletRequest) request).getRequestURL();
 
-        System.out.println(body);
-        chain.doFilter(request, response);
-    }
+		System.out.println(body);
+		chain.doFilter(request, response);
+	}
 
-    @Override
-    public void init(FilterConfig arg0) throws ServletException {
-    }
+	@Override
+	public void init(FilterConfig arg0) throws ServletException {
+	}
 
-    @Override
-    public void destroy() {
-    }
+	@Override
+	public void destroy() {
+	}
 
 }

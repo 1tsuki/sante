@@ -13,18 +13,20 @@ import com.astrider.sfc.src.model.vo.db.UserVo;
 
 public class UserModel extends BaseModel {
 
-    public boolean getRecommendedRecipes(HttpServletRequest request) {
-        HttpSession session = request.getSession();
-        UserVo user = (UserVo) session.getAttribute("loginUser");
-        if (user == null) {
-            return false;
-        }
+	public boolean getRecommendedRecipes(HttpServletRequest request) {
+		HttpSession session = request.getSession();
+		UserVo user = (UserVo) session.getAttribute("loginUser");
+		if (user == null) {
+			return false;
+		}
 
-        InsufficientNutrients nutrients = SanteUtils.getInsufficientNutrients(user.getUserId());
-        request.setAttribute("nutrients", nutrients);
+		InsufficientNutrients nutrients = SanteUtils
+				.getInsufficientNutrients(user.getUserId());
+		request.setAttribute("nutrients", nutrients);
 
-        ArrayList<RecipeVo> recipes = SanteUtils.getRecommendedRecipes(user.getUserId());
-        request.setAttribute("recommendedRecipes", recipes);
-        return true;
-    }
+		ArrayList<RecipeVo> recipes = SanteUtils.getRecommendedRecipes(
+				user.getUserId(), 4);
+		request.setAttribute("recommendedRecipes", recipes);
+		return true;
+	}
 }

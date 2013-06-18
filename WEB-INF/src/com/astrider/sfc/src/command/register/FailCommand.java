@@ -9,8 +9,8 @@ import com.astrider.sfc.app.lib.helper.annotation.Title;
 
 @Title("認証失敗")
 public class FailCommand extends Command {
-    @Override
-    public void doGet() throws ServletException, IOException {
-        render();
-    }
+	@Override
+	public void doGet() throws ServletException, IOException {
+		render();
+	}
 }

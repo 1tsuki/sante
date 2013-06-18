@@ -15,35 +15,39 @@ import javax.servlet.http.HttpSession;
 import com.astrider.sfc.app.lib.helper.FlashMessage;
 import com.astrider.sfc.src.model.vo.db.UserVo;
 
+/**
+ * @author Itsuki Sakitsu /User以下接続時にログイン済みか否かを確認する
+ */
 public class LoginFilter implements Filter {
-    private static final String UNKNOWN_PATH = "/Unknown";
+	private static final String UNKNOWN_PATH = "/Unknown";
 
-    @Override
-    public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws IOException,
-            ServletException {
-        try {
-            HttpSession session = ((HttpServletRequest) request).getSession();
+	@Override
+	public void doFilter(ServletRequest request, ServletResponse response,
+			FilterChain chain) throws IOException, ServletException {
+		try {
+			HttpSession session = ((HttpServletRequest) request).getSession();
 
-            UserVo user = (UserVo) session.getAttribute("loginUser");
-            if (user == null) {
-                FlashMessage flashMessage = new FlashMessage();
-                flashMessage.addMessage("指定されたURLに接続するにはログインが必要です");
-                session.setAttribute("flashMessage", flashMessage);
-                String target = ((HttpServletRequest) request).getContextPath() + UNKNOWN_PATH;
-                ((HttpServletResponse) response).sendRedirect(target);
-            } else {
-                chain.doFilter(request, response);
-            }
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
+			UserVo user = (UserVo) session.getAttribute("loginUser");
+			if (user == null) {
+				FlashMessage flashMessage = new FlashMessage();
+				flashMessage.addMessage("指定されたURLに接続するにはログインが必要です");
+				session.setAttribute("flashMessage", flashMessage);
+				String target = ((HttpServletRequest) request).getContextPath()
+						+ UNKNOWN_PATH;
+				((HttpServletResponse) response).sendRedirect(target);
+			} else {
+				chain.doFilter(request, response);
+			}
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
 
-    @Override
-    public void init(FilterConfig arg0) throws ServletException {
-    }
+	@Override
+	public void init(FilterConfig arg0) throws ServletException {
+	}
 
-    @Override
-    public void destroy() {
-    }
+	@Override
+	public void destroy() {
+	}
 }

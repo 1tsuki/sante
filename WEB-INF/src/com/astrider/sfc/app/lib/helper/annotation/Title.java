@@ -7,13 +7,13 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.Target;
 
 /**
- * タイトル自動設定用アノテーション
- * Commandクラスに設定することでページタイトルを自動挿入する
- * @author 01002552
- *
+ * @author astrider<br>
+ *         タイトル自動設定用アノテーション<br>
+ *         Commandクラスに設定することでページタイトルを自動挿入する
+ * 
  */
 @Target(TYPE)
 @Retention(RUNTIME)
 public @interface Title {
-    String value();
+	String value();
 }

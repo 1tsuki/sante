@@ -13,234 +13,234 @@ import com.astrider.sfc.src.model.vo.db.RecipeVo;
 import com.astrider.sfc.src.model.vo.db.StepVo;
 
 public class RecipeDao extends BaseDao {
-    public RecipeDao() {
-        super();
-    }
+	public RecipeDao() {
+		super();
+	}
 
-    public RecipeDao(Connection con) {
-        super(con);
-    }
-    
-    public ArrayList<RecipeVo> selectAll() {
-        ArrayList<RecipeVo> recipes = new ArrayList<RecipeVo>();
-        PreparedStatement pstmt = null;
+	public RecipeDao(Connection con) {
+		super(con);
+	}
 
-        try {
-            String sql = "SELECT * FROM recipes";
-            pstmt = con.prepareStatement(sql);
-            ResultSet rs = pstmt.executeQuery();
-            while (rs.next()) {
-                Mapper<RecipeVo> mapper = new Mapper<RecipeVo>();
-                recipes.add(mapper.fromResultSet(rs));
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
-        } finally {
-            try {
-                if (pstmt != null) {
-                    pstmt.close();
-                }
-            } catch (SQLException e) {
-                e.printStackTrace();
-            }
-        }
+	public ArrayList<RecipeVo> selectAll() {
+		ArrayList<RecipeVo> recipes = new ArrayList<RecipeVo>();
+		PreparedStatement pstmt = null;
 
-        return recipes;
-    }
-    
-    public RecipeVo selectByRecipeId(int recipeId) {
-        RecipeVo recipe = null;
-        PreparedStatement pstmt = null;
+		try {
+			String sql = "SELECT * FROM recipes";
+			pstmt = con.prepareStatement(sql);
+			ResultSet rs = pstmt.executeQuery();
+			while (rs.next()) {
+				Mapper<RecipeVo> mapper = new Mapper<RecipeVo>();
+				recipes.add(mapper.fromResultSet(rs));
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			try {
+				if (pstmt != null) {
+					pstmt.close();
+				}
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+		}
 
-        try {
-            String sql = "SELECT * FROM recipes WHERE recipe_id = ?";
-            pstmt = con.prepareStatement(sql);
-            pstmt.setInt(1, recipeId);
-            ResultSet rs = pstmt.executeQuery();
-            while (rs.next()) {
-                Mapper<RecipeVo> mapper = new Mapper<RecipeVo>();
-                recipe = mapper.fromResultSet(rs);
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
-        } finally {
-            try {
-                if (pstmt != null) {
-                    pstmt.close();
-                }
-            } catch (SQLException e) {
-                e.printStackTrace();
-            }
-        }
+		return recipes;
+	}
 
-        return recipe;
-    }
+	public RecipeVo selectByRecipeId(int recipeId) {
+		RecipeVo recipe = null;
+		PreparedStatement pstmt = null;
 
-    public ArrayList<RecipeVo> selectByMaterialName(String materialName) {
-        ArrayList<RecipeVo> recipes = new ArrayList<RecipeVo>();
-        PreparedStatement pstmt = null;
+		try {
+			String sql = "SELECT * FROM recipes WHERE recipe_id = ?";
+			pstmt = con.prepareStatement(sql);
+			pstmt.setInt(1, recipeId);
+			ResultSet rs = pstmt.executeQuery();
+			while (rs.next()) {
+				Mapper<RecipeVo> mapper = new Mapper<RecipeVo>();
+				recipe = mapper.fromResultSet(rs);
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			try {
+				if (pstmt != null) {
+					pstmt.close();
+				}
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+		}
 
-        try {
-            String sql = "SELECT * FROM recipes WHERE recipe_id IN (SELECT DISTINCT recipe_id FROM RECIPE_MATERIALS WHERE material_name LIKE ?)";
-            pstmt = con.prepareStatement(sql);
-            pstmt.setString(1, "%" + materialName + "%");
-            ResultSet rs = pstmt.executeQuery();
-            while (rs.next()) {
-                Mapper<RecipeVo> mapper = new Mapper<RecipeVo>();
-                RecipeVo recipe = mapper.fromResultSet(rs);
-                recipes.add(recipe);
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
-        } finally {
-            try {
-                if (pstmt != null) {
-                    pstmt.close();
-                }
-            } catch (SQLException e) {
-                e.printStackTrace();
-            }
-        }
+		return recipe;
+	}
 
-        return recipes;
-    }
+	public ArrayList<RecipeVo> selectByMaterialName(String materialName) {
+		ArrayList<RecipeVo> recipes = new ArrayList<RecipeVo>();
+		PreparedStatement pstmt = null;
+
+		try {
+			String sql = "SELECT * FROM recipes WHERE recipe_id IN (SELECT DISTINCT recipe_id FROM RECIPE_MATERIALS WHERE material_name LIKE ?)";
+			pstmt = con.prepareStatement(sql);
+			pstmt.setString(1, "%" + materialName + "%");
+			ResultSet rs = pstmt.executeQuery();
+			while (rs.next()) {
+				Mapper<RecipeVo> mapper = new Mapper<RecipeVo>();
+				RecipeVo recipe = mapper.fromResultSet(rs);
+				recipes.add(recipe);
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			try {
+				if (pstmt != null) {
+					pstmt.close();
+				}
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+		}
+
+		return recipes;
+	}
 
 	public ArrayList<RecipeVo> selectByNutrientId(int nutrientId) {
 		ArrayList<RecipeVo> recipes = new ArrayList<RecipeVo>();
-        PreparedStatement pstmt = null;
+		PreparedStatement pstmt = null;
 
-        try {
-            String sql = "SELECT * FROM recipes WHERE recipe_id IN (SELECT DISTINCT recipe_id FROM RECIPE_MATERIAL_QUANTITIES WHERE nutrient_id = ?)";
-            pstmt = con.prepareStatement(sql);
-            pstmt.setInt(1, nutrientId);
-            ResultSet rs = pstmt.executeQuery();
-            Mapper<RecipeVo> mapper = new Mapper<RecipeVo>();
-            while (rs.next()) {
-                recipes.add(mapper.fromResultSet(rs));
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
-        } finally {
-            try {
-                if (pstmt != null) {
-                    pstmt.close();
-                }
-            } catch (SQLException e) {
-                e.printStackTrace();
-            }
-        }
-        return recipes;
+		try {
+			String sql = "SELECT * FROM recipes WHERE recipe_id IN (SELECT DISTINCT recipe_id FROM RECIPE_MATERIAL_QUANTITIES WHERE nutrient_id = ?)";
+			pstmt = con.prepareStatement(sql);
+			pstmt.setInt(1, nutrientId);
+			ResultSet rs = pstmt.executeQuery();
+			Mapper<RecipeVo> mapper = new Mapper<RecipeVo>();
+			while (rs.next()) {
+				recipes.add(mapper.fromResultSet(rs));
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			try {
+				if (pstmt != null) {
+					pstmt.close();
+				}
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+		}
+		return recipes;
 	}
 
+	public ArrayList<MaterialQuantityVo> selectMaterialQuantitiesByRecipeId(
+			int recipeId) {
+		ArrayList<MaterialQuantityVo> materialQuantities = new ArrayList<MaterialQuantityVo>();
+		PreparedStatement pstmt = null;
 
-    public ArrayList<MaterialQuantityVo> selectMaterialQuantitiesByRecipeId(int recipeId) {
-        ArrayList<MaterialQuantityVo> materialQuantities = new ArrayList<MaterialQuantityVo>();
-        PreparedStatement pstmt = null;
+		try {
+			String sql = "SELECT * FROM RECIPE_MATERIAL_QUANTITIES WHERE recipe_id = ? ORDER BY nutrient_id";
+			pstmt = con.prepareStatement(sql);
+			pstmt.setInt(1, recipeId);
+			ResultSet rs = pstmt.executeQuery();
+			Mapper<MaterialQuantityVo> mapper = new Mapper<MaterialQuantityVo>();
+			while (rs.next()) {
+				MaterialQuantityVo materialQuantity = mapper.fromResultSet(rs);
+				materialQuantities.add(materialQuantity);
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			try {
+				if (pstmt != null) {
+					pstmt.close();
+				}
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+		}
+		return materialQuantities;
+	}
 
-        try {
-            String sql =  "SELECT * FROM RECIPE_MATERIAL_QUANTITIES WHERE recipe_id = ? ORDER BY nutrient_id";
-            pstmt = con.prepareStatement(sql);
-            pstmt.setInt(1, recipeId);
-            ResultSet rs = pstmt.executeQuery();
-            Mapper<MaterialQuantityVo> mapper = new Mapper<MaterialQuantityVo>();
-            while (rs.next()) {
-                MaterialQuantityVo materialQuantity = mapper.fromResultSet(rs);
-                materialQuantities.add(materialQuantity);
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
-        } finally {
-            try {
-                if (pstmt != null) {
-                    pstmt.close();
-                }
-            } catch (SQLException e) {
-                e.printStackTrace();
-            }
-        }
-        return materialQuantities;
-    }
-    
-    public ArrayList<MaterialQuantityVo> selectMaterialQuantitiesByNutrientId(int nutrientId) {
-        ArrayList<MaterialQuantityVo> materials = new ArrayList<MaterialQuantityVo>();
-        PreparedStatement pstmt = null;
+	public ArrayList<MaterialQuantityVo> selectMaterialQuantitiesByNutrientId(
+			int nutrientId) {
+		ArrayList<MaterialQuantityVo> materials = new ArrayList<MaterialQuantityVo>();
+		PreparedStatement pstmt = null;
 
-        try {
-            String sql = "SELECT * FROM RECIPE_MATERIAL_QUANTITIES WHERE nutrient_id = ?";
-            pstmt = con.prepareStatement(sql);
-            pstmt.setInt(1, nutrientId);
-            ResultSet rs = pstmt.executeQuery();
-            Mapper<MaterialQuantityVo> mapper = new Mapper<MaterialQuantityVo>();
-            while (rs.next()) {
-                MaterialQuantityVo material = mapper.fromResultSet(rs);
-                materials.add(material);
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
-        } finally {
-            try {
-                if (pstmt != null) {
-                    pstmt.close();
-                }
-            } catch (SQLException e) {
-                e.printStackTrace();
-            }
-        }
-        return materials;
-    }
+		try {
+			String sql = "SELECT * FROM RECIPE_MATERIAL_QUANTITIES WHERE nutrient_id = ?";
+			pstmt = con.prepareStatement(sql);
+			pstmt.setInt(1, nutrientId);
+			ResultSet rs = pstmt.executeQuery();
+			Mapper<MaterialQuantityVo> mapper = new Mapper<MaterialQuantityVo>();
+			while (rs.next()) {
+				MaterialQuantityVo material = mapper.fromResultSet(rs);
+				materials.add(material);
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			try {
+				if (pstmt != null) {
+					pstmt.close();
+				}
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+		}
+		return materials;
+	}
 
-    public ArrayList<StepVo> selectStepsByRecipeId(int recipeId) {
-        ArrayList<StepVo> steps = new ArrayList<StepVo>();
-        PreparedStatement pstmt = null;
+	public ArrayList<StepVo> selectStepsByRecipeId(int recipeId) {
+		ArrayList<StepVo> steps = new ArrayList<StepVo>();
+		PreparedStatement pstmt = null;
 
-        try {
-            String sql = "SELECT * FROM steps WHERE recipe_id = ? ORDER BY STEP";
-            pstmt = con.prepareStatement(sql);
-            pstmt.setInt(1, recipeId);
-            ResultSet rs = pstmt.executeQuery();
-            Mapper<StepVo> mapper = new Mapper<StepVo>();
-            while (rs.next()) {
-                StepVo step = mapper.fromResultSet(rs);
-                steps.add(step);
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
-        } finally {
-            try {
-                if (pstmt != null) {
-                    pstmt.close();
-                }
-            } catch (SQLException e) {
-                e.printStackTrace();
-            }
-        }
-        return steps;
-    }
+		try {
+			String sql = "SELECT * FROM steps WHERE recipe_id = ? ORDER BY STEP";
+			pstmt = con.prepareStatement(sql);
+			pstmt.setInt(1, recipeId);
+			ResultSet rs = pstmt.executeQuery();
+			Mapper<StepVo> mapper = new Mapper<StepVo>();
+			while (rs.next()) {
+				StepVo step = mapper.fromResultSet(rs);
+				steps.add(step);
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			try {
+				if (pstmt != null) {
+					pstmt.close();
+				}
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+		}
+		return steps;
+	}
 
-    
-    public ArrayList<Integer> selectRecipeIdByNutrientId(int nutrientId) {
-        ArrayList<Integer> recipeIds = new ArrayList<Integer>();
-        PreparedStatement pstmt = null;
+	public ArrayList<Integer> selectRecipeIdByNutrientId(int nutrientId) {
+		ArrayList<Integer> recipeIds = new ArrayList<Integer>();
+		PreparedStatement pstmt = null;
 
-        try {
-            String sql = "SELECT DISTINCT recipe_id FROM RECIPE_MATERIAL_QUANTITIES WHERE nutrient_id = ?";
-            pstmt = con.prepareStatement(sql);
-            pstmt.setInt(1, nutrientId);
-            ResultSet rs = pstmt.executeQuery();
-            while (rs.next()) {
-                recipeIds.add(rs.getInt(1));
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
-        } finally {
-            try {
-                if (pstmt != null) {
-                    pstmt.close();
-                }
-            } catch (SQLException e) {
-                e.printStackTrace();
-            }
-        }
-        return recipeIds;
-    }
+		try {
+			String sql = "SELECT DISTINCT recipe_id FROM RECIPE_MATERIAL_QUANTITIES WHERE nutrient_id = ?";
+			pstmt = con.prepareStatement(sql);
+			pstmt.setInt(1, nutrientId);
+			ResultSet rs = pstmt.executeQuery();
+			while (rs.next()) {
+				recipeIds.add(rs.getInt(1));
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			try {
+				if (pstmt != null) {
+					pstmt.close();
+				}
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+		}
+		return recipeIds;
+	}
 }

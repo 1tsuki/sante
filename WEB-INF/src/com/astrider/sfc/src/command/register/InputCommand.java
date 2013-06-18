@@ -9,11 +9,8 @@ import com.astrider.sfc.app.lib.helper.annotation.Title;
 
 @Title("新規登録")
 public class InputCommand extends Command {
-    /*
-     * 新規登録フォーム表示
-     */
-    @Override
-    public void doGet() throws ServletException, IOException {
-        render();
-    }
+	@Override
+	public void doGet() throws ServletException, IOException {
+		render();
+	}
 }

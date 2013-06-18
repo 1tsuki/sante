@@ -9,19 +9,19 @@ import com.astrider.sfc.app.lib.helper.annotation.Title;
 import com.astrider.sfc.src.model.RecipeModel;
 import com.astrider.sfc.src.model.UserModel;
 
-@Title("レシピ")
+@Title("レシピ詳細")
 public class DetailCommand extends Command {
-    @Override
-    public void doGet() throws ServletException, IOException {
-        RecipeModel recipeModel = new RecipeModel();
-        boolean succeed = recipeModel.getRecipeDetail(request);
-        if (!succeed) {
-            flashMessage.addMessage(recipeModel.getFlashMessage());
-            redirect("/user/Index");
-        }
+	@Override
+	public void doGet() throws ServletException, IOException {
+		RecipeModel recipeModel = new RecipeModel();
+		boolean succeed = recipeModel.showDetail(request);
+		if (!succeed) {
+			flashMessage.addMessage(recipeModel.getFlashMessage());
+			redirect("/user/Index");
+		}
 
-        UserModel userModel = new UserModel();
-        userModel.getRecommendedRecipes(request);
-        render();
-    }
+		UserModel userModel = new UserModel();
+		userModel.getRecommendedRecipes(request);
+		render();
+	}
 }

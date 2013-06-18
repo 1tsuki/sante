@@ -18,6 +18,11 @@ import org.dbunit.dataset.excel.XlsDataSet;
 import org.dbunit.ext.oracle.Oracle10DataTypeFactory;
 import org.dbunit.operation.DatabaseOperation;
 
+/**
+ * @author Itsuki Sakitsu
+ * daoテスト用クラス。xlsファイルからDBへの読み込み等を行う
+ * テスト時にDB接続が多発すると困るので、Singleton化して初回のみDBロードを行うように。
+ */
 public class TestDataManager {
     private String testDataDirectory;
     private String driverClassName;
@@ -99,6 +104,7 @@ public class TestDataManager {
             throw new Exception("data file name is wrong.");
         }
     }
+
     public void restoreTestDataInXLS(String dataFileName) throws Exception {
         String backupFileName = testDataDirectory + createBackupFileName(dataFileName);
         IDataSet partialDataSet = null;

@@ -45,6 +45,10 @@ if (!window.santeUserNutrients) santeUserNutrients = {};
 						var colors = ["red", "red", "red", "red", "green", "green", "green", "yellow", "yellow", "yellow", "yellow"];
 						santeFillMaterials.interface.fill(keys, data.result.items, colors);
 					}
+				},
+				error: function(data) {
+				    santePieGraph.interface.setItems(null);
+				    santePieGraph.interface.draw();
 				}
 			});
 		}

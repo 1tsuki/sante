@@ -8,10 +8,10 @@ import com.astrider.sfc.app.lib.Command;
 import com.astrider.sfc.src.model.ApiModel;
 
 public class GetStatsCommand extends Command {
-    @Override
-    public void doGet() throws ServletException, IOException {
-        ApiModel apiModel = new ApiModel();
-        apiModel.getStats(request);
-        render();
-    }
+	@Override
+	public void doGet() throws ServletException, IOException {
+		ApiModel apiModel = new ApiModel();
+		apiModel.getStats(request);
+		render();
+	}
 }

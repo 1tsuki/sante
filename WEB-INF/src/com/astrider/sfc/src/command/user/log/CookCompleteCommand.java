@@ -9,18 +9,19 @@ import com.astrider.sfc.app.lib.helper.FlashMessage.Type;
 import com.astrider.sfc.src.model.LogModel;
 
 public class CookCompleteCommand extends Command {
-    @Override
-    public void doGet() throws ServletException, IOException {
-        LogModel model = new LogModel();
-        boolean succeed = model.cookComplete(request);
-        if (succeed) {
-            flashMessage.addMessage("調理完了おめでとうございます！");
-            flashMessage.setMessageType(Type.INFO);
-            redirect("/user/Index");
-        } else {
-            flashMessage.addMessage(model.getFlashMessage());
-            flashMessage.setMessageType(Type.WARNING);
-            redirect("/user/recipe/Detail?recipe_id=" + (String) request.getAttribute("recipe_id"));
-        }
-    }
+	@Override
+	public void doGet() throws ServletException, IOException {
+		LogModel model = new LogModel();
+		boolean succeed = model.cookComplete(request);
+		if (succeed) {
+			flashMessage.addMessage("調理完了おめでとうございます！");
+			flashMessage.setMessageType(Type.INFO);
+			redirect("/user/Index");
+		} else {
+			flashMessage.addMessage(model.getFlashMessage());
+			flashMessage.setMessageType(Type.WARNING);
+			redirect("/user/recipe/Detail?recipe_id="
+					+ (String) request.getAttribute("recipe_id"));
+		}
+	}
 }

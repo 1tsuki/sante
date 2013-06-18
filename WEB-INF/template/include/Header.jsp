@@ -5,7 +5,7 @@
 <%@ page import="java.util.*"%>
 <%@ page import="com.astrider.sfc.src.model.vo.db.*"%>
 <%@ page import="com.astrider.sfc.src.model.vo.form.*"%>
-<%@ page import="com.astrider.sfc.src.helper.ViewUtils"%>
+<%@ page import="com.astrider.sfc.src.helper.ViewHelper"%>
 <%@ page import="com.astrider.sfc.app.lib.helper.StringUtils"%>
 <%	
     request.setCharacterEncoding("UTF-8");

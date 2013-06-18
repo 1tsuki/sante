@@ -7,12 +7,12 @@ import java.lang.annotation.Target;
 import java.lang.annotation.Retention;
 
 /**
- * ORM用アノテーション。DB上のテーブル名を指定する
- * @author 01002552
- *
+ * @author astrider<br>
+ *         ORM用アノテーション。DB上のテーブル名を指定する
+ * 
  */
 @Target(TYPE)
 @Retention(RUNTIME)
 public @interface Table {
-    String value();
+	String value();
 }

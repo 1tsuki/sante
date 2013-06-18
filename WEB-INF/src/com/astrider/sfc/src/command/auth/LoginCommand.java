@@ -9,16 +9,16 @@ import com.astrider.sfc.app.lib.helper.FlashMessage.Type;
 import com.astrider.sfc.src.model.AuthModel;
 
 public class LoginCommand extends Command {
-    @Override
-    public void doPost() throws ServletException, IOException {
-        AuthModel model = new AuthModel();
-        boolean succeed = model.authLogin(request);
-        if (succeed) {
-            redirect("/user/Index");
-        } else {
-            flashMessage.addMessage(model.getFlashMessage());
-            flashMessage.setMessageType(Type.WARNING);
-            redirect("/Index");
-        }
-    }
+	@Override
+	public void doPost() throws ServletException, IOException {
+		AuthModel model = new AuthModel();
+		boolean succeed = model.authLogin(request);
+		if (succeed) {
+			redirect("/user/Index");
+		} else {
+			flashMessage.addMessage(model.getFlashMessage());
+			flashMessage.setMessageType(Type.WARNING);
+			redirect("/Index");
+		}
+	}
 }
