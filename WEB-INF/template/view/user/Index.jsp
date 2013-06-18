@@ -71,24 +71,24 @@
     <h3>食材名から検索</h3>
     <div class="search">
         <form method="POST" action="<% v.getPath("/user/recipe/Search"); %>">
-            <input class="input-middle" type="search" placeholder="使いたい食材名を入力" required>
+            <input class="input-middle" type="search" name="material_name" placeholder="使いたい食材名を入力" required>
             <input class="btn btn-primary btn-small" type="submit" value="検索">
         </form>
     </div>
 
     <h3>食材分類から選ぶ</h3>
     <div class="materials">
-        <div id="milk"    class="material material-red-light"><a href="<% v.getPath("/user/recipe/Search"); %>">乳製品</a></div>
-        <div id="egg"     class="material material-red-light"><a href="<% v.getPath("/user/recipe/Search"); %>">卵</a></div>
-        <div id="meat"    class="material material-red-light"><a href="<% v.getPath("/user/recipe/Search"); %>">魚・肉類</a></div>
-        <div id="bean"    class="material material-red-light"><a href="<% v.getPath("/user/recipe/Search"); %>">豆類</a></div>
-        <div id="veg"     class="material material-green-light"><a href="<% v.getPath("/user/recipe/Search"); %>">野菜</a></div>
-        <div id="fruit"   class="material material-green-light"><a href="<% v.getPath("/user/recipe/Search"); %>">果物</a></div>
-        <div id="mineral" class="material material-green-light"><a href="<% v.getPath("/user/recipe/Search"); %>">海藻・茸</a></div>
-        <div id="crop"    class="material material-yellow-light"><a href="<% v.getPath("/user/recipe/Search"); %>">穀物</a></div>
-        <div id="potato"  class="material material-yellow-light"><a href="<% v.getPath("/user/recipe/Search"); %>">イモ類</a></div>
-        <div id="fat"     class="material material-yellow-light"><a href="<% v.getPath("/user/recipe/Search"); %>">油分</a></div>
-        <div id="sugar"   class="material material-yellow-light"><a href="<% v.getPath("/user/recipe/Search"); %>">糖分</a></div>
+        <div id="milk"    class="material material-red-light"><a href="<% v.getPath("/user/recipe/Search?material_id=1"); %>">乳製品</a></div>
+        <div id="egg"     class="material material-red-light"><a href="<% v.getPath("/user/recipe/Search?material_id=2"); %>">卵</a></div>
+        <div id="meat"    class="material material-red-light"><a href="<% v.getPath("/user/recipe/Search?material_id=3"); %>">魚・肉類</a></div>
+        <div id="bean"    class="material material-red-light"><a href="<% v.getPath("/user/recipe/Search?material_id=4"); %>">豆類</a></div>
+        <div id="veg"     class="material material-green-light"><a href="<% v.getPath("/user/recipe/Search?material_id=5"); %>">野菜</a></div>
+        <div id="fruit"   class="material material-green-light"><a href="<% v.getPath("/user/recipe/Search?material_id=6"); %>">果物</a></div>
+        <div id="mineral" class="material material-green-light"><a href="<% v.getPath("/user/recipe/Search?material_id=7"); %>">海藻・茸</a></div>
+        <div id="crop"    class="material material-yellow-light"><a href="<% v.getPath("/user/recipe/Search?material_id=8"); %>">穀物</a></div>
+        <div id="potato"  class="material material-yellow-light"><a href="<% v.getPath("/user/recipe/Search?material_id=9"); %>">イモ類</a></div>
+        <div id="fat"     class="material material-yellow-light"><a href="<% v.getPath("/user/recipe/Search?material_id=10"); %>">油分</a></div>
+        <div id="sugar"   class="material material-yellow-light"><a href="<% v.getPath("/user/recipe/Search?material_id=11"); %>">糖分</a></div>
     </div>
     <p>最近不足している食材が強調表示されています。</p>
 </section>
