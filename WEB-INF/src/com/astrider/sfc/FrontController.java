@@ -7,7 +7,6 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
 
 import com.astrider.sfc.app.lib.Command;
 import com.astrider.sfc.app.lib.helper.StringUtils;
@@ -15,32 +14,25 @@ import com.astrider.sfc.app.lib.helper.annotation.Title;
 import com.astrider.sfc.src.command.UnknownCommand;
 
 /**
- * @author astrider<br>
- *         概要<br>
+ * FrontController.
+ * 
+ * @author astrider
+ *         <p>
  *         全Commandに対するアクセスは全てこのクラスから振り分けられる<br>
  *         同時にCommandクラスにTitleアノテーションが用意されていた場合、自動的にページタイトルを設定する。<br>
- * <br>
- *         機能<br>
- *         主要機能<br>
- *         ・doGet() 通常のdoGetメソッド<br>
- *         ・doPost() 通常のdoPostメソッド<br>
- * <br>
- *         副次機能<br>
- *         ・setPageTitle()
- *         CommandクラスにTitleアノテーションが付加されていた場合、sessionにpageTitle要素を格納<br>
- *         ・setServletPath() sessionにservletpathを格納。jsp転送後のviewUtils用<br>
- *         ・getCommandName() リクエストURLをCommand名に変換<br>
- *         ・getCommand() Commandクラスのインスタンスを生成、Command不在の場合はUnknownCommandにリダイレクト<br>
+ *         </p>
  * 
  */
 public class FrontController extends HttpServlet {
 	private static final long serialVersionUID = -7412673150826768532L;
 
 	/**
-	 * getリクエスト時
+	 * doGet.
+	 * <p>
+	 * URLに対応したCommandクラスの呼び出し、及びページタイトル、servletPathの設定を行う。
+	 * </p>
 	 */
-	public void doGet(HttpServletRequest request, HttpServletResponse response)
-			throws ServletException, IOException {
+	public void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		Command command = getCommand(request);
 		setPageTitle(request, command);
 		setServletPath(request);
@@ -50,10 +42,12 @@ public class FrontController extends HttpServlet {
 	}
 
 	/**
-	 * postリクエスト時
+	 * doPost.
+	 * <p>
+	 * URLに対応したCommandクラスの呼び出し、及びページタイトル、servletPathの設定を行う。
+	 * </p>
 	 */
-	public void doPost(HttpServletRequest request, HttpServletResponse response)
-			throws ServletException, IOException {
+	public void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		Command command = getCommand(request);
 		setPageTitle(request, command);
 		setServletPath(request);
@@ -63,24 +57,22 @@ public class FrontController extends HttpServlet {
 	}
 
 	/**
-	 * CommandクラスにTitleアノテーションが付加されていた場合、sessionにタイトル情報を保存
+	 * CommandクラスにTitleアノテーションが付加されていた場合、sessionにタイトル情報を保存.
 	 */
 	private void setPageTitle(HttpServletRequest request, Command command) {
 		Title title = command.getClass().getAnnotation(Title.class);
 		if (title != null && StringUtils.isNotEmpty(title.value())) {
-			HttpSession session = request.getSession();
-			session.setAttribute("pageTitle", title.value());
+			request.setAttribute("pageTitle", title.value());
 		}
 	}
 
 	/**
-	 * sessionにservletPathを追加。jspにforwardされてからのViewHelper用
+	 * sessionにservletPathを追加。jspにforwardされてからのViewHelper用.
 	 * 
 	 * @param request
 	 */
 	private void setServletPath(HttpServletRequest request) {
-		HttpSession session = request.getSession();
-		session.setAttribute("servletPath", request.getServletPath());
+		request.setAttribute("servletPath", request.getServletPath());
 	}
 
 	/**
@@ -106,8 +98,7 @@ public class FrontController extends HttpServlet {
 			isInvalidPath = true;
 		}
 
-		HttpSession session = request.getSession();
-		session.setAttribute("invalidPath", isInvalidPath);
+		request.setAttribute("invalidPath", isInvalidPath);
 		return command;
 	}
 

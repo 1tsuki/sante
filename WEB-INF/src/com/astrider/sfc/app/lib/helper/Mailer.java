@@ -14,24 +14,21 @@ import javax.mail.internet.MimeMultipart;
 import javax.mail.internet.MimeUtility;
 
 /**
+ * メール送信用ヘルパークラス.
+ * 
  * @author astrider<br>
- *         メール送信用ヘルパークラス<br>
- * <br>
- *         概要<br>
- *         javaMail利用用ラッパークラス<br>
- *         送信元情報は定数として設定済み。<br>
- *         FROM ... デフォルト送信元アドレス<br>
- *         MAIL_HOST ... 接続先SMTPサーバードメイン、Windows上ではlocalhost上のsmtp4dev<br>
- *         MAIL_PORT ... 接続先SMTPサーバーのポート、windows上ではport25のsmtp4dev<br>
- * <br>
- *         機能<br>
- *         主要機能<br>
- *         ・private class Mail メール内容格納用のVO的なモノ<br>
- *         ・send() 送信実行<br>
+ *         <p>
+ *         javaMail利用用ラッパークラス。 送信元情報は定数として設定済み。
+ *         </p>
  */
 public class Mailer {
 	/**
-	 * @author Itsuki Sakitsu メール内容格納用クラス
+	 * メールBean.
+	 * 
+	 * @author astrider
+	 *         <p>
+	 *         メール内容を格納するBean
+	 *         </p>
 	 */
 	@SuppressWarnings("unused")
 	private class Mail {
@@ -40,6 +37,14 @@ public class Mailer {
 		private String subject;
 		private String body;
 
+		/**
+		 * コンストラクタ.
+		 * 
+		 * @param 送信元アドレス
+		 * @param 送信先アドレス
+		 * @param タイトル
+		 * @param 本文
+		 */
 		public Mail(String from, String to, String subject, String body) {
 			this.to = to;
 			this.subject = subject;
@@ -80,26 +85,35 @@ public class Mailer {
 	}
 
 	private Mail mail;
-	private static final String FROM = "noreply@sante.com"; // 標準送信元
-	private static final String MAIL_HOST = "localhost"; // 標準SMTP host
-	private static final String MAIL_PORT = "25"; // 標準SMTP port
+	private static final String FROM = "noreply@sante.com";
+	private static final String MAIL_HOST = "localhost";
+	private static final String MAIL_PORT = "25";
 
 	/**
-	 * 送信元を指定しない場合のコンストラクタ
+	 * 標準送信元アドレスを利用するコンストラクタ.
+	 * 
+	 * @param 送信先アドレス
+	 * @param タイトル
+	 * @param 本文
 	 */
 	public Mailer(String to, String subject, String body) {
 		mail = new Mail(FROM, to, subject, body);
 	}
 
 	/**
-	 * 送信元を指定する場合のコンストラクタ
+	 * 送信元アドレスを指定するコンストラクタ.
+	 * 
+	 * @param 送信元アドレス
+	 * @param 送信先アドレス
+	 * @param タイトル
+	 * @param 本文
 	 */
 	public Mailer(String from, String to, String subject, String body) {
 		mail = new Mail(from, to, subject, body);
 	}
 
 	/**
-	 * メール送信
+	 * メール送信.
 	 * 
 	 * @return メール送信成否
 	 */
@@ -114,14 +128,13 @@ public class Mailer {
 	}
 
 	/**
-	 * メールオブジェクトを作成
+	 * メールオブジェクトを作成.
 	 * 
-	 * @return
+	 * @return MimeMessage
 	 * @throws UnsupportedEncodingException
 	 * @throws MessagingException
 	 */
-	private MimeMessage createMessage() throws UnsupportedEncodingException,
-			MessagingException {
+	private MimeMessage createMessage() throws UnsupportedEncodingException, MessagingException {
 		// 送信先情報
 		Properties props = new Properties();
 		props.put("mail.smtp.host", MAIL_HOST);
@@ -130,7 +143,6 @@ public class Mailer {
 
 		// メール本文
 		MimeMessage msg = new MimeMessage(session);
-
 		InternetAddress[] toList = new InternetAddress[1];
 		toList[0] = new InternetAddress(mail.getTo());
 
@@ -140,8 +152,7 @@ public class Mailer {
 
 		MimeMultipart multipart = new MimeMultipart();
 		MimeBodyPart bodypart = new MimeBodyPart();
-		bodypart.setContent(mail.getBody(),
-				"text/plain;charset=\"iso-2022-jp\"");
+		bodypart.setContent(mail.getBody(), "text/plain;charset=\"iso-2022-jp\"");
 		multipart.addBodyPart(bodypart);
 		msg.setContent(multipart);
 

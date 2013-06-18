@@ -22,71 +22,78 @@ import com.astrider.sfc.src.model.vo.db.RecipeVo;
 import com.astrider.sfc.src.model.vo.db.UserStatsVo;
 import com.astrider.sfc.src.model.vo.db.UserVo;
 
+/**
+ * 内部ツール関連Model
+ * @author astrider
+ *
+ */
 public class InternalModel extends BaseModel {
+	/**
+	 * 連続調理日数のリセット
+	 */
 	public void execDailyBatch() {
 		UserDao userDao = new UserDao();
 		ArrayList<UserVo> users = userDao.selectAll();
 		userDao.close();
-		for (UserVo user : users) {
-			checkDailyCookLogs(user);
-		}
-	}
-
-	private void checkDailyCookLogs(UserVo user) {
+		
 		CookLogDao cookLogDao = new CookLogDao();
-		if (0 < cookLogDao.countCookedAtYesterday(user.getUserId())) {
-			// 連続調理日数の更新
-			UserStatsDao userStatsDao = new UserStatsDao();
-			UserStatsVo userStatsVo = userStatsDao.selectByUserId(user
-					.getUserId());
-			userStatsVo.setConsecutivelyCooked(0);
-			userStatsDao.update(userStatsVo);
-			userStatsDao.close();
+		UserStatsDao userStatsDao = new UserStatsDao();
+		for (UserVo user : users) {
+			// 前日の調理履歴が0件ならば連続調理日数をリセット
+			if (0 == cookLogDao.countCookedAtYesterday(user.getUserId())) {
+				UserStatsVo userStatsVo = userStatsDao.selectByUserId(user.getUserId());
+				userStatsVo.setConsecutivelyCooked(0);
+				userStatsDao.update(userStatsVo, false);
+			}
 		}
+		userStatsDao.commit();
 		cookLogDao.close();
+		userStatsDao.close();
 	}
 
+	/**
+	 * 全レシピの栄養素統計情報を計算
+	 */
 	public void generateRecipeNutAmounts() {
 		RecipeDao recipeDao = new RecipeDao();
 		ArrayList<RecipeVo> recipes = recipeDao.selectAll();
 		recipeDao.close();
 
 		RecipeNutAmountsDao recipeNutDao = new RecipeNutAmountsDao();
-		boolean succeed = false;
+		boolean succeed = true;
 		for (RecipeVo recipe : recipes) {
-			RecipeNutAmountsVo amounts = recipeNutDao.selectById(recipe
-					.getRecipeId());
+			// RecipeNutAmountsが存在しなければ新規作成
+			RecipeNutAmountsVo amounts = recipeNutDao.selectById(recipe.getRecipeId());
 			if (amounts == null) {
 				amounts = calculateRecipeNutAmounts(recipe.getRecipeId());
-				succeed = recipeNutDao.insertWithoutCommit(amounts);
-				if (succeed) {
-					recipeNutDao.commit();
-				} else {
-					recipeNutDao.rollback();
-				}
+				succeed = recipeNutDao.insert(amounts, false) && succeed;
 			}
+		}
+
+		if (succeed) {
+			recipeNutDao.commit();
+		} else {
+			recipeNutDao.rollback();
 		}
 		recipeNutDao.close();
 	}
 
 	private RecipeNutAmountsVo calculateRecipeNutAmounts(int recipeId) {
 		RecipeDao recipeDao = new RecipeDao();
-		ArrayList<MaterialQuantityVo> materials = recipeDao
-				.selectMaterialQuantitiesByRecipeId(recipeId);
+		ArrayList<MaterialQuantityVo> materials = recipeDao.selectMaterialQuantitiesByRecipeId(recipeId);
 		recipeDao.close();
+
 		RecipeNutAmountsVo recipeNutrients = new RecipeNutAmountsVo();
 		recipeNutrients.setRecipeId(recipeId);
 		for (MaterialQuantityVo material : materials) {
 			int nutrientId = material.getNutrientId();
-			float amount = material.getGramPerQuantity()
-					* material.getQuantity();
+			float amount = material.getGramPerQuantity() * material.getQuantity();
 			addNutrientToAmountById(recipeNutrients, nutrientId, (int) amount);
 		}
 		return recipeNutrients;
 	}
 
-	private void addNutrientToAmountById(RecipeNutAmountsVo recipeNutrients,
-			int nutrientId, int gram) {
+	private void addNutrientToAmountById(RecipeNutAmountsVo recipeNutrients, int nutrientId, int gram) {
 		switch (nutrientId) {
 		case 1:
 			recipeNutrients.setMilk(recipeNutrients.getMilk() + gram);
@@ -126,12 +133,14 @@ public class InternalModel extends BaseModel {
 		}
 	}
 
+	/**
+	 * 素材情報挿入用ツール。
+	 */
 	public void insertMaterials() {
 		MaterialDao materialDao = null;
 		try {
 			materialDao = new MaterialDao();
-			File csv = new File(
-					"/Users/astrider/Documents/workspace/recruit/sante/WEB-INF/test-data/materials.csv");
+			File csv = new File("/Users/astrider/Documents/workspace/recruit/sante/WEB-INF/test-data/materials.csv");
 			BufferedReader br = new BufferedReader(new FileReader(csv));
 			String line = "";
 			int recipeId = -1;
@@ -149,8 +158,7 @@ public class InternalModel extends BaseModel {
 				recipeId = Integer.parseInt(splitted[0]);
 				quantity = Float.parseFloat(splitted[3]);
 
-				MaterialVo material = materialDao
-						.selectByNameAndPrePostfix(arg);
+				MaterialVo material = materialDao.selectByNameAndPrePostfix(arg);
 				if (material == null) {
 					arg.setGramPerQuantity(1);
 					arg.setNutrientId(12);
@@ -163,7 +171,7 @@ public class InternalModel extends BaseModel {
 				recipeMaterialVo.setMaterialName(material.getMaterialName());
 				recipeMaterialVo.setPrefix(material.getPrefix());
 				recipeMaterialVo.setPostfix(material.getPostfix());
-				materialDao.insertWithoutCommit(recipeMaterialVo);
+				materialDao.insert(recipeMaterialVo, false);
 			}
 			materialDao.commit();
 		} catch (FileNotFoundException e) {

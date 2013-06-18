@@ -16,31 +16,37 @@ if (!window.santeUserNutrients) santeUserNutrients = {};
 		}
 	};
 	santeUserNutrients.interface = {
-		"exec": function(week) {
-            if (!week) week = 0;
+	    showDate: function(weekAgo) {
             var now = new Date;
             var tmp = new Date();
-            tmp.setTime(now.getTime() - 86400000 * week * 7);
-			var first = tmp.getDate() - tmp.getDay();
-			var last = first + 6;
-			var firstday = new Date(tmp.setDate(first));
-			var lastday = new Date(tmp.setDate(last));
-			
-			var dayString = firstday.getMonth() + "/" + firstday.getDate() + " - " + lastday.getMonth() + "/" + lastday.getDate();
-			$('.today').html(dayString);
-			
+            tmp.setTime(now.getTime() - 86400000 * weekAgo * 7);
+            var first = tmp.getDate() - tmp.getDay();
+            var last = first + 6;
+            var firstday = new Date(tmp.setDate(first));
+            var lastday = new Date(tmp.setDate(last));
+            
+            var dayString = firstday.getMonth() + "/" + firstday.getDate() + " - " + lastday.getMonth() + "/" + lastday.getDate();
+            $('.today').html(dayString);
+	    },
+
+		exec: function(weekAgo) {
+            if (!weekAgo || weekAgo < 0) week = 0;
+			santeUserNutrients.interface.showDate(weekAgo);
+
 			$.ajax({
 				url: "http://localhost:8080/sante/api/user/GetChartSource",
-				data: "week=" + week,
+				data: "weekAgo=" + weekAgo,
 				async: true,
 				dataType: "json",
 				success: function(data) {
 					if (data.status.success == "false") {
 						alert("栄養摂取状態の取得に失敗しました");
 					} else {
+                        // 円グラフの更新
 						santePieGraph.interface.setItems(data.result.items);
 						santePieGraph.interface.draw();
-						
+
+						// fillMaterialsの更新
 						var keys = ["#milk", "#egg", "#meat", "#bean", "#veg", "#fruit", "#mineral", "#crop", "#potato", "#fat", "#sugar"];
 						var colors = ["red", "red", "red", "red", "green", "green", "green", "yellow", "yellow", "yellow", "yellow"];
 						santeFillMaterials.interface.fill(keys, data.result.items, colors);

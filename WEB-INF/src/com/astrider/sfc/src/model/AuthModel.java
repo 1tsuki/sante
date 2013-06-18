@@ -35,8 +35,7 @@ public class AuthModel extends BaseModel {
 
 		// isConfirmedを確認
 		if (!user.isConfirmed()) {
-			flashMessage
-					.addMessage("このユーザーはメールアドレス確認が完了していません。仮登録メールから本登録を実行してください。");
+			flashMessage.addMessage("このユーザーはメールアドレス確認が完了していません。仮登録メールから本登録を実行してください。");
 			return false;
 		}
 
@@ -49,7 +48,6 @@ public class AuthModel extends BaseModel {
 		// ログイン成功
 		HttpSession session = request.getSession();
 		session.setAttribute("loginUser", user);
-
 		return true;
 	}
 

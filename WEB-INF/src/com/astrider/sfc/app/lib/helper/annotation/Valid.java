@@ -7,10 +7,12 @@ import java.lang.annotation.Target;
 import java.lang.annotation.Retention;
 
 /**
- * @author astrider<br>
- *         Validator用アノテーション<br>
- *         isXX=true, XX=valueとして設定
+ * Validアノテーション.
  * 
+ * @author astrider
+ *         <p>
+ *         Validator用アノテーション。isXX=true, XX=valueとしてペアで設定する。
+ *         </p>
  */
 @Target(FIELD)
 @Retention(RUNTIME)

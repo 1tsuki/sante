@@ -5,37 +5,45 @@ import java.security.NoSuchAlgorithmException;
 import java.util.UUID;
 
 /**
- * @author astrider<br>
- *         各種文字列用Utils
+ * 文字列Util.
  * 
+ * @author astrider
  */
 public final class StringUtils {
 	/**
-	 * @param arg
-	 * @return
+	 * isNotNull and isNotEmpty.
+	 * 
+	 * @param 文字列
+	 * @return boolean
 	 */
 	public static boolean isNotEmpty(String arg) {
 		return arg != null && !arg.isEmpty();
 	}
 
 	/**
-	 * @param arg
-	 * @return
+	 * isNotNull but isEmpty.
+	 * 
+	 * @param 文字列
+	 * @return boolean
 	 */
 	public static boolean isEmpty(String arg) {
 		return arg != null && arg.isEmpty();
 	}
 
 	/**
-	 * @param arg
-	 * @return
+	 * 先頭一文字を大文字化.
+	 * 
+	 * @param 文字列
+	 * @return 変換された文字列
 	 */
 	public static String toCamelCase(String arg) {
 		return arg.substring(0, 1).toUpperCase() + arg.substring(1);
 	}
 
 	/**
-	 * @param arg
+	 * UUID文字列を取得.
+	 * 
+	 * @param 文字列
 	 * @return
 	 */
 	public static String getUniqueString() {
@@ -43,8 +51,10 @@ public final class StringUtils {
 	}
 
 	/**
+	 * メールアドレス認証用トークンを生成.
+	 * 
 	 * @param email
-	 * @return
+	 * @return メールアドレス認証用トークン(16文字)
 	 */
 	public static String getEmailToken(String email) {
 		String token = getHash(email);
@@ -52,16 +62,18 @@ public final class StringUtils {
 	}
 
 	/**
-	 * @param password
-	 * @return
+	 * SHA-512を用いたハッシュ化.
+	 * 
+	 * @param 文字列
+	 * @return ハッシュ化済み文字列
 	 */
-	public static String getHash(String password) {
+	public static String getHash(String arg) {
 		StringBuilder builder = new StringBuilder();
 
 		try {
 			MessageDigest md = MessageDigest.getInstance("SHA-512");
 			md.reset();
-			md.update(password.getBytes());
+			md.update(arg.getBytes());
 			byte[] digest = md.digest();
 
 			for (int i = 0; i < digest.length; i++) {

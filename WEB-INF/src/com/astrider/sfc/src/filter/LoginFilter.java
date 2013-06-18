@@ -22,8 +22,8 @@ public class LoginFilter implements Filter {
 	private static final String UNKNOWN_PATH = "/Unknown";
 
 	@Override
-	public void doFilter(ServletRequest request, ServletResponse response,
-			FilterChain chain) throws IOException, ServletException {
+	public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws IOException,
+			ServletException {
 		try {
 			HttpSession session = ((HttpServletRequest) request).getSession();
 
@@ -32,8 +32,7 @@ public class LoginFilter implements Filter {
 				FlashMessage flashMessage = new FlashMessage();
 				flashMessage.addMessage("指定されたURLに接続するにはログインが必要です");
 				session.setAttribute("flashMessage", flashMessage);
-				String target = ((HttpServletRequest) request).getContextPath()
-						+ UNKNOWN_PATH;
+				String target = ((HttpServletRequest) request).getContextPath() + UNKNOWN_PATH;
 				((HttpServletResponse) response).sendRedirect(target);
 			} else {
 				chain.doFilter(request, response);

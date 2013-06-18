@@ -132,8 +132,7 @@ public class RecipeDao extends BaseDao {
 		return recipes;
 	}
 
-	public ArrayList<MaterialQuantityVo> selectMaterialQuantitiesByRecipeId(
-			int recipeId) {
+	public ArrayList<MaterialQuantityVo> selectMaterialQuantitiesByRecipeId(int recipeId) {
 		ArrayList<MaterialQuantityVo> materialQuantities = new ArrayList<MaterialQuantityVo>();
 		PreparedStatement pstmt = null;
 
@@ -161,8 +160,7 @@ public class RecipeDao extends BaseDao {
 		return materialQuantities;
 	}
 
-	public ArrayList<MaterialQuantityVo> selectMaterialQuantitiesByNutrientId(
-			int nutrientId) {
+	public ArrayList<MaterialQuantityVo> selectMaterialQuantitiesByNutrientId(int nutrientId) {
 		ArrayList<MaterialQuantityVo> materials = new ArrayList<MaterialQuantityVo>();
 		PreparedStatement pstmt = null;
 

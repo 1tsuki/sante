@@ -13,23 +13,13 @@ import javax.servlet.http.HttpSession;
 import com.astrider.sfc.app.lib.helper.FlashMessage;
 
 /**
- * @author astrider<br>
- *         Front Command<br>
- * <br>
- *         概要<br>
- *         スクラッチのservletに相当。doGet,doPostメソッドに加えて、redirectやforwardを簡易化するメソッド等を用意。<br>
- *         flashMessageクラスを保持し、中身が存在した場合は自動的にflashmessageがページに表示される。<br>
- * <br>
- *         機能<br>
- *         主要機能<br>
- *         ・init() 通常のServlet処理に必要な各種変数を代入、その他初期化処理<br>
- *         ・doGet() 標準ではUnknown.jspにforwardする。Overrideすべし。<br>
- *         ・doPost() 標準ではUnknown.jspにforwardする。Overrideすべし。<br>
- * <br>
- *         副次機能<br>
- *         ・render() jspを描画、引数なしで自動的に名前で対応するjspを呼び出し<br>
- *         ・redirect() requestDispatcherを実行<br>
+ * Command.
  * 
+ * @author astrider
+ *         <p>
+ *         FrontControllerから呼び出されるクラス。通常のServletに相当。<br>
+ *         redirectやforwardを簡易化するメソッドの他、flashMessageの出力機能を持つ。
+ *         </p>
  */
 public abstract class Command {
 	protected static final String VIEW_BASEPATH = "/WEB-INF/template/view";
@@ -39,15 +29,15 @@ public abstract class Command {
 	protected FlashMessage flashMessage;
 
 	/**
-	 * 初期化メソッド
+	 * 初期化メソッド.
 	 * 
 	 * @param request
 	 * @param response
 	 * @param context
 	 * @throws UnsupportedEncodingException
 	 */
-	public void init(HttpServletRequest request, HttpServletResponse response,
-			ServletContext context) throws UnsupportedEncodingException {
+	public void init(HttpServletRequest request, HttpServletResponse response, ServletContext context)
+			throws UnsupportedEncodingException {
 		request.setCharacterEncoding("UTF-8");
 		response.setCharacterEncoding("UTF-8");
 		this.request = request;
@@ -58,7 +48,7 @@ public abstract class Command {
 	}
 
 	/**
-	 * getリクエスト時
+	 * getリクエスト時.
 	 * 
 	 * @throws ServletException
 	 * @throws IOException
@@ -68,7 +58,7 @@ public abstract class Command {
 	}
 
 	/**
-	 * postリクエスト時
+	 * postリクエスト時.
 	 * 
 	 * @throws ServletException
 	 * @throws IOException
@@ -78,11 +68,14 @@ public abstract class Command {
 	}
 
 	/**
-	 * forward実行用ラッパーメソッド
+	 * forward.
 	 * 
 	 * @param target
 	 * @throws ServletException
 	 * @throws IOException
+	 *             <p>
+	 *             forwardの実行に加えて、flashMessageをセッションに格納する。
+	 *             </p>
 	 */
 	protected void forward(String target) throws ServletException, IOException {
 		registerFlashMessage();
@@ -91,30 +84,40 @@ public abstract class Command {
 	}
 
 	/**
-	 * servletに対応するjspに自動forward
+	 * 簡易forward.
 	 * 
 	 * @param target
 	 * @throws ServletException
 	 * @throws IOException
+	 *             <p>
+	 *             /WEB-INF/等の接頭辞情報自動的に付与してforwardを実行。
+	 *             forwardの実行に加えて、flashMessageをセッションに格納する。
+	 *             </p>
 	 */
 	protected void render(String target) throws ServletException, IOException {
 		registerFlashMessage();
-		RequestDispatcher rd = context.getRequestDispatcher(VIEW_BASEPATH
-				+ target);
+		RequestDispatcher rd = context.getRequestDispatcher(VIEW_BASEPATH + target);
 		rd.forward(request, response);
 	}
 
 	/**
-	 * 指定した名前のjspに自動forward
+	 * 簡易forward.
 	 * 
+	 * @param target
 	 * @throws ServletException
 	 * @throws IOException
+	 *             <p>
+	 *             要求されたURIに対応するjspをに対して自動的にforwardを実行。
+	 *             forwardの実行に加えて、flashMessageをセッションに格納する。
+	 *             </p>
 	 */
 	protected void render() throws ServletException, IOException {
 		render(request.getServletPath() + ".jsp");
 	}
 
 	/**
+	 * 簡易redirect.
+	 * 
 	 * @param target
 	 * @throws IOException
 	 */
@@ -125,21 +128,20 @@ public abstract class Command {
 	}
 
 	/**
-	 * redirectされてきたflashMessagesの内容を配列に格納
+	 * redirectされてきたFlashMessagesの内容を配列に格納.
 	 */
 	private void initFlashMessage() {
 		flashMessage = new FlashMessage();
 
 		HttpSession session = request.getSession();
-		FlashMessage passedMessages = (FlashMessage) session
-				.getAttribute("flashMessage");
+		FlashMessage passedMessages = (FlashMessage) session.getAttribute("flashMessage");
 		if (passedMessages != null) {
 			flashMessage.addMessage(passedMessages);
 		}
 	}
 
 	/**
-	 * sessionにflashMessage配列を登録
+	 * sessionにFlashMessage配列を登録
 	 */
 	private void registerFlashMessage() throws IOException {
 		HttpSession session = request.getSession();

@@ -12,51 +12,45 @@ import com.astrider.sfc.app.lib.helper.annotation.Valid;
 import com.astrider.sfc.app.lib.model.vo.BaseVo;
 
 /**
- * @author astrider<br>
- *         概要<br>
- *         BaseVoを継承するValueObject用バリデータ<br>
- *         Validアノテーションの内容に応じてValidationを実行し、エラーメッセージを生成する<br>
- * <br>
- *         機能<br>
- *         主要機能<br>
- *         ・valid() validationを実行。validか否かを返す。<br>
- *         ・getFlashMessage() validationに失敗した項目があれば、エラーメッセージが格納されている<br>
- * <br>
- *         副次機能<br>
- *         ・isNotNull()<br>
- *         ・isNotBlank()<br>
- *         ・isLength()<br>
- *         ・isMaxLength()<br>
- *         ・isMinLength()<br>
- *         ・isMax()<br>
- *         ・isMin()<br>
- *         ・isRegex()<br>
- *         ・isPhone()<br>
- *         ・isEmail()<br>
- *         ・isUrl()<br>
+ * Validator
+ * 
+ * @author astrider
+ *         <p>
+ *         ValueObject用バリデータ。
+ *         Validアノテーションの内容に応じてValidationを実行し、FlashMessage形式でエラーメッセージを生成する。
+ *         </p>
  * 
  * @param <T>
+ *            ValueObject
  */
 public class Validator<T extends BaseVo> {
 	private FlashMessage flashMessage = new FlashMessage();
 	private T vo;
 
 	/**
-	 * @param vo
+	 * コンストラクタ.
+	 * 
+	 * @param 対象ValueObject
+	 * 
 	 */
 	public Validator(T vo) {
 		this.vo = vo;
 		flashMessage.setMessageType(Type.WARNING);
 	}
 
+	/**
+	 * エラーメッセージを取得.
+	 * 
+	 * @return FlashMessage
+	 */
 	public FlashMessage getFlashMessage() {
 		return flashMessage;
 	}
 
 	/**
-	 * ValueObjectの全てのFieldに対してvalidationを実行
+	 * 全Fieldに対してValidationを実行.
 	 * 
-	 * @return
+	 * @return Valid or not
 	 */
 	public boolean valid() {
 		boolean result = true;
@@ -69,13 +63,6 @@ public class Validator<T extends BaseVo> {
 		return result;
 	}
 
-	/**
-	 * validation評価部分 validアノテーションが存在しなければ処理をスキップ
-	 * アノテーションが存在した場合、trueに設定されている全validationメソッドを実行する
-	 * 
-	 * @param f
-	 * @return
-	 */
 	private boolean validateField(Field f) {
 		boolean result = true;
 		Valid v = f.getAnnotation(Valid.class);
@@ -85,11 +72,9 @@ public class Validator<T extends BaseVo> {
 
 		for (Method vm : v.getClass().getDeclaredMethods()) {
 			try {
-				if (vm.getReturnType().equals(Boolean.TYPE)
-						&& !vm.getName().equals("equals")) {
+				if (vm.getReturnType().equals(Boolean.TYPE) && !vm.getName().equals("equals")) {
 					if ((Boolean) vm.invoke(v)) {
-						Method method = this.getClass().getMethod(vm.getName(),
-								Field.class, Valid.class);
+						Method method = this.getClass().getMethod(vm.getName(), Field.class, Valid.class);
 						result = (Boolean) method.invoke(this, f, v) && result;
 					}
 				}
@@ -105,10 +90,15 @@ public class Validator<T extends BaseVo> {
 				e.printStackTrace();
 			}
 		}
-
 		return result;
 	}
 
+	/**
+	 * isNotNull.
+	 * 
+	 * @param f
+	 * @return 正否
+	 */
 	public boolean isNotNull(Field f) {
 		boolean valid = false;
 		try {
@@ -127,10 +117,24 @@ public class Validator<T extends BaseVo> {
 		return valid;
 	}
 
+	/**
+	 * isNotNull.
+	 * 
+	 * @param f
+	 * @param v
+	 * @return 正否
+	 */
 	public boolean isNotNull(Field f, Valid v) {
 		return isNotNull(f);
 	}
 
+	/**
+	 * isNotBlank.
+	 * 
+	 * @param f
+	 * @param v
+	 * @return 正否
+	 */
 	public boolean isNotBlank(Field f, Valid v) {
 		boolean valid = false;
 		try {
@@ -158,6 +162,16 @@ public class Validator<T extends BaseVo> {
 		return valid;
 	}
 
+	/**
+	 * isLength.
+	 * 
+	 * @param f
+	 * @param v
+	 * @return 正否
+	 *         <p>
+	 *         length要素と併用
+	 *         </p>
+	 */
 	public boolean isLength(Field f, Valid v) {
 		boolean valid = false;
 		try {
@@ -183,6 +197,16 @@ public class Validator<T extends BaseVo> {
 		return valid;
 	}
 
+	/**
+	 * isMinLength.
+	 * 
+	 * @param f
+	 * @param v
+	 * @return 正否
+	 *         <p>
+	 *         minLength要素を併用
+	 *         </p>
+	 */
 	public boolean isMinLength(Field f, Valid v) {
 		boolean valid = false;
 		try {
@@ -207,6 +231,16 @@ public class Validator<T extends BaseVo> {
 		return valid;
 	}
 
+	/**
+	 * isMaxLength.
+	 * 
+	 * @param f
+	 * @param v
+	 * @return 正否
+	 *         <p>
+	 *         maxLength要素を併用
+	 *         </p>
+	 */
 	public boolean isMaxLength(Field f, Valid v) {
 		boolean valid = false;
 		try {
@@ -231,6 +265,16 @@ public class Validator<T extends BaseVo> {
 		return valid;
 	}
 
+	/**
+	 * isMin.
+	 * 
+	 * @param f
+	 * @param v
+	 * @return 正否
+	 *         <p>
+	 *         min要素と併用
+	 *         </p>
+	 */
 	public boolean isMin(Field f, Valid v) {
 		boolean valid = false;
 		try {
@@ -255,6 +299,16 @@ public class Validator<T extends BaseVo> {
 		return valid;
 	}
 
+	/**
+	 * isMax.
+	 * 
+	 * @param f
+	 * @param v
+	 * @return 正否
+	 *         <p>
+	 *         max要素と併用
+	 *         </p>
+	 */
 	public boolean isMax(Field f, Valid v) {
 		boolean valid = false;
 		try {
@@ -279,6 +333,16 @@ public class Validator<T extends BaseVo> {
 		return valid;
 	}
 
+	/**
+	 * isRegexp.
+	 * 
+	 * @param f
+	 * @param v
+	 * @return 正否
+	 *         <p>
+	 *         regexp要素と併用
+	 *         </p>
+	 */
 	public boolean isRegexp(Field f, Valid v) {
 		boolean valid = false;
 		try {
@@ -295,21 +359,57 @@ public class Validator<T extends BaseVo> {
 		return valid;
 	}
 
+	/**
+	 * isUrl.
+	 * 
+	 * @param f
+	 * @param v
+	 * @return 正否
+	 *         <p>
+	 *         URLであることを確認
+	 *         </p>
+	 */
 	public boolean isUrl(Field f, Valid v) {
 		String regex = "^(https?|ftp|file)://[-a-zA-Z0-9+&@#/%?=~_|!:,.;]*[-a-zA-Z0-9+&@#/%=~_|]";
 		return checkRegexp(f, regex);
 	}
 
+	/**
+	 * isEmail.
+	 * 
+	 * @param f
+	 * @param v
+	 * @return <p>
+	 *         emailであることを確認
+	 *         </p>
+	 */
 	public boolean isEmail(Field f, Valid v) {
 		String regex = "^[_A-Za-z0-9-\\+]+(\\.[_A-Za-z0-9-]+)*@[A-Za-z0-9-]+(\\.[A-Za-z0-9]+)*(\\.[A-Za-z]{2,})$";
 		return checkRegexp(f, regex);
 	}
 
+	/**
+	 * isPhone.
+	 * 
+	 * @param f
+	 * @param v
+	 * @return 正否
+	 *         <p>
+	 *         電話番号であることを確認
+	 *         </p>
+	 */
 	public boolean isPhone(Field f, Valid v) {
 		String regex = "^\\d{1,4}?-\\d{1,4}?-\\d{1,4}$";
 		return checkRegexp(f, regex);
 	}
 
+	/**
+	 * 正規表現チェッカー
+	 * 
+	 * @param f
+	 * @param regex
+	 * @return 正否
+	 */
 	private boolean checkRegexp(Field f, String regex) {
 		boolean valid = false;
 		try {

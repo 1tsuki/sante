@@ -12,20 +12,24 @@ import com.astrider.sfc.app.lib.helper.annotation.Column;
 import com.astrider.sfc.app.lib.model.vo.BaseVo;
 
 /**
- * @author astrider<br>
- *         概要<br>
- *         Resultset、requestParameterからの入力値をValueObjectにマッピングする。<br>
- *         カラム名との対応は@Columnアノテーションを利用。<br>
+ * O/R Mapper.
  * 
+ * @author astrider
+ *         <p>
+ *         Resultset<->ValueObject<->RequestParameterのマッピングを行う。
+ *         </p>
  * @param <T>
+ *            ValueObject型
  */
 public class Mapper<T extends BaseVo> {
 	private Class<T> type;
 
 	/**
-	 * 可変長引数は T型のインスタンスを得るために利用
-	 * 
-	 * @param 通常は空のまま利用
+	 * @param t
+	 *            通常は空のまま利用
+	 *            <p>
+	 *            可変長引数は T型のインスタンスを得るために利用
+	 *            </p>
 	 */
 	@SuppressWarnings("unchecked")
 	public Mapper(T... t) {
@@ -33,10 +37,10 @@ public class Mapper<T extends BaseVo> {
 	}
 
 	/**
-	 * ResultSetからのマッピング
+	 * ResultSetからのMapping.
 	 * 
 	 * @param ResultSet
-	 * @return T型のVO
+	 * @return ValueObject
 	 */
 	public T fromResultSet(ResultSet rs) {
 		T vo = getNewInstance();
@@ -45,10 +49,10 @@ public class Mapper<T extends BaseVo> {
 	}
 
 	/**
-	 * HttpRequest空のマッピング
+	 * RequestParametersからのマッピング.
 	 * 
-	 * @param request
-	 * @return T型のVO
+	 * @param HttpServletRequest
+	 * @return ValueObject
 	 */
 	public T fromHttpRequest(HttpServletRequest request) {
 		T vo = getNewInstance();
@@ -56,6 +60,12 @@ public class Mapper<T extends BaseVo> {
 		return vo;
 	}
 
+	/**
+	 * @return ValueObjectの新しいインスタンス
+	 *         <p>
+	 *         可変長引数を用いたハックによってインスタンスを生成
+	 *         </p>
+	 */
 	private T getNewInstance() {
 		T obj = null;
 		try {
@@ -100,19 +110,17 @@ public class Mapper<T extends BaseVo> {
 	}
 
 	/**
-	 * field型に併せてResultSetの中の値をキャストする
+	 * field型に併せてResultSetの中の値をキャストする.
 	 * 
-	 * @param f
-	 * @param rs
-	 * @param columnName
-	 * @param vo
+	 * @param ValueObject内の1フィールド
+	 * @param ResultSet
+	 * @param カラム名
+	 * @param ValueObject
 	 */
-	private void castResultSetValues(Field f, ResultSet rs, String columnName,
-			T vo) {
+	private void castResultSetValues(Field f, ResultSet rs, String columnName, T vo) {
 		f.setAccessible(true);
 		try {
-			Method method = ResultSet.class.getMethod(getGetterName(f),
-					String.class);
+			Method method = ResultSet.class.getMethod(getGetterName(f), String.class);
 			f.set(vo, method.invoke(rs, columnName));
 		} catch (SecurityException e) {
 			e.printStackTrace();
@@ -128,11 +136,11 @@ public class Mapper<T extends BaseVo> {
 	}
 
 	/**
-	 * field型に併せてStringをキャストする
+	 * field型に併せてStringをキャストする.
 	 * 
-	 * @param f
-	 * @param value
-	 * @param vo
+	 * @param ValueObject内の1フィールド
+	 * @param RequestParameter
+	 * @param ValueObject
 	 */
 	private void castRequestParameterValues(Field f, String value, T vo) {
 		f.setAccessible(true);
@@ -162,10 +170,10 @@ public class Mapper<T extends BaseVo> {
 	}
 
 	/**
-	 * resultSetの各データ型に対応したメソッド名を生成
+	 * resultSetの各データ型に対応したメソッド名を生成.
 	 * 
-	 * @param f
-	 * @return
+	 * @param ValueObject内の1フィールド
+	 * @return メソッド名
 	 */
 	private String getGetterName(Field f) {
 		String type = f.getType().getSimpleName();

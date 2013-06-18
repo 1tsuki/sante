@@ -7,8 +7,12 @@ import java.lang.annotation.Target;
 import java.lang.annotation.Retention;
 
 /**
- * @author astrider<br>
- *         ORM用アノテーション。DB上のテーブル名を指定する
+ * Tableアノテーション.
+ * 
+ * @author astrider
+ *         <p>
+ *         ORM用アノテーション。DB上のテーブル名を指定する。
+ *         </p>
  * 
  */
 @Target(TYPE)

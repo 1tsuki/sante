@@ -17,11 +17,10 @@ import javax.servlet.http.HttpServletRequest;
 public class LogFilter implements Filter {
 
 	@Override
-	public void doFilter(ServletRequest request, ServletResponse response,
-			FilterChain chain) throws IOException, ServletException {
+	public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws IOException,
+			ServletException {
 		Date now = new Date();
-		String body = "[" + now.toString() + "] "
-				+ ((HttpServletRequest) request).getRequestURL();
+		String body = "[" + now.toString() + "] " + ((HttpServletRequest) request).getRequestURL();
 
 		System.out.println(body);
 		chain.doFilter(request, response);

@@ -4,21 +4,12 @@ import java.io.Serializable;
 import java.util.ArrayList;
 
 /**
+ * フラッシュメッセージ.
+ * 
  * @author astrider<br>
- *         概要<br>
- *         システム内のエラーやり取り用クラス<br>
- * <br>
- *         機能<br>
- *         主要機能<br>
- *         ・enum Type メッセージ種別。WARNING, INFO等<br>
- *         ・addMessage() メッセージ内容の登録<br>
- *         ・getMessages() メッセージ一覧の取得<br>
- *         ・setMessageType（） メッセージ種別を設定<br>
- *         ・getMessageType() メッセージ種別を取得<br>
- * <br>
- *         副次機能<br>
- *         ・hasMessage() メッセージ有無を取得<br>
- *         ・size() メッセージ数を取得<br>
+ *         <p>
+ *         FW内で共通利用する、ユーザー通知メッセージ用クラス。
+ *         </p>
  */
 public class FlashMessage implements Serializable {
 	private static final long serialVersionUID = -8229498358235532373L;

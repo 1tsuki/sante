@@ -3,8 +3,12 @@ package com.astrider.sfc.app.lib.model;
 import com.astrider.sfc.app.lib.helper.FlashMessage;
 
 /**
- * @author astrider<br>
- *         各種Modelの基底クラス。flashMessageを持つ
+ * Model基底クラス
+ * 
+ * @author astrider
+ *         <p>
+ *         FlashMessageを持つ
+ *         </p>
  */
 public class BaseModel {
 	protected FlashMessage flashMessage = new FlashMessage();

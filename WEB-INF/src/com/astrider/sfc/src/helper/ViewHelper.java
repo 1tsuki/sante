@@ -11,28 +11,29 @@ import com.astrider.sfc.app.lib.helper.StringUtils;
 import com.astrider.sfc.src.model.vo.db.UserVo;
 
 /**
- * @author Itsuki Sakitsu jsp内で利用するヘルパークラス<br>
- *         機能<br>
- *         主要機能<br>
- *         ・getPath() contextPathを自動的に取得、要求pathに付加<br>
- *         ・getCssPath() ページ毎の固有cssファイルを自動挿入<br>
- *         ・getTitle(); FrontControllerにて設定されたタイトルを挿入<br>
- *         ・getFlashMessages() FlashMessageがあれば表示、一度表示したらsessionから削除<br>
+ * ViewHelper.
+ * 
+ * @author astrider
+ *         <p>
+ *         jsp内にて利用するヘルパークラス
+ *         </p>
+ * 
  */
 public class ViewHelper {
 	private PageContext context;
 	private HttpSession session;
 	private HttpServletRequest request;
 
-	public ViewHelper(PageContext context, HttpSession session,
-			HttpServletRequest request) {
+	public ViewHelper(PageContext context, HttpSession session, HttpServletRequest request) {
 		this.context = context;
 		this.session = session;
 		this.request = request;
 	}
 
 	/**
-	 * @return ログイン可否
+	 * ログイン状態取得.
+	 * 
+	 * @return ログイン成否
 	 */
 	public boolean isLoggedIn() {
 		UserVo user = (UserVo) session.getAttribute("loginUser");
@@ -40,9 +41,9 @@ public class ViewHelper {
 	}
 
 	/**
-	 * 相対パスを取得(contextPathを先頭に付加)
+	 * 相対パスを出力(contextPathを先頭に付加).
 	 * 
-	 * @param target
+	 * @param 対象URL
 	 */
 	public void getPath(String target) {
 		StringBuilder sb = new StringBuilder();
@@ -52,28 +53,16 @@ public class ViewHelper {
 	}
 
 	/**
-	 * urlに対応したcssをロード frontControllerでinvalidがコールされていた場合はUnknown.cssをロード
+	 * urlに対応したcssファイルのURLを出力.
+	 * <p>
+	 * frontControllerでinvalidがコールされていた場合はUnknown.cssをロード
+	 * </p>
 	 */
 	public void getCssPath() {
-		String fileName = getCssFileName();
 		StringBuilder sb = new StringBuilder();
 		sb.append("/asset/css");
-		sb.append(fileName);
-
-		getPath(sb.toString());
-	}
-
-	/**
-	 * Sessionに格納されたURL情報から対象のcssファイルの相対パスを取得
-	 * 
-	 * @return
-	 */
-	private String getCssFileName() {
-		String replaced = request.getServletPath()
-				.replace("/WEB-INF/template/view", "").replace(".jsp", "");
+		String replaced = request.getServletPath().replace("/WEB-INF/template/view", "").replace(".jsp", "");
 		String[] splitted = replaced.split("/");
-
-		StringBuilder sb = new StringBuilder();
 		for (int i = 0; i < splitted.length; i++) {
 			String item = splitted[i].toLowerCase();
 			sb.append(item);
@@ -83,16 +72,16 @@ public class ViewHelper {
 		}
 		sb.append(".css");
 
-		return sb.toString();
+		getPath(sb.toString());
 	}
 
 	/**
-	 * sessionに格納されたページタイトル情報から動的にタイトルを出力
+	 * ページタイトルを出力.
 	 */
 	public void getTitle() {
 		StringBuilder sb = new StringBuilder();
 		sb.append(context.getServletContext().getServletContextName());
-		String pageTitle = (String) session.getAttribute("pageTitle");
+		String pageTitle = (String) request.getAttribute("pageTitle");
 		if (StringUtils.isNotEmpty(pageTitle)) {
 			sb.append(" | ");
 			sb.append(pageTitle);
@@ -102,9 +91,11 @@ public class ViewHelper {
 		print(title);
 	}
 
+	/**
+	 * /indexの場合のみ背景画像を表示.
+	 */
 	public void showBackgroundImage() {
-		String replaced = request.getServletPath()
-				.replace("/WEB-INF/template/view/", "").replace(".jsp", "");
+		String replaced = request.getServletPath().replace("/WEB-INF/template/view/", "").replace(".jsp", "");
 		if (replaced.equals("Index")) {
 			print("<img alt=\"背景画像\" src=");
 			getPath("/asset/img/topimage.jpg");
@@ -113,15 +104,12 @@ public class ViewHelper {
 	}
 
 	/**
-	 * sessionに格納されたerrorMessagesをflashMessageとして表示
+	 * FlashMessageとして表示.
 	 */
 	public void getFlashMessages() {
-		FlashMessage flashMessage = (FlashMessage) session
-				.getAttribute("flashMessage");
+		FlashMessage flashMessage = (FlashMessage) session.getAttribute("flashMessage");
 		if (flashMessage != null && flashMessage.hasMessage()) {
-			print("<div id='flash-messages' class='"
-					+ flashMessage.getMessageType().toString().toLowerCase()
-					+ "'>");
+			print("<div id='flash-messages' class='" + flashMessage.getMessageType().toString().toLowerCase() + "'>");
 			print("<ul>");
 			for (String message : flashMessage.getMessages()) {
 				print("<li>" + message + "</li>");
@@ -134,9 +122,9 @@ public class ViewHelper {
 	}
 
 	/**
-	 * printを簡易化
+	 * printを簡易化.
 	 * 
-	 * @param arg
+	 * @param 文字列
 	 */
 	private void print(String arg) {
 		try {

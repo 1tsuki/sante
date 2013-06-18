@@ -11,12 +11,15 @@ import com.astrider.sfc.app.lib.helper.annotation.Table;
 import com.astrider.sfc.app.lib.model.vo.BaseVo;
 
 /**
- * @author astrider<br>
- *         概要<br>
- *         Insert, Updateのみに対応したQueryBuilder<br>
- *         Voのアノテーション情報を活用したSQL文の発行、PreparedStatementの作成、値の挿入まで<br>
+ * QueryBuilder.
  * 
+ * @author astrider
+ *         <p>
+ *         Insert, Updateに対応した PreparedStatementを生成するクエリビルダー。
+ *         SQLの生成、PreparedStatementの生成、値の挿入までを行う。
+ *         </p>
  * @param <T>
+ *            ValueObject型
  */
 public class QueryBuilder<T extends BaseVo> {
 	private T vo;
@@ -25,6 +28,13 @@ public class QueryBuilder<T extends BaseVo> {
 	private HashMap<String, Field> columns;
 	private HashMap<String, Field> primaryKies;
 
+	/**
+	 * コンストラクタ.
+	 * 
+	 * @param ValueObject
+	 * @param DBコネクション
+	 * @throws Exception
+	 */
 	public QueryBuilder(T vo, Connection con) throws Exception {
 		this.vo = vo;
 		this.con = con;
@@ -32,6 +42,12 @@ public class QueryBuilder<T extends BaseVo> {
 		getColumnInfos();
 	}
 
+	/**
+	 * Insert用PreparedStatement取得.
+	 * 
+	 * @return PreparedStatement
+	 * @throws Exception
+	 */
 	public PreparedStatement getInsertPstmt() throws Exception {
 		String sql = getInputSql();
 		PreparedStatement pstmt = con.prepareStatement(sql);
@@ -39,6 +55,12 @@ public class QueryBuilder<T extends BaseVo> {
 		return pstmt;
 	}
 
+	/**
+	 * Update用PreparedStatement取得.
+	 * 
+	 * @return PreparedStatement
+	 * @throws Exception
+	 */
 	public PreparedStatement getUpdatePstmt() throws Exception {
 		String sql = getUpdateSql();
 		PreparedStatement pstmt = con.prepareStatement(sql);
@@ -47,6 +69,11 @@ public class QueryBuilder<T extends BaseVo> {
 		return pstmt;
 	}
 
+	/**
+	 * Input文取得
+	 * 
+	 * @return SQL文
+	 */
 	public String getInputSql() {
 		StringBuilder sb = new StringBuilder();
 		sb.append("INSERT INTO ");
@@ -59,6 +86,11 @@ public class QueryBuilder<T extends BaseVo> {
 		return sb.toString();
 	}
 
+	/**
+	 * Update文取得.
+	 * 
+	 * @return SQL文
+	 */
 	public String getUpdateSql() {
 		StringBuilder sb = new StringBuilder();
 		sb.append("UPDATE ");

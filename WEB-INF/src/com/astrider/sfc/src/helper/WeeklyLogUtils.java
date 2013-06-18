@@ -13,37 +13,43 @@ public final class WeeklyLogUtils {
 
 	/**
 	 * @param userId
-	 * @return 最新のWeeklyLogVo 最新のWeeklyLogVoを取得。週が変わっていた場合は新しく作成。
+	 * @return 最新のWeeklyLogVo
+	 *         <p>
+	 *         最新のWeeklyLogVoを取得。週が変わっていた場合は新しく作成。
+	 *         </p>
 	 */
 	public static WeeklyLogVo getCurrentLog(int userId) {
 		WeeklyLogDao weeklyLogDao = new WeeklyLogDao();
-		WeeklyLogVo vo = weeklyLogDao.selectCurrentWeek(userId);
-		if (vo == null) {
-			vo = new WeeklyLogVo();
-			vo.setUserId(userId);
-			weeklyLogDao.insert(vo);
+		WeeklyLogVo weeklyLog = weeklyLogDao.selectCurrentWeek(userId);
+		if (weeklyLog == null) {
+			weeklyLog = new WeeklyLogVo();
+			weeklyLog.setUserId(userId);
+			weeklyLogDao.insert(weeklyLog);
 		}
 		weeklyLogDao.close();
-		return vo;
+		return weeklyLog;
 	}
 
 	/**
 	 * @param userId
 	 * @param meal
+	 *            <p>
 	 *            食事ログの内容を週間ログに反映させる
+	 *            </p>
 	 */
 	public static void addMealToCurrentLog(int userId, MealLogVo meal) {
-		WeeklyLogVo week = getCurrentLog(userId);
-		joinValues(week, meal);
-
+		WeeklyLogVo weeklyLog = getCurrentLog(userId);
+		joinValues(weeklyLog, meal);
 		WeeklyLogDao weeklyLogDao = new WeeklyLogDao();
-		weeklyLogDao.update(week);
+		weeklyLogDao.update(weeklyLog);
 		weeklyLogDao.close();
 	}
 
 	/**
 	 * @param userId
+	 *            <p>
 	 *            現在の栄養バランス数値を再計算する
+	 *            </p>
 	 */
 	public static void updateCurrentTotalBalance(int userId) {
 		int[] ingested = SanteUtils.getIngestedNutrients(userId, 0);
@@ -62,17 +68,16 @@ public final class WeeklyLogUtils {
 		for (int j = 0; j < ingested.length; j++) {
 			diffs[j] = 0;
 			if (desired[j] != 0) {
-				diffs[j] = Math.sqrt(Math.pow(desired[j] - ingested[j], 2))
-						/ desired[j];
+				diffs[j] = Math.sqrt(Math.pow(desired[j] - ingested[j], 2)) / desired[j];
 			}
 		}
 		double balance = (1 - MathUtils.getAverage(diffs)) * 100;
 
 		WeeklyLogVo weekLog = getCurrentLog(userId);
 		weekLog.setTotalBalance((int) balance);
-		WeeklyLogDao dao = new WeeklyLogDao();
-		dao.update(weekLog);
-		dao.close();
+		WeeklyLogDao weeklyLogDao = new WeeklyLogDao();
+		weeklyLogDao.update(weekLog);
+		weeklyLogDao.close();
 	}
 
 	private static void joinValues(WeeklyLogVo week, MealLogVo meal) {

@@ -19,30 +19,32 @@ import com.astrider.sfc.src.model.vo.db.UserVo;
 import com.astrider.sfc.src.model.vo.form.ConfirmEmailVo;
 import com.astrider.sfc.src.model.vo.form.RegisterFormVo;
 
-/*
- * ユーザー登録関連model
+/**
+ * ユーザー登録関連Model.
+ * @author astrider
+ *
  */
 public class RegisterModel extends BaseModel {
-	/*
-	 * ユーザー新規登録
+	
+	/**
+	 * ユーザー新規登録.
+	 * @param request
+	 * @return
 	 */
 	public boolean registerUser(HttpServletRequest request) {
 		// フォーム情報取得
 		Mapper<RegisterFormVo> m = new Mapper<RegisterFormVo>();
-		RegisterFormVo registerForm = (RegisterFormVo) m
-				.fromHttpRequest(request);
+		RegisterFormVo registerForm = (RegisterFormVo) m.fromHttpRequest(request);
 
 		// 汎用バリデーション
-		Validator<RegisterFormVo> validator = new Validator<RegisterFormVo>(
-				registerForm);
+		Validator<RegisterFormVo> validator = new Validator<RegisterFormVo>(registerForm);
 		if (!validator.valid()) {
 			flashMessage.addMessage(validator.getFlashMessage());
 			return false;
 		}
 
 		// パスワード一致
-		if (!registerForm.getPassword().equals(
-				registerForm.getPasswordConfirm())) {
+		if (!registerForm.getPassword().equals(registerForm.getPasswordConfirm())) {
 			flashMessage.addMessage("パスワードが一致しません");
 			return false;
 		}
@@ -55,8 +57,7 @@ public class RegisterModel extends BaseModel {
 		boolean succeed = userDao.insert(user);
 		userDao.close();
 		if (!succeed) {
-			flashMessage
-					.addMessage("仮登録に失敗しました。お客様のメールアドレスは既に登録されている可能性があります。");
+			flashMessage.addMessage("仮登録に失敗しました。お客様のメールアドレスは既に登録されている可能性があります。");
 			return false;
 		}
 
@@ -69,11 +70,9 @@ public class RegisterModel extends BaseModel {
 			sb.append(user.getUserName() + "様\n\n");
 			sb.append("この度はsanteに仮登録いただきありがとうございます。\n");
 			sb.append("以下のURLをクリックすることによって本登録が完了いたします。\n");
-			sb.append("http://" + request.getServerName()
-					+ request.getContextPath() + "/register/ConfirmEmail");
+			sb.append("http://" + request.getServerName() + request.getContextPath() + "/register/ConfirmEmail");
 			sb.append("?email=" + URLEncoder.encode(user.getEmail(), "UTF-8"));
-			sb.append("&token="
-					+ URLEncoder.encode(user.getEmailToken(), "UTF-8"));
+			sb.append("&token=" + URLEncoder.encode(user.getEmailToken(), "UTF-8"));
 			body = sb.toString();
 		} catch (UnsupportedEncodingException e) {
 			flashMessage.addMessage("仮登録完了のメール本文の作成に失敗しました");
@@ -90,8 +89,10 @@ public class RegisterModel extends BaseModel {
 		return true;
 	}
 
-	/*
-	 * メールアドレス確認
+	/**
+	 * メールアドレス確認.
+	 * @param request
+	 * @return
 	 */
 	public boolean confirmMail(HttpServletRequest request) {
 		// 引数取得

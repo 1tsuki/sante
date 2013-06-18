@@ -1,8 +1,9 @@
 package com.astrider.sfc.app.lib.helper;
 
 /**
+ * 数学計算Util.
+ * 
  * @author astrider<br>
- *         数学計算用ヘルパークラス
  */
 public final class MathUtils {
 	public static double getAverage(int[] items) {

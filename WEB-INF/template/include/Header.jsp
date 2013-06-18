@@ -9,7 +9,7 @@
 <%@ page import="com.astrider.sfc.app.lib.helper.StringUtils"%>
 <%	
     request.setCharacterEncoding("UTF-8");
-    ViewUtils v = new ViewUtils(pageContext, session, request);
+    ViewHelper v = new ViewHelper(pageContext, session, request);
     pageContext.setAttribute("isLoggedIn", v.isLoggedIn());
 %>
 

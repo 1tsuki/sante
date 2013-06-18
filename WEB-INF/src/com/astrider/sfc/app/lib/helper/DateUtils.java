@@ -3,12 +3,13 @@ package com.astrider.sfc.app.lib.helper;
 import java.util.Calendar;
 
 /**
+ * 日付関連Utils.
+ * 
  * @author astrider<br>
- *         日付関連Utils
  */
 public final class DateUtils {
 	/**
-	 * ２つの日付の間で経過した日数を取得
+	 * ２つの日付の間で経過した日数を取得.
 	 * 
 	 * @param 比較対象１
 	 * @param 比較対象２

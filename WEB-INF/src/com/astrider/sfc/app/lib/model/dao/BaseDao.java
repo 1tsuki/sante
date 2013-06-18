@@ -10,18 +10,17 @@ import javax.naming.NamingException;
 import javax.sql.DataSource;
 
 import com.astrider.sfc.app.lib.helper.QueryBuilder;
+import com.astrider.sfc.app.lib.helper.Validator;
 import com.astrider.sfc.app.lib.model.vo.BaseVo;
 
 /**
- * @author astrider<br>
- *         概要<br>
- *         Dao基底クラス。DBコネクション機能をデフォルトで持つ。<br>
+ * Dao基底クラス.
+ * 
+ * @author astrider
+ *         <p>
+ *         DBコネクション機能及びinsert,update機能をデフォルトで持つ。<br>
  *         利用後は必ずclose()を実行する必要がある<br>
- * <br>
- *         機能<br>
- *         主要機能<br>
- *         ・insert() extends BaseVoなオブジェクトを一発Insert<br>
- *         ・update() extends BaseVoなオブジェクトを一発Update<br>
+ *         </p>
  */
 public class BaseDao {
 	private final String localName = "java:comp/env/jdbc/sante";
@@ -42,18 +41,48 @@ public class BaseDao {
 		}
 	}
 
+	/**
+	 * dbUnit用.
+	 * 
+	 * @param con
+	 */
 	public BaseDao(Connection con) {
 		this.con = con;
 	}
 
-	public <T extends BaseVo> boolean insertWithoutCommit(T vo) {
+	/**
+	 * insert(自動コミット).
+	 * 
+	 * @param vo
+	 * @return 挿入成否
+	 */
+	public <T extends BaseVo> boolean insert(T vo) {
+		return insert(vo, true);
+	}
+
+	/**
+	 * insert.
+	 * 
+	 * @param vo
+	 * @param autoCommit
+	 * @return 挿入成否
+	 */
+	public <T extends BaseVo> boolean insert(T vo, boolean autoCommit) {
+		// validationに失敗したら挿入しない
+		Validator<T> validator = new Validator<T>(vo);
+		if (!validator.valid()) {
+			return false;
+		}
+
 		boolean succeed = false;
 		PreparedStatement pstmt = null;
 		try {
 			QueryBuilder<T> qb = new QueryBuilder<T>(vo, con);
 			pstmt = qb.getInsertPstmt();
 			int resultCount = pstmt.executeUpdate();
-			succeed = resultCount == 1;
+			if (resultCount == 1) {
+				succeed = true;
+			}
 		} catch (Exception e) {
 			e.printStackTrace();
 		} finally {
@@ -64,20 +93,40 @@ public class BaseDao {
 				e.printStackTrace();
 			}
 		}
-		return succeed;
-	}
 
-	public <T extends BaseVo> boolean insert(T vo) {
-		boolean succeed = insertWithoutCommit(vo);
-		if (succeed) {
+		if (autoCommit && succeed) {
 			commit();
-		} else {
+		}
+		if (autoCommit && !succeed) {
 			rollback();
 		}
 		return succeed;
 	}
 
+	/**
+	 * update(自動コミット).
+	 * 
+	 * @param vo
+	 * @return 更新成否
+	 */
 	public <T extends BaseVo> boolean update(T vo) {
+		return update(vo, true);
+	}
+
+	/**
+	 * update.
+	 * 
+	 * @param vo
+	 * @param autoCommit
+	 * @return 更新成否
+	 */
+	public <T extends BaseVo> boolean update(T vo, boolean autoCommit) {
+		// validationに失敗したら更新しない
+		Validator<T> validator = new Validator<T>(vo);
+		if (!validator.valid()) {
+			return false;
+		}
+
 		boolean succeed = false;
 		PreparedStatement pstmt = null;
 
@@ -86,7 +135,6 @@ public class BaseDao {
 			pstmt = qb.getUpdatePstmt();
 			int resultCount = pstmt.executeUpdate();
 			if (resultCount == 1) {
-				con.commit();
 				succeed = true;
 			}
 		} catch (SQLException e) {
@@ -101,9 +149,19 @@ public class BaseDao {
 				e.printStackTrace();
 			}
 		}
+
+		if (autoCommit && succeed) {
+			commit();
+		}
+		if (autoCommit && !succeed) {
+			rollback();
+		}
 		return succeed;
 	}
 
+	/**
+	 * コミット.
+	 */
 	public void commit() {
 		try {
 			con.commit();
@@ -112,6 +170,9 @@ public class BaseDao {
 		}
 	}
 
+	/**
+	 * ロールバック.
+	 */
 	public void rollback() {
 		try {
 			con.rollback();
@@ -120,6 +181,9 @@ public class BaseDao {
 		}
 	}
 
+	/**
+	 * DB切断.
+	 */
 	public void close() {
 		if (con != null) {
 			try {

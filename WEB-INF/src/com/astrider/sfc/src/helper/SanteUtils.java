@@ -2,21 +2,28 @@ package com.astrider.sfc.src.helper;
 
 import java.util.ArrayList;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
+
 import com.astrider.sfc.app.lib.helper.MathUtils;
 import com.astrider.sfc.src.model.dao.NutrientDao;
 import com.astrider.sfc.src.model.dao.RecipeDao;
 import com.astrider.sfc.src.model.dao.WeeklyLogDao;
 import com.astrider.sfc.src.model.vo.db.RecipeVo;
+import com.astrider.sfc.src.model.vo.db.UserVo;
 import com.astrider.sfc.src.model.vo.db.WeeklyLogVo;
 
 /**
- * @author Itsuki Sakitsu 汎用ヘルパークラス。
+ * @author astrider 汎用ヘルパークラス。
  */
 public final class SanteUtils {
 	private static final int NUT_COUNT = 11;
 
 	/**
-	 * @author Itsuki Sakitsu 不足している栄養素情報を格納するためのBean
+	 * @author astrider
+	 *         <p>
+	 *         不足している栄養素情報を格納するためのBean
+	 *         </p>
 	 */
 	public static class InsufficientNutrients {
 		private int primaryKey;
@@ -57,9 +64,20 @@ public final class SanteUtils {
 		}
 	}
 
+	public static UserVo getLoginUser(HttpServletRequest request) {
+		HttpSession session = request.getSession();
+		UserVo user = (UserVo) session.getAttribute("loginUser");
+		return user;
+	}
 	/**
+	 * 不足栄養素取得.
+	 * 
 	 * @param userId
-	 * @return InsufficientNutrients 最新の栄養素状態から、不足している栄養素2種を割り出す
+	 * @return InsufficientNutrients
+	 *         <p>
+	 *         最新の栄養素状態から、不足している栄養素2種を割り出す。　
+	 *         値が全て空の場合は肉と野菜を含むレシピを選択。
+	 *         </p>
 	 */
 	public static InsufficientNutrients getInsufficientNutrients(int userId) {
 		double[] balances = getNutrientBalances(userId, 0);
@@ -73,10 +91,8 @@ public final class SanteUtils {
 			InsufficientNutrients nutrients = new InsufficientNutrients();
 			nutrients.setPrimaryKey(3);
 			nutrients.setSecondKey(5);
-			nutrients.setPrimaryNutrientName(nutrientDao.selectById(3)
-					.getLogicalName());
-			nutrients.setSecondaryNutrientName(nutrientDao.selectById(5)
-					.getLogicalName());
+			nutrients.setPrimaryNutrientName(nutrientDao.selectById(3).getLogicalName());
+			nutrients.setSecondaryNutrientName(nutrientDao.selectById(5).getLogicalName());
 			nutrientDao.close();
 			return nutrients;
 		}
@@ -104,10 +120,8 @@ public final class SanteUtils {
 		int primaryKey = primaryIndex + 1;
 		int secondaryKey = secondaryIndex + 1;
 		NutrientDao nutrientDao = new NutrientDao();
-		String primaryNutrientName = nutrientDao.selectById(primaryKey)
-				.getLogicalName();
-		String secondaryNutrientName = nutrientDao.selectById(secondaryKey)
-				.getLogicalName();
+		String primaryNutrientName = nutrientDao.selectById(primaryKey).getLogicalName();
+		String secondaryNutrientName = nutrientDao.selectById(secondaryKey).getLogicalName();
 		nutrientDao.close();
 
 		// 値をセット
@@ -123,7 +137,10 @@ public final class SanteUtils {
 	/**
 	 * @param userId
 	 * @param weekAgo
-	 * @return 栄養素別バランス 理想量に対して現在の各摂取栄養素を％で取得
+	 * @return 栄養素別バランス
+	 *         <p>
+	 *         理想量に対して現在の各摂取栄養素を％で取得
+	 *         </p>
 	 */
 	public static double[] getNutrientBalances(int userId, int weekAgo) {
 		// 現在の栄養摂取量と理想量を取得
@@ -148,8 +165,7 @@ public final class SanteUtils {
 		double[] items = new double[NUT_COUNT];
 		for (int j = 0; j < NUT_COUNT; j++) {
 			double desiredDiff = (desired[j] - desiredAverage) / desiredAverage;
-			double ingestedDiff = (ingested[j] - ingestedAverage)
-					/ ingestedAverage;
+			double ingestedDiff = (ingested[j] - ingestedAverage) / ingestedAverage;
 			double diff = (ingestedDiff - desiredDiff) / 2 + 0.5;
 			items[j] = diff;
 		}
@@ -172,9 +188,8 @@ public final class SanteUtils {
 			weekDao.close();
 		}
 
-		int[] ingested = { weekVo.getMilk(), weekVo.getEgg(), weekVo.getMeat(),
-				weekVo.getBean(), weekVo.getVegetable(), weekVo.getFruit(),
-				weekVo.getMineral(), weekVo.getCrop(), weekVo.getPotato(),
+		int[] ingested = { weekVo.getMilk(), weekVo.getEgg(), weekVo.getMeat(), weekVo.getBean(),
+				weekVo.getVegetable(), weekVo.getFruit(), weekVo.getMineral(), weekVo.getCrop(), weekVo.getPotato(),
 				weekVo.getFat(), weekVo.getSuguar() };
 		return ingested;
 	}
@@ -197,22 +212,18 @@ public final class SanteUtils {
 	 * @param 取得件数上限
 	 * @return おすすめレシピVO
 	 */
-	public static ArrayList<RecipeVo> getRecommendedRecipes(int userId,
-			int limit) {
+	public static ArrayList<RecipeVo> getRecommendedRecipes(int userId, int limit) {
 		InsufficientNutrients nutrients = getInsufficientNutrients(userId);
-		ArrayList<RecipeVo> recipes = getRecipesContainBothNutrients(nutrients,
-				limit);
+		ArrayList<RecipeVo> recipes = getRecipesContainBothNutrients(nutrients, limit);
 		return recipes;
 	}
 
-	private static ArrayList<RecipeVo> getRecipesContainBothNutrients(
-			InsufficientNutrients nutrients, int limit) {
+	private static ArrayList<RecipeVo> getRecipesContainBothNutrients(InsufficientNutrients nutrients, int limit) {
 		ArrayList<RecipeVo> recipes = new ArrayList<RecipeVo>();
 		RecipeDao recipeDao = new RecipeDao();
-		ArrayList<Integer> recipesContainsBoth = getDuplicateKeys(recipeDao
-				.selectRecipeIdByNutrientId(nutrients.getPrimaryKey()),
-				recipeDao.selectRecipeIdByNutrientId(nutrients
-						.getSecondaryKey()));
+		ArrayList<Integer> recipesContainsBoth = getDuplicateKeys(
+				recipeDao.selectRecipeIdByNutrientId(nutrients.getPrimaryKey()),
+				recipeDao.selectRecipeIdByNutrientId(nutrients.getSecondaryKey()));
 		if (recipesContainsBoth.size() < limit) {
 			limit = recipesContainsBoth.size();
 		}
@@ -226,8 +237,7 @@ public final class SanteUtils {
 		return recipes;
 	}
 
-	private static ArrayList<Integer> getDuplicateKeys(
-			ArrayList<Integer> firstKeys, ArrayList<Integer> secondKeys) {
+	private static ArrayList<Integer> getDuplicateKeys(ArrayList<Integer> firstKeys, ArrayList<Integer> secondKeys) {
 		ArrayList<Integer> duplicate = new ArrayList<Integer>();
 		for (int first : firstKeys) {
 			for (int second : secondKeys) {

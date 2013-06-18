@@ -3,7 +3,6 @@ package com.astrider.sfc.src.model;
 import java.util.ArrayList;
 
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpSession;
 
 import com.astrider.sfc.app.lib.model.BaseModel;
 import com.astrider.sfc.src.helper.SanteUtils;
@@ -15,19 +14,28 @@ import com.astrider.sfc.src.model.vo.db.UserStatsVo;
 import com.astrider.sfc.src.model.vo.db.UserVo;
 import com.astrider.sfc.src.model.vo.db.WeeklyLogVo;
 
+/**
+ * API関連Model.
+ * 
+ * @author astrider
+ * 
+ */
 public class ApiModel extends BaseModel {
 
+	/**
+	 * ユーザーステータス取得API.
+	 * 
+	 * @param request
+	 * @return
+	 */
 	public boolean getStats(HttpServletRequest request) {
-		HttpSession session = request.getSession();
-		UserVo user = (UserVo) session.getAttribute("loginUser");
-
+		UserVo user = SanteUtils.getLoginUser(request);
 		if (user == null) {
 			return returnFailStatus(request);
 		}
 
-		UserStatsVo userStats = null;
 		UserStatsDao userStatsDao = new UserStatsDao();
-		userStats = userStatsDao.selectByUserId(user.getUserId());
+		UserStatsVo userStats = userStatsDao.selectByUserId(user.getUserId());
 		userStatsDao.close();
 		if (userStats == null) {
 			return returnFailStatus(request);
@@ -38,16 +46,19 @@ public class ApiModel extends BaseModel {
 		return true;
 	}
 
+	/**
+	 * 栄養素取得API.
+	 * 
+	 * @param request
+	 * @return
+	 */
 	public boolean getNutrients(HttpServletRequest request) {
-		HttpSession session = request.getSession();
-		UserVo user = (UserVo) session.getAttribute("loginUser");
-
+		UserVo user = SanteUtils.getLoginUser(request);
 		if (user == null) {
 			return returnFailStatus(request);
 		}
 
-		WeeklyLogVo weekVo = null;
-		weekVo = WeeklyLogUtils.getCurrentLog(user.getUserId());
+		WeeklyLogVo weekVo = WeeklyLogUtils.getCurrentLog(user.getUserId());
 		NutrientDao nutrientDao = new NutrientDao();
 		ArrayList<NutrientVo> nutrients = nutrientDao.selectAll();
 		nutrientDao.close();
@@ -58,21 +69,30 @@ public class ApiModel extends BaseModel {
 		return true;
 	}
 
+	/**
+	 * 円グラフ用API.
+	 * 
+	 * @param request
+	 * @return
+	 */
 	public boolean getChartSource(HttpServletRequest request) {
-		HttpSession session = request.getSession();
-		UserVo user = (UserVo) session.getAttribute("loginUser");
-
+		UserVo user = SanteUtils.getLoginUser(request);
 		if (user == null) {
 			return returnFailStatus(request);
 		}
 
-		int week = 0;
+		// requestParametersからweekAgoを取得
+		int weekAgo = 0;
 		try {
-			week = Integer.valueOf(request.getParameter("week"));
+			weekAgo = Integer.valueOf(request.getParameter("weekAgo"));
+			if (weekAgo < 0) {
+				weekAgo = 0;
+			}
 		} catch (NumberFormatException e) {
-			// do nothing
+			weekAgo = 0;
 		}
-		double[] items = SanteUtils.getNutrientBalances(user.getUserId(), week);
+
+		double[] items = SanteUtils.getNutrientBalances(user.getUserId(), weekAgo);
 		request.setAttribute("items", items);
 		request.setAttribute("success", true);
 		return true;

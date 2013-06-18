@@ -83,8 +83,7 @@ public class WeeklyLogDao extends BaseDao {
 			int end = start - 6;
 			StringBuilder sb = new StringBuilder();
 			sb.append("SELECT * FROM weekly_nut_amounts WHERE user_id = ? AND first_date BETWEEN ");
-			sb.append("(SELECT TRUNC(SYSDATE -" + start
-					+ ", 'Day') FROM dual) AND ");
+			sb.append("(SELECT TRUNC(SYSDATE -" + start + ", 'Day') FROM dual) AND ");
 			sb.append("(SELECT TRUNC(SYSDATE -" + end + ", 'Day') FROM dual)");
 			pstmt = con.prepareStatement(sb.toString());
 			pstmt.setInt(1, userId);

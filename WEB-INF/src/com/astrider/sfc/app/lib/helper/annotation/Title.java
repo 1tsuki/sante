@@ -7,9 +7,12 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.Target;
 
 /**
+ * Titleアノテーション.
+ * 
  * @author astrider<br>
- *         タイトル自動設定用アノテーション<br>
- *         Commandクラスに設定することでページタイトルを自動挿入する
+ *         <p>
+ *         HTMLにおけるTitle要素を設定するアノテーション。Commandクラスに設定することで、値がページタイトルとして自動挿入される。
+ *         </p>
  * 
  */
 @Target(TYPE)

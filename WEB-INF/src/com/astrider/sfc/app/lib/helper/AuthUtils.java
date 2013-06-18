@@ -3,29 +3,41 @@ package com.astrider.sfc.app.lib.helper;
 import java.util.UUID;
 
 /**
- * @author astrider<br>
- *         ユーザー認証用ヘルパークラス<br>
- *         salt+SHA-512を用いたパスワードの暗号化とストレッチングを行う。<br>
- *         saltはパスワード文字列内の指定した位置にまぶされる。<br>
+ * 認証Util.
+ * 
+ * @author astrider
+ *         <p>
+ *         ユーザー認証用ヘルパークラス。 salt+SHA-512を用いたパスワードの暗号化とストレッチングを行う。
+ *         saltはパスワード文字列内の指定した位置にまぶされる。
+ *         </p>
  */
 public final class AuthUtils {
 	private static int saltLength = 10;
 	private static int stretchCount = 100;
-	private static int[] insertPositions = { 2, 14, 52, 63, 78, 81, 93, 101,
-			103, 120 };
+	private static int[] insertPositions = { 2, 14, 52, 63, 78, 81, 93, 101, 103, 120 };
 
 	/**
-	 * @param パスワード
-	 * @return 暗号化された文字列
+	 * 暗号化関数.
+	 * 
+	 * @param 生パスワード
+	 * @return 暗号化されたパスワード
+	 *         <p>
+	 *         SHA-512を用いたハッシュ化、salt付与及びストレッチングを行う。
+	 *         </p>
 	 */
 	public static String encrypt(String password) {
 		return doStretching(password, generateSalt());
 	}
 
 	/**
+	 * 認証関数.
+	 * 
 	 * @param 生パスワード
 	 * @param 暗号化された文字列
-	 * @return パスワードが一致したか否か
+	 * @return パスワード一致
+	 *         <p>
+	 *         入力されたパスワードと暗号化された文字列が一致するか検証する。
+	 *         </p>
 	 */
 	public static boolean verify(String password, String authToken) {
 		String salt = extractSalt(authToken);
@@ -33,8 +45,7 @@ public final class AuthUtils {
 	}
 
 	private static String generateSalt() {
-		return StringUtils.getHash(UUID.randomUUID().toString()).substring(0,
-				saltLength);
+		return StringUtils.getHash(UUID.randomUUID().toString()).substring(0, saltLength);
 	}
 
 	private static String doStretching(String password, String salt) {
