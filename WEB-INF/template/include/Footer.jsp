@@ -9,5 +9,8 @@
       </footer>
 
     </div>
+    
+    <script type="text/javascript" src="<% v.getPath("/asset/js/s_code.js"); %>"></script>
+    <script type="text/javascript" src="<% v.getPath("/asset/js/code_to_paste.js"); %>"></script>
   </body>
 </html>
