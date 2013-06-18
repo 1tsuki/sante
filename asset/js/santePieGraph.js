@@ -216,8 +216,8 @@ if (!window.santePieGraph) santePieGraph = {};
 				if (_items.length != params.length) {
 					console.log("Invalid item length");
 				}
-				items = _items;
 			}
+			items = _items;
 		},
 
 		setOffsetAngle: function(_offsetAngle) {

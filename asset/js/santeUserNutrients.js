@@ -25,12 +25,12 @@ if (!window.santeUserNutrients) santeUserNutrients = {};
             var firstday = new Date(tmp.setDate(first));
             var lastday = new Date(tmp.setDate(last));
             
-            var dayString = firstday.getMonth() + "/" + firstday.getDate() + " - " + lastday.getMonth() + "/" + lastday.getDate();
+            var dayString = firstday.getMonth() + "/" + firstday.getDate() + "(日)<br>〜" + lastday.getMonth() + "/" + lastday.getDate() + "(土)";
             $('.today').html(dayString);
 	    },
 
 		exec: function(weekAgo) {
-            if (!weekAgo || weekAgo < 0) week = 0;
+            if (typeof weekAgo === 'undefined' || weekAgo < 0) weekAgo = 0;
 			santeUserNutrients.interface.showDate(weekAgo);
 
 			$.ajax({

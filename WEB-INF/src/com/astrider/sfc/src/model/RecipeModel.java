@@ -4,10 +4,10 @@ import java.util.ArrayList;
 
 import javax.servlet.http.HttpServletRequest;
 
-import com.astrider.sfc.app.lib.helper.Mapper;
-import com.astrider.sfc.app.lib.helper.FlashMessage.Type;
-import com.astrider.sfc.app.lib.helper.StringUtils;
-import com.astrider.sfc.app.lib.model.BaseModel;
+import com.astrider.sfc.app.lib.Mapper;
+import com.astrider.sfc.app.lib.StringUtils;
+import com.astrider.sfc.app.lib.FlashMessage.Type;
+import com.astrider.sfc.app.model.BaseModel;
 import com.astrider.sfc.src.helper.SanteUtils;
 import com.astrider.sfc.src.model.dao.NutrientDao;
 import com.astrider.sfc.src.model.dao.RecipeDao;

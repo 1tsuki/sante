@@ -1,8 +1,8 @@
 package com.astrider.sfc.src.model.vo.form;
 
-import com.astrider.sfc.app.lib.helper.annotation.Column;
-import com.astrider.sfc.app.lib.helper.annotation.Valid;
-import com.astrider.sfc.app.lib.model.vo.BaseVo;
+import com.astrider.sfc.app.annotation.Column;
+import com.astrider.sfc.app.annotation.Valid;
+import com.astrider.sfc.app.model.BaseVo;
 
 public class RegisterFormVo extends BaseVo {
 	private static final long serialVersionUID = -7366649426401452317L;

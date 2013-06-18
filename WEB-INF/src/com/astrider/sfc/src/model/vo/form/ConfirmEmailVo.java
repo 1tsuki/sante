@@ -1,7 +1,8 @@
 package com.astrider.sfc.src.model.vo.form;
 
-import com.astrider.sfc.app.lib.helper.annotation.*;
-import com.astrider.sfc.app.lib.model.vo.BaseVo;
+import com.astrider.sfc.app.annotation.Column;
+import com.astrider.sfc.app.annotation.Valid;
+import com.astrider.sfc.app.model.BaseVo;
 
 public class ConfirmEmailVo extends BaseVo {
 	private static final long serialVersionUID = -3901324159533290441L;

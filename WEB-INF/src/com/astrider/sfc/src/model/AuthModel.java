@@ -3,9 +3,9 @@ package com.astrider.sfc.src.model;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
-import com.astrider.sfc.app.lib.helper.AuthUtils;
-import com.astrider.sfc.app.lib.helper.Mapper;
-import com.astrider.sfc.app.lib.model.BaseModel;
+import com.astrider.sfc.app.lib.AuthUtils;
+import com.astrider.sfc.app.lib.Mapper;
+import com.astrider.sfc.app.model.BaseModel;
 import com.astrider.sfc.src.model.dao.UserDao;
 import com.astrider.sfc.src.model.vo.db.UserVo;
 import com.astrider.sfc.src.model.vo.form.LoginFormVo;

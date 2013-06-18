@@ -7,7 +7,11 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
 
-import com.astrider.sfc.app.lib.model.BaseModel;
+import javax.servlet.http.HttpServletRequest;
+
+import com.astrider.sfc.app.lib.Mailer;
+import com.astrider.sfc.app.model.BaseModel;
+import com.astrider.sfc.src.helper.SanteUtils;
 import com.astrider.sfc.src.model.dao.CookLogDao;
 import com.astrider.sfc.src.model.dao.MaterialDao;
 import com.astrider.sfc.src.model.dao.RecipeDao;
@@ -24,8 +28,9 @@ import com.astrider.sfc.src.model.vo.db.UserVo;
 
 /**
  * 内部ツール関連Model
+ * 
  * @author astrider
- *
+ * 
  */
 public class InternalModel extends BaseModel {
 	/**
@@ -35,7 +40,7 @@ public class InternalModel extends BaseModel {
 		UserDao userDao = new UserDao();
 		ArrayList<UserVo> users = userDao.selectAll();
 		userDao.close();
-		
+
 		CookLogDao cookLogDao = new CookLogDao();
 		UserStatsDao userStatsDao = new UserStatsDao();
 		for (UserVo user : users) {
@@ -181,6 +186,35 @@ public class InternalModel extends BaseModel {
 		} finally {
 			if (materialDao != null) {
 				materialDao.close();
+			}
+		}
+	}
+
+	/**
+	 * おすすめレシピ定期送信用バッチメソッド.
+	 * 
+	 * @param request
+	 */
+	public void sendRecommendMail(HttpServletRequest request) {
+		UserDao userDao = new UserDao();
+		ArrayList<UserVo> users = userDao.selectAll();
+
+		// 全ての有効なユーザーにレシピを送信
+		for (UserVo user : users) {
+			if (user.isAvailable()) {
+				ArrayList<RecipeVo> recipes = SanteUtils.getRecommendedRecipes(user.getUserId(), 4);
+				StringBuilder sb = new StringBuilder();
+				for (RecipeVo recipe : recipes) {
+					sb.append(request.getServerName());
+					sb.append(request.getContextPath());
+					sb.append("/user/recipe/Detail?recipe_id=");
+					sb.append(recipe.getRecipeId());
+					sb.append("\n");
+				}
+				String title = "【sante】本日のおすすめレシピ";
+				String body = sb.toString();
+				Mailer mailer = new Mailer(user.getEmail(), title, body);
+				mailer.send();
 			}
 		}
 	}

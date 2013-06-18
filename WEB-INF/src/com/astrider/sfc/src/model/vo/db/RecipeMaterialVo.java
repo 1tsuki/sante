@@ -1,9 +1,9 @@
 package com.astrider.sfc.src.model.vo.db;
 
-import com.astrider.sfc.app.lib.helper.annotation.Column;
-import com.astrider.sfc.app.lib.helper.annotation.Table;
-import com.astrider.sfc.app.lib.helper.annotation.Valid;
-import com.astrider.sfc.app.lib.model.vo.BaseVo;
+import com.astrider.sfc.app.annotation.Column;
+import com.astrider.sfc.app.annotation.Table;
+import com.astrider.sfc.app.annotation.Valid;
+import com.astrider.sfc.app.model.BaseVo;
 
 @Table("recipe_materials")
 public class RecipeMaterialVo extends BaseVo {

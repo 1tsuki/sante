@@ -12,7 +12,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
-import com.astrider.sfc.app.lib.helper.FlashMessage;
+import com.astrider.sfc.app.lib.FlashMessage;
 import com.astrider.sfc.src.model.vo.db.UserVo;
 
 /**

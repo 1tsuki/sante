@@ -1,12 +1,14 @@
 package com.astrider.sfc.src.helper;
 
-import com.astrider.sfc.app.lib.helper.MathUtils;
+import com.astrider.sfc.app.lib.MathUtils;
 import com.astrider.sfc.src.model.dao.WeeklyLogDao;
 import com.astrider.sfc.src.model.vo.db.MealLogVo;
 import com.astrider.sfc.src.model.vo.db.WeeklyLogVo;
 
 /**
- * @author Itsuki Sakitsu 週間ログ周辺のUtil集
+ * 週間ログ周辺のUtil集.
+ * 
+ * @author astrider
  */
 public final class WeeklyLogUtils {
 	private static final int NUT_COUNT = 11;

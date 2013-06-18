@@ -5,8 +5,8 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-import com.astrider.sfc.app.lib.helper.Mapper;
-import com.astrider.sfc.app.lib.model.dao.BaseDao;
+import com.astrider.sfc.app.lib.Mapper;
+import com.astrider.sfc.app.model.BaseDao;
 import com.astrider.sfc.src.model.vo.db.RecipeNutAmountsVo;
 
 public class RecipeNutAmountsDao extends BaseDao {

@@ -1,8 +1,10 @@
 package com.astrider.sfc.src.model.vo.db;
 
-import com.astrider.sfc.app.lib.helper.StringUtils;
-import com.astrider.sfc.app.lib.helper.annotation.*;
-import com.astrider.sfc.app.lib.model.vo.BaseVo;
+import com.astrider.sfc.app.annotation.Column;
+import com.astrider.sfc.app.annotation.Table;
+import com.astrider.sfc.app.annotation.Valid;
+import com.astrider.sfc.app.lib.StringUtils;
+import com.astrider.sfc.app.model.BaseVo;
 
 @Table("materials")
 public class MaterialVo extends BaseVo {

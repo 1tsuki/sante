@@ -5,7 +5,7 @@ import java.io.IOException;
 import javax.servlet.ServletException;
 
 import com.astrider.sfc.app.lib.Command;
-import com.astrider.sfc.app.lib.helper.FlashMessage.Type;
+import com.astrider.sfc.app.lib.FlashMessage.Type;
 import com.astrider.sfc.src.model.AuthModel;
 
 public class LoginCommand extends Command {

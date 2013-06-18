@@ -4,8 +4,8 @@ import java.io.IOException;
 
 import javax.servlet.ServletException;
 
+import com.astrider.sfc.app.lib.AuthUtils;
 import com.astrider.sfc.app.lib.Command;
-import com.astrider.sfc.app.lib.helper.AuthUtils;
 import com.astrider.sfc.src.model.InternalModel;
 
 public class GenerateRecipeNutAmountsCommand extends Command {

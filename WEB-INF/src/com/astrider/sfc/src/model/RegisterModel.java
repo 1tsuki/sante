@@ -6,12 +6,12 @@ import java.net.URLEncoder;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
-import com.astrider.sfc.app.lib.helper.AuthUtils;
-import com.astrider.sfc.app.lib.helper.Mailer;
-import com.astrider.sfc.app.lib.helper.Mapper;
-import com.astrider.sfc.app.lib.helper.StringUtils;
-import com.astrider.sfc.app.lib.helper.Validator;
-import com.astrider.sfc.app.lib.model.BaseModel;
+import com.astrider.sfc.app.lib.AuthUtils;
+import com.astrider.sfc.app.lib.Mailer;
+import com.astrider.sfc.app.lib.Mapper;
+import com.astrider.sfc.app.lib.StringUtils;
+import com.astrider.sfc.app.lib.Validator;
+import com.astrider.sfc.app.model.BaseModel;
 import com.astrider.sfc.src.model.dao.UserDao;
 import com.astrider.sfc.src.model.dao.UserStatsDao;
 import com.astrider.sfc.src.model.vo.db.UserStatsVo;
@@ -54,10 +54,12 @@ public class RegisterModel extends BaseModel {
 		user.setAuthToken(AuthUtils.encrypt(registerForm.getPassword()));
 		user.setEmailToken(StringUtils.getEmailToken(registerForm.getEmail()));
 		UserDao userDao = new UserDao();
-		boolean succeed = userDao.insert(user);
-		userDao.close();
+		boolean succeed = userDao.insert(user, false);
+		
 		if (!succeed) {
 			flashMessage.addMessage("仮登録に失敗しました。お客様のメールアドレスは既に登録されている可能性があります。");
+			userDao.rollback();
+			userDao.close();
 			return false;
 		}
 
@@ -76,6 +78,8 @@ public class RegisterModel extends BaseModel {
 			body = sb.toString();
 		} catch (UnsupportedEncodingException e) {
 			flashMessage.addMessage("仮登録完了のメール本文の作成に失敗しました");
+			userDao.rollback();
+			userDao.close();
 			return false;
 		}
 
@@ -83,8 +87,13 @@ public class RegisterModel extends BaseModel {
 		Mailer mailer = new Mailer(to, subject, body);
 		if (!mailer.send()) {
 			flashMessage.addMessage("仮登録完了のメール送信に失敗しました");
+			userDao.rollback();
+			userDao.close();
 			return false;
 		}
+		
+		userDao.commit();
+		userDao.close();
 
 		return true;
 	}

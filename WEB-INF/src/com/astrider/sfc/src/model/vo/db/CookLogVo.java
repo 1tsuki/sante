@@ -2,8 +2,10 @@ package com.astrider.sfc.src.model.vo.db;
 
 import java.sql.Date;
 
-import com.astrider.sfc.app.lib.helper.annotation.*;
-import com.astrider.sfc.app.lib.model.vo.BaseVo;
+import com.astrider.sfc.app.annotation.Column;
+import com.astrider.sfc.app.annotation.Table;
+import com.astrider.sfc.app.annotation.Valid;
+import com.astrider.sfc.app.model.BaseVo;
 
 @Table("cook_logs")
 public class CookLogVo extends BaseVo {

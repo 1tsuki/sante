@@ -2,10 +2,10 @@ package com.astrider.sfc.src.model;
 
 import javax.servlet.http.HttpServletRequest;
 
-import com.astrider.sfc.app.lib.helper.Mapper;
-import com.astrider.sfc.app.lib.helper.FlashMessage.Type;
-import com.astrider.sfc.app.lib.helper.Validator;
-import com.astrider.sfc.app.lib.model.BaseModel;
+import com.astrider.sfc.app.lib.Mapper;
+import com.astrider.sfc.app.lib.Validator;
+import com.astrider.sfc.app.lib.FlashMessage.Type;
+import com.astrider.sfc.app.model.BaseModel;
 import com.astrider.sfc.src.helper.SanteUtils;
 import com.astrider.sfc.src.helper.WeeklyLogUtils;
 import com.astrider.sfc.src.model.dao.CookLogDao;

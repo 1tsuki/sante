@@ -5,7 +5,7 @@ import java.util.ArrayList;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
-import com.astrider.sfc.app.lib.helper.MathUtils;
+import com.astrider.sfc.app.lib.MathUtils;
 import com.astrider.sfc.src.model.dao.NutrientDao;
 import com.astrider.sfc.src.model.dao.RecipeDao;
 import com.astrider.sfc.src.model.dao.WeeklyLogDao;
@@ -14,7 +14,10 @@ import com.astrider.sfc.src.model.vo.db.UserVo;
 import com.astrider.sfc.src.model.vo.db.WeeklyLogVo;
 
 /**
- * @author astrider 汎用ヘルパークラス。
+ * 汎用ヘルパークラス.
+ * 
+ * @author astrider
+ * 
  */
 public final class SanteUtils {
 	private static final int NUT_COUNT = 11;
@@ -69,14 +72,14 @@ public final class SanteUtils {
 		UserVo user = (UserVo) session.getAttribute("loginUser");
 		return user;
 	}
+
 	/**
 	 * 不足栄養素取得.
 	 * 
 	 * @param userId
 	 * @return InsufficientNutrients
 	 *         <p>
-	 *         最新の栄養素状態から、不足している栄養素2種を割り出す。　
-	 *         値が全て空の場合は肉と野菜を含むレシピを選択。
+	 *         最新の栄養素状態から、不足している栄養素2種を割り出す。　 値が全て空の場合は肉と野菜を含むレシピを選択。
 	 *         </p>
 	 */
 	public static InsufficientNutrients getInsufficientNutrients(int userId) {
@@ -146,6 +149,9 @@ public final class SanteUtils {
 		// 現在の栄養摂取量と理想量を取得
 		int[] ingested = getIngestedNutrients(userId, weekAgo);
 		int[] desired = getDesiredNutrients();
+		if (ingested == null || desired == null) {
+			return null;
+		}
 
 		// 理想割合から飛び抜けた値を丸める
 		double ingestedAverage = MathUtils.getAverage(ingested);
@@ -179,13 +185,12 @@ public final class SanteUtils {
 	 * @return 栄養素別摂取総量
 	 */
 	public static int[] getIngestedNutrients(int userId, int weekAgo) {
-		WeeklyLogVo weekVo = null;
-		if (weekAgo == 0) {
-			weekVo = WeeklyLogUtils.getCurrentLog(userId);
-		} else {
-			WeeklyLogDao weekDao = new WeeklyLogDao();
-			weekVo = weekDao.selectByWeekAgo(userId, weekAgo);
-			weekDao.close();
+		WeeklyLogDao weekDao = new WeeklyLogDao();
+		WeeklyLogVo weekVo = weekDao.selectByWeekAgo(userId, weekAgo);
+		weekDao.close();
+
+		if (weekVo == null) {
+			return null;
 		}
 
 		int[] ingested = { weekVo.getMilk(), weekVo.getEgg(), weekVo.getMeat(), weekVo.getBean(),

@@ -4,7 +4,7 @@ import java.util.ArrayList;
 
 import javax.servlet.http.HttpServletRequest;
 
-import com.astrider.sfc.app.lib.model.BaseModel;
+import com.astrider.sfc.app.model.BaseModel;
 import com.astrider.sfc.src.helper.SanteUtils;
 import com.astrider.sfc.src.helper.WeeklyLogUtils;
 import com.astrider.sfc.src.model.dao.NutrientDao;
@@ -93,6 +93,10 @@ public class ApiModel extends BaseModel {
 		}
 
 		double[] items = SanteUtils.getNutrientBalances(user.getUserId(), weekAgo);
+		if (items == null) {
+			return returnFailStatus(request);
+		}
+
 		request.setAttribute("items", items);
 		request.setAttribute("success", true);
 		return true;

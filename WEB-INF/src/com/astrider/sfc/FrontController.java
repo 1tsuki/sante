@@ -8,9 +8,9 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import com.astrider.sfc.app.annotation.Title;
 import com.astrider.sfc.app.lib.Command;
-import com.astrider.sfc.app.lib.helper.StringUtils;
-import com.astrider.sfc.app.lib.helper.annotation.Title;
+import com.astrider.sfc.app.lib.StringUtils;
 import com.astrider.sfc.src.command.UnknownCommand;
 
 /**

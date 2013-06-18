@@ -6,8 +6,8 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 
-import com.astrider.sfc.app.lib.helper.Mapper;
-import com.astrider.sfc.app.lib.model.dao.BaseDao;
+import com.astrider.sfc.app.lib.Mapper;
+import com.astrider.sfc.app.model.BaseDao;
 import com.astrider.sfc.src.model.vo.db.CookLogVo;
 
 public class CookLogDao extends BaseDao {

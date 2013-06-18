@@ -6,8 +6,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import javax.servlet.jsp.PageContext;
 
-import com.astrider.sfc.app.lib.helper.FlashMessage;
-import com.astrider.sfc.app.lib.helper.StringUtils;
+import com.astrider.sfc.app.lib.FlashMessage;
+import com.astrider.sfc.app.lib.StringUtils;
 import com.astrider.sfc.src.model.vo.db.UserVo;
 
 /**
