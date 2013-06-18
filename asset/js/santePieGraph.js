@@ -2,32 +2,17 @@ if (!window.santePieGraph) santePieGraph = {};
 
 (function(w, $){
 	// some alias to compress code
-	var m = Math;
-	var pi = m.PI;
-	var cos = m.cos;
-	var sin = m.sin;
-	var round = m.round;
+	var m = Math, pi = m.PI, cos = m.cos, sin = m.sin, round = m.round;
 
 	// prefix values
-	var fontsize = 22;
+	var fontsize = 20;
 	var font = 'ＭＳ Ｐゴシック';
 	var colormap = ['#F05050','#F05050','#F05050','#F05050','#509650','#509650','#509650','#DCDC00','#DCDC00','#DCDC00','#DCDC00'];
 	var auxlineNum = 5;
 
 	// variables
-	var c;
-	var ctx;
-	var width = 220;
-	var height = 220;
-	var radius;
-	var radDiv;
-	var radOffset = -pi/2;
-	var centerX;
-	var centerY;
-	var timer = 25;
-	var drawInfo = true;
-	var params;
-	var items;
+	var c, ctx, width = 220, height = 220, radius, radDiv, radOffset = -pi/2, centerX, centerY;
+	var timer = 25, params, items;
 
 	var color = {
 		mod: function(color, amount) {
@@ -133,7 +118,6 @@ if (!window.santePieGraph) santePieGraph = {};
 			privateMethods.drawPie();
 			privateMethods.drawLabel();
 			privateMethods.drawItems();
-			privateMethods.drawInfo();
 		},
 
 		drawPie: function() {
@@ -162,8 +146,8 @@ if (!window.santePieGraph) santePieGraph = {};
 			ctx.moveTo(centerX + cos(radOffset)*radius, centerY+sin(radOffset)*radius);
 			for(var i=0; i<params.length; i++) {
 				var rad = radOffset + radDiv*(i+0.5);
-				targetX = centerX + cos(rad)*(radius+fontsize/2);
-				targetY = centerY + sin(rad)*(radius+fontsize/2);
+				targetX = centerX + cos(rad)*(radius+fontsize/2+3);
+				targetY = centerY + sin(rad)*(radius+fontsize/2+3);
 
 				// draw params
 				if(i < params.length/4) {
@@ -178,61 +162,31 @@ if (!window.santePieGraph) santePieGraph = {};
 			}
 		},
 
-		drawInfo: function() {
-			if(typeof items !== "undefined" && drawInfo) {
-				if(width > height) {
-					privateMethods.drawInfoOnSide();
-				} else {
-					privateMethods.drawInfoOnBottom();
-				}
-			}
-		},
-
-		drawInfoOnSide: function() {
-			for(var i=0; i<items.length; i++) {
-				ctx.fillStyle = color.darken(colormap[i], 1.5);
-				ctx.fillText(items[i][0], (radius+fontsize)*2+fontsize, centerY - fontsize*items.length + fontsize*(i+1)*2);
-			}
-		},
-
-		drawInfoOnBottom: function() {
-			var unit = width / items.length;
-			for(var i=0; i<items.length; i++) {
-				ctx.textAlign = "center";
-				ctx.fillStyle = color.darken(colormap[i], 1.5);
-				ctx.fillText(items[i][0], unit*(i+0.5), (radius+fontsize)*2 + fontsize*2);
-			}
-		},
-
 		drawItems: function() {
 			if (typeof items !== "undefined") {
 				for(var i=0; i<items.length; i++) {
-					privateMethods.drawItem(items[i], 1);
+					privateMethods.drawItem(items[i], i);
 				}
 			}
 		},
 
 		drawItem: function(item, key) {
-			if(item.length <= key) {
-				return;
+			if(isNaN(item) || item <= 0) {
+                return;
 			}
-
-			var radStart = radOffset;
 			setTimeout(privateMethods.drawItemValue, 100, item, key, 0);
-			privateMethods.drawItem(item, ++key);
 		},
 
 		drawItemValue: function(item, key, counter) {
-			if (item[key] == 0 || item[key]*auxlineNum <= counter) {
+			if (item[key] <= 0 || item*auxlineNum <= counter || auxlineNum <= counter) {
 				return;
 			}
-
-			var startAngle = radOffset + radDiv*(key-1);
-			var endAngle = radOffset + radDiv*key;
+            
+			var startAngle = radOffset + radDiv*key;
+			var endAngle = radOffset + radDiv*(key + 1);
 			var length = radius/auxlineNum;
 			var innerRadius = length*counter;
-
-			ctx.fillStyle = color.mod(colormap[key-1], counter*10);
+			ctx.fillStyle = color.mod(colormap[key], counter*10);
 			draw.fan(startAngle, endAngle, innerRadius, length);
 			ctx.fill();
 			setTimeout(privateMethods.drawItemValue, timer, item, key, ++counter);
@@ -253,20 +207,14 @@ if (!window.santePieGraph) santePieGraph = {};
 			privateMethods.drawGraph();
 		},
 
-		setDrawInfo: function(flag) {
-			drawInfo = flag;
-		},
-
 		setParams: function(_params) {
 			params = _params;
 		},
 
 		setItems: function(_items) {
 			if (_items) {
-				for (var i=0; i<_items.length; i++) {
-					if(_items[i].length != params.length + 1) {
-						console.log("Invalid item length");
-					}
+				if (_items.length != params.length) {
+					console.log("Invalid item length");
 				}
 				items = _items;
 			}

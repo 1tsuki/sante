@@ -13,7 +13,7 @@
     <div class="status-contents">
         <div class="calendar">
             <span class="today">5/24 - 5/27</span>
-            <span class="title">自炊履歴</span>
+            <!-- <span class="title">自炊履歴</span>
             <ul>
                 <li class="cooked">SUN</li>
                 <li>MON</li>
@@ -22,7 +22,7 @@
                 <li>THU</li>
                 <li class="cooked">FRI</li>
                 <li>SAT</li>
-            </ul>
+            </ul> -->
         </div>
         <div class="status-counter">
             <dl><dt>自炊回数</dt><dd id="total-cooked">--回</dd></dl>
@@ -34,8 +34,13 @@
 </section>
 
 <section class="tips">
-    <h2>今日のTips</h2>
-    <p>　<c:out value="${ tips }" /></p>
+    <h2>今日の栄養状態</h2>
+    <p>　あなたの食事履歴から算出された不足食材は以下の2種類です。<br>
+        <ul>
+            <li><c:out value="${ nutrients.primaryNutrientName }" /></li>
+            <li><c:out value="${ nutrients.secondaryNutrientName }" /></li>
+        </ul>
+    </p>
 </section>
 
 <section class="recommends-wrapper">
@@ -45,13 +50,13 @@
             <% RecipeVo recipe = (RecipeVo) pageContext.getAttribute("recipe"); %>
             <c:if test="${0 == status.index}">
                 <a class="recipe recipe-main" href="<% v.getPath("/user/recipe/Detail?recipe_id=" + recipe.getRecipeId()); %>">
-                    <img alt="料理名" src="<% v.getPath("/asset/img/sample_food.jpg"); %>">
+                    <img alt="料理名" src="<% v.getPath(((RecipeVo)pageContext.getAttribute("recipe")).getImageUrl()); %>">
                     <h3><c:out value="${ recipe.recipeName }" /></h3>
                 </a>
             </c:if>
             <c:if test="${0 < status.index}">
                 <a class="recipe" href="<% v.getPath("/user/recipe/Detail?recipe_id=" + recipe.getRecipeId()); %>">
-                    <img alt="料理名" src="<% v.getPath("/asset/img/sample_food.jpg"); %>">
+                    <img alt="料理名" src="<% v.getPath(((RecipeVo)pageContext.getAttribute("recipe")).getImageUrl()); %>">
                     <h3><c:out value="${ recipe.recipeName }" /></h3>
                 </a>
             </c:if>
@@ -73,17 +78,17 @@
 
     <h3>食材分類から選ぶ</h3>
     <div class="materials">
-        <div id="milk"    class="material"><a href="<% v.getPath("/user/recipe/Search"); %>">乳製品</a></div>
-        <div id="egg"     class="material"><a href="<% v.getPath("/user/recipe/Search"); %>">卵</a></div>
-        <div id="meat"    class="material"><a href="<% v.getPath("/user/recipe/Search"); %>">魚・肉類</a></div>
-        <div id="bean"    class="material"><a href="<% v.getPath("/user/recipe/Search"); %>">豆類</a></div>
-        <div id="veg"     class="material"><a href="<% v.getPath("/user/recipe/Search"); %>">野菜</a></div>
-        <div id="fruit"   class="material"><a href="<% v.getPath("/user/recipe/Search"); %>">果物</a></div>
-        <div id="mineral" class="material"><a href="<% v.getPath("/user/recipe/Search"); %>">海藻・茸</a></div>
-        <div id="crop"    class="material"><a href="<% v.getPath("/user/recipe/Search"); %>">穀物</a></div>
-        <div id="potato"  class="material"><a href="<% v.getPath("/user/recipe/Search"); %>">イモ類</a></div>
-        <div id="fat"     class="material"><a href="<% v.getPath("/user/recipe/Search"); %>">油分</a></div>
-        <div id="sugar"   class="material"><a href="<% v.getPath("/user/recipe/Search"); %>">糖分</a></div>
+        <div id="milk"    class="material material-red-light"><a href="<% v.getPath("/user/recipe/Search"); %>">乳製品</a></div>
+        <div id="egg"     class="material material-red-light"><a href="<% v.getPath("/user/recipe/Search"); %>">卵</a></div>
+        <div id="meat"    class="material material-red-light"><a href="<% v.getPath("/user/recipe/Search"); %>">魚・肉類</a></div>
+        <div id="bean"    class="material material-red-light"><a href="<% v.getPath("/user/recipe/Search"); %>">豆類</a></div>
+        <div id="veg"     class="material material-green-light"><a href="<% v.getPath("/user/recipe/Search"); %>">野菜</a></div>
+        <div id="fruit"   class="material material-green-light"><a href="<% v.getPath("/user/recipe/Search"); %>">果物</a></div>
+        <div id="mineral" class="material material-green-light"><a href="<% v.getPath("/user/recipe/Search"); %>">海藻・茸</a></div>
+        <div id="crop"    class="material material-yellow-light"><a href="<% v.getPath("/user/recipe/Search"); %>">穀物</a></div>
+        <div id="potato"  class="material material-yellow-light"><a href="<% v.getPath("/user/recipe/Search"); %>">イモ類</a></div>
+        <div id="fat"     class="material material-yellow-light"><a href="<% v.getPath("/user/recipe/Search"); %>">油分</a></div>
+        <div id="sugar"   class="material material-yellow-light"><a href="<% v.getPath("/user/recipe/Search"); %>">糖分</a></div>
     </div>
     <p>最近不足している食材が強調表示されています。</p>
 </section>

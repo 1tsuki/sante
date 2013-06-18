@@ -5,7 +5,7 @@ import java.sql.Connection;
 import org.junit.After;
 import org.junit.Before;
 
-import com.astrider.sfc.app.lib.helper.TestDataManager;
+import com.astrider.sfc.app.test.src.model.TestDataManager;
 import com.astrider.sfc.src.model.dao.CookLogDao;
 import com.astrider.sfc.src.model.dao.MealLogDao;
 import com.astrider.sfc.src.model.dao.NutrientDao;

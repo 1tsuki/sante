@@ -8,7 +8,6 @@ import java.util.Calendar;
 
 import org.junit.Test;
 
-import com.astrider.sfc.app.lib.helper.TestDataManager;
 import com.astrider.sfc.src.model.vo.db.CookLogVo;
 
 public class CookLogDaoTest extends DaoTestBase {

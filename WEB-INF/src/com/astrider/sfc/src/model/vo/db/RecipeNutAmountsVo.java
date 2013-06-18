@@ -6,7 +6,7 @@ import com.astrider.sfc.app.lib.model.vo.BaseVo;
 @Table("recipe_nut_amounts")
 public class RecipeNutAmountsVo extends BaseVo {
     private static final long serialVersionUID = 6820635435339523406L;
-    @Column(physic="recipe_id", logic="レシピID")
+    @Column(physic="recipe_id", logic="レシピID", isPrimaryKey=true)
     private int recipeId;
     @Column(physic="total_balance", logic="栄養バランス")
     private int totalBalance;

@@ -9,7 +9,7 @@ import com.astrider.sfc.src.model.vo.db.RecipeVo;
 public class RecipeDaoTest extends DaoTestBase {
     @Test
     public void selectFromId() {
-        RecipeVo recipe = recipeDao.selectByRecipeId(1);
+        RecipeVo recipe = recipeDao.selectByRecipeId(21);
         assertTrue(recipe != null);
     }
 }

@@ -14,14 +14,14 @@ public class MealLogDaoTest extends DaoTestBase {
     @Test
     public void レシピIDから食事ログを生成() {
         UserVo user = userDao.selectByUserId(1);
-        RecipeVo recipe = recipeDao.selectByRecipeId(1);
+        RecipeVo recipe = recipeDao.selectByRecipeId(21);
         assertTrue(mealLogDao.insertFromRecipeNutAmounts(user.getUserId(), recipe.getRecipeId()));
     }
 
     @Test
     public void 挿入された食事ログが取得できるか確認() {
         int userId = 1;
-        int recipeId = 1;
+        int recipeId = 21;
         RecipeNutAmountsVo recipeNut = recipeNutDao.selectById(recipeId);
         assertTrue(recipeNut != null);
         assertTrue(mealLogDao.insertFromRecipeNutAmounts(userId, recipeId));
@@ -33,7 +33,7 @@ public class MealLogDaoTest extends DaoTestBase {
     @Test
     public void 今週の食事回数を取得() {
         int userId = 1;
-        int recipeId = 1;
+        int recipeId = 21;
         assertTrue(mealLogDao.insertFromRecipeNutAmounts(userId, recipeId));
         assertTrue(mealLogDao.countMealOfThisWeek(userId) == 3);
     }

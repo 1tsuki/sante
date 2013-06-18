@@ -1,15 +1,12 @@
 package com.astrider.sfc.src.model;
 
 import java.util.ArrayList;
-import java.util.Calendar;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
-import com.astrider.sfc.app.lib.helper.DateUtils;
 import com.astrider.sfc.app.lib.model.BaseModel;
 import com.astrider.sfc.src.helper.SanteUtils;
-import com.astrider.sfc.src.model.dao.MealLogDao;
 import com.astrider.sfc.src.model.dao.NutrientDao;
 import com.astrider.sfc.src.model.dao.UserStatsDao;
 import com.astrider.sfc.src.model.vo.db.NutrientVo;
@@ -20,71 +17,64 @@ import com.astrider.sfc.src.model.vo.db.WeeklyLogVo;
 public class ApiModel extends BaseModel {
 
     public boolean getStats(HttpServletRequest request) {
-        boolean succeed = false;
         HttpSession session = request.getSession();
         UserVo user = (UserVo) session.getAttribute("loginUser");
+        
+        if (user == null) {
+        	return returnFailStatus(session);
+        }
 
         UserStatsVo userStats = null;
-        if (user != null) {
-            UserStatsDao userStatsDao = new UserStatsDao();
-            userStats = userStatsDao.selectByUserId(user.getUserId());
-            userStatsDao.close();
-            if (userStats != null) {
-                succeed = true;
-            }
+        UserStatsDao userStatsDao = new UserStatsDao();
+        userStats = userStatsDao.selectByUserId(user.getUserId());
+        userStatsDao.close();
+        if (userStats == null) {
+            return returnFailStatus(session);
         }
 
-        if (succeed) {
-            session.setAttribute("userStats", userStats);
-            session.setAttribute("success", true);
-            return true;
-        } else {
-            session.setAttribute("success", false);
-            session.setAttribute("message", "failed");
-            return false;
-        }
+        session.setAttribute("userStats", userStats);
+        session.setAttribute("success", true);
+        return true;
     }
 
     public boolean getNutrients(HttpServletRequest request) {
-        boolean succeed = false;
         HttpSession session = request.getSession();
         UserVo user = (UserVo) session.getAttribute("loginUser");
-
-        int dayPassed = 0;
-        WeeklyLogVo weekVo = null;
-        if (user != null) {
-            weekVo = SanteUtils.getWeeklyLogOfThisWeek(user.getUserId());
-            Calendar today = Calendar.getInstance();
-            Calendar firstDate = Calendar.getInstance();
-            firstDate.setTime(weekVo.getFirstDate());
-            firstDate.add(Calendar.DATE, 1);
-            dayPassed =DateUtils.getDayPassed(firstDate, today);
-            succeed = true;
+        
+        if (user == null) {
+        	return returnFailStatus(session);
         }
 
+        WeeklyLogVo weekVo = null;
+    	weekVo = SanteUtils.getWeeklyLogOfThisWeek(user.getUserId());
         NutrientDao nutrientDao = new NutrientDao();
         ArrayList<NutrientVo> nutrients = nutrientDao.selectAll();
         nutrientDao.close();
 
-        MealLogDao mealDao = new MealLogDao();
-        int mealCount = mealDao.countMealOfThisWeek(user.getUserId());
-        mealDao.close();
-        if (mealCount < 0) {
-            mealCount = 0;
-        }
-
-        if (succeed) {
-            session.setAttribute("dayPassed", dayPassed);
-            session.setAttribute("ingested", weekVo);
-            session.setAttribute("desired", nutrients);
-            session.setAttribute("mealCount", mealCount);
-            session.setAttribute("success", true);
-            return true;
-        } else {
-            session.setAttribute("success", false);
-            session.setAttribute("message", "failed");
-            return false;
-        }
+        session.setAttribute("ingested", weekVo);
+        session.setAttribute("desired", nutrients);
+        session.setAttribute("success", true);
+        return true;
     }
 
+	public boolean getChartSource(HttpServletRequest request) {
+		HttpSession session = request.getSession();
+		UserVo user = (UserVo) session.getAttribute("loginUser");
+		
+		if (user == null) {
+        	return returnFailStatus(session);
+        }
+
+		
+		double[] items = SanteUtils.getNutrientBalances(user.getUserId());
+        session.setAttribute("items", items);
+        session.setAttribute("success", true);
+        return true;
+	}
+
+	private boolean returnFailStatus(HttpSession session) {
+		session.setAttribute("success", false);
+        session.setAttribute("message", "failed");
+        return false;
+	}
 }

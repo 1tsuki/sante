@@ -44,4 +44,31 @@ public class NutrientDao extends BaseDao {
         }
         return nutrients;
     }
+
+	public NutrientVo selectById(int id) {
+		NutrientVo nutrient = null;
+		PreparedStatement pstmt = null;
+
+        try {
+            String sql = "SELECT * FROM nutrients WHERE nutrient_id = ?";
+            pstmt = con.prepareStatement(sql);
+            pstmt.setInt(1, id);
+            ResultSet rs = pstmt.executeQuery();
+            while (rs.next()) {
+                Mapper<NutrientVo> mapper = new Mapper<NutrientVo>();
+                nutrient = mapper.fromResultSet(rs);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            try {
+                if (pstmt != null) {
+                    pstmt.close();
+                }
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
+        return nutrient;
+	}
 }

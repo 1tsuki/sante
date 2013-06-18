@@ -11,21 +11,16 @@ import com.astrider.sfc.app.lib.model.BaseModel;
 import com.astrider.sfc.src.helper.SanteUtils;
 import com.astrider.sfc.src.model.dao.CookLogDao;
 import com.astrider.sfc.src.model.dao.MaterialDao;
-import com.astrider.sfc.src.model.dao.MealLogDao;
 import com.astrider.sfc.src.model.dao.RecipeDao;
 import com.astrider.sfc.src.model.dao.RecipeNutAmountsDao;
 import com.astrider.sfc.src.model.dao.UserDao;
 import com.astrider.sfc.src.model.dao.UserStatsDao;
-import com.astrider.sfc.src.model.dao.WeeklyLogDao;
-import com.astrider.sfc.src.model.vo.db.CookLogVo;
 import com.astrider.sfc.src.model.vo.db.MaterialVo;
-import com.astrider.sfc.src.model.vo.db.MealLogVo;
 import com.astrider.sfc.src.model.vo.db.RecipeMaterialVo;
 import com.astrider.sfc.src.model.vo.db.RecipeNutAmountsVo;
 import com.astrider.sfc.src.model.vo.db.RecipeVo;
 import com.astrider.sfc.src.model.vo.db.UserStatsVo;
 import com.astrider.sfc.src.model.vo.db.UserVo;
-import com.astrider.sfc.src.model.vo.db.WeeklyLogVo;
 
 public class InternalModel extends BaseModel {
     public void execDailyBatch() {
@@ -34,51 +29,20 @@ public class InternalModel extends BaseModel {
         userDao.close();
         for (UserVo user : users) {
             checkDailyCookLogs(user);
-//            updateWeeklyNutAmounts(user);
         }
     }
 
     private void checkDailyCookLogs(UserVo user) {
         CookLogDao cookLogDao = new CookLogDao();
-        ArrayList<CookLogVo> cookLogs = cookLogDao.selectCookedAtYesterday(user.getUserId());
-        cookLogDao.close();
-
-        UserStatsDao userStatsDao = new UserStatsDao();
-        UserStatsVo userStatsVo = userStatsDao.selectByUserId(user.getUserId());
-        if (0 < cookLogs.size()) {
+        if (0 < cookLogDao.countCookedAtYesterday(user.getUserId())) {
             // 連続調理日数の更新
-            int consecutivelyCooked = userStatsVo.getConsecutivelyCooked() + 1;
-            userStatsVo.setConsecutivelyCooked(consecutivelyCooked);
-            // 最大連続調理日数の更新
-            if (userStatsVo.getMaxConsecutivelyCooked() < consecutivelyCooked) {
-                userStatsVo.setMaxConsecutivelyCooked(consecutivelyCooked);
-            }
-        } else {
+        	UserStatsDao userStatsDao = new UserStatsDao();
+        	UserStatsVo userStatsVo = userStatsDao.selectByUserId(user.getUserId());
             userStatsVo.setConsecutivelyCooked(0);
+            userStatsDao.update(userStatsVo);
+            userStatsDao.close();
         }
-        userStatsDao.update(userStatsVo);
-        userStatsDao.close();
-    }
-
-    @SuppressWarnings("unused")
-    private void updateWeeklyNutAmounts(UserVo user) {
-        WeeklyLogDao weekNutAmountsDao = new WeeklyLogDao();
-        WeeklyLogVo weekNutAmounts = weekNutAmountsDao.selectItemOfThisWeek(user.getUserId());
-        if (weekNutAmounts == null) {
-            weekNutAmounts = new WeeklyLogVo();
-            weekNutAmounts.setUserId(user.getUserId());
-            weekNutAmountsDao.insert(weekNutAmounts);
-        }
-
-        MealLogDao mealNutAmountsDao = new MealLogDao();
-        ArrayList<MealLogVo> mealNutAmounts = mealNutAmountsDao.selectMealAtYesterday(user.getUserId());
-        for (MealLogVo mealNutAmount : mealNutAmounts) {
-            SanteUtils.joinWeeklyAndMealLog(weekNutAmounts, mealNutAmount);
-        }
-        weekNutAmountsDao.update(weekNutAmounts);
-
-        weekNutAmountsDao.close();
-        mealNutAmountsDao.close();
+        cookLogDao.close();
     }
 
     public void generateRecipeNutAmounts() {
@@ -88,19 +52,17 @@ public class InternalModel extends BaseModel {
 
         RecipeNutAmountsDao recipeNutDao = new RecipeNutAmountsDao();
         boolean succeed = false;
-        System.out.println(recipes.size());
         for (RecipeVo recipe : recipes) {
-        	System.out.println(recipe.getRecipeId());
             RecipeNutAmountsVo amounts = recipeNutDao.selectById(recipe.getRecipeId());
             if (amounts == null) {
                 amounts = SanteUtils.generateRecipeNutrientAmounts(recipe.getRecipeId());
-                succeed = recipeNutDao.insertWithoutCommit(amounts) && succeed;
+                succeed = recipeNutDao.insertWithoutCommit(amounts);
+                if (succeed) {
+                	recipeNutDao.commit();
+                } else {
+                	recipeNutDao.rollback();
+                }
             }
-        }
-        if (succeed) {
-        	recipeNutDao.commit();
-        } else {
-        	recipeNutDao.rollback();
         }
         recipeNutDao.close();
     }

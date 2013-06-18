@@ -25,7 +25,7 @@
             },
             "desired": {
                 <c:forEach var="nutrient" items="${desired}" varStatus="status">
-                "<c:out value="${nutrient.nutrientName}" />" : <c:out value="${nutrient.dailyRequiredAmount * mealCount}" />
+                "<c:out value="${nutrient.nutrientName}" />" : <c:out value="${nutrient.dailyRequiredAmount}" />
                 <c:if test="${!status.last}">,</c:if>
                 </c:forEach>
             }

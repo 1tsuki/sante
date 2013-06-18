@@ -15534,7 +15534,7 @@ h2 {
   overflow: hidden;
 }
 .recommend .recipe a img {
-  height: 100%;
+  width: 100%;
 }
 .recommend .recipe a h3 {
   position: absolute;

@@ -25,19 +25,17 @@
     <script type="text/javascript" src="<% v.getPath("/asset/js/santePieGraph.js"); %>"></script>
     <script type="text/javascript" src="<% v.getPath("/asset/js/santeUserStats.js"); %>"></script>
     <script type="text/javascript" src="<% v.getPath("/asset/js/santeUserNutrients.js"); %>"></script>
+    <script type="text/javascript" src="<% v.getPath("/asset/js/santeFillMaterials.js"); %>"></script>
     <script type="text/javascript">
     $(document).ready(function() {
+        // prepare for pieGraph
         var params = ["乳", "卵", "肉", "豆", "菜", "果", "藻", "米", "芋", "油", "糖"];
         santePieGraph.interface.init(".pie-graph", params);
-        santePieGraph.interface.setDrawInfo(false);
         santePieGraph.interface.setSize($('.pie-graph').width(), $('.pie-graph').height());
         santePieGraph.interface.setAuxlineNum(10);
-        santeUserNutrients.interface.exec();
+        santePieGraph.interface.draw();
 
-        //var keys = ["#milk", "#egg", "#meat", "#bean", "#veg", "#fruit", "#mineral", "#crop", "#potato", "#fat", "#sugar"];
-        //var values = [1, 0.8, 0.6, 0.4, 0.6, 0.8, 1, 0.8, 1, 0.6, 0.4];
-        //var colors = ["red", "red", "red", "red", "green", "green", "green", "yellow", "yellow", "yellow", "yellow"];
-        //fillMaterials.interface.fill(keys, values, colors);
+        santeUserNutrients.interface.exec();
       });
     </script>
     </c:if>
@@ -63,13 +61,6 @@
               <a href="<%v.getPath("/Index");%>">sante</a><p>-自炊を楽しむすべての人に、手軽で健康的な料理生活を-</p>
             </div>
             <nav class="header-control">
-              <c:if test="${ isLoggedIn }" >
-              <ul>
-                <li><a href="<% v.getPath("/log/Monthly"); %>"><i></i>調理履歴</a></li>
-                <li><a href="<% v.getPath("/recipe/Favorite"); %>"><i></i>お気に入り</a></li>
-                <li><a href="<% v.getPath("/knowledge/Index"); %>"><i></i>栄養知識</a></li>
-              </ul>
-              </c:if>
             </nav>
           </div>
         </section>

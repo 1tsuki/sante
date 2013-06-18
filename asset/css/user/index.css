@@ -15045,7 +15045,7 @@ h3 {
   width: 40.476190476190474%;
   margin: 0 0.5952380952380952%;
   *zoom: 1;
-  height: 80px;
+  height: 100px;
   overflow: hidden;
   text-decoration: none;
   position: relative;
@@ -15237,7 +15237,10 @@ h3 {
   text-shadow: 1px 1px 3px #000000;
 }
 #wrapper .recommends-wrapper .recommends .recipe img {
-  width: 100%;
+  position: absolute;
+  left: -50px;
+  top: -100px;
+  width: 120%;
   height: auto;
   overflow: hidden;
 }
@@ -15250,7 +15253,7 @@ h3 {
   width: 57.14285714285714%;
   margin: 0 0.5952380952380952%;
   *zoom: 1;
-  height: 240px;
+  height: 300px;
 }
 #wrapper .recommends-wrapper .recommends .recipe-main:after {
   clear: both;
@@ -15432,6 +15435,7 @@ h3 {
   font-size: 20px;
 }
 #wrapper .recommends-wrapper .recommends .recipe-main img {
+  top: 0px;
   height: 100%;
   width: auto;
 }
