@@ -20,7 +20,7 @@ public class CookCompleteCommand extends Command {
 		} else {
 			flashMessage.addMessage(model.getFlashMessage());
 			flashMessage.setMessageType(Type.WARNING);
-			redirect("/user/recipe/Detail?recipe_id=" + (String) request.getAttribute("recipe_id"));
+			redirect("/user/Index");
 		}
 	}
 }
