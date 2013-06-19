@@ -8,10 +8,10 @@ import com.astrider.sfc.app.model.BaseVo;
 public class LoginFormVo extends BaseVo {
     private static final long serialVersionUID = 3395655886710155573L;
     @Column(physic="email", logic="メールアドレス")
-    @Valid(isNotNull=true, isNotBlank=true, isEmail=true)
+    @Valid(isNotNull = true, isNotBlank = true, isMaxLength = true, maxLength = 128, isEmail = true)
     private String email;
     @Column(physic="password", logic="パスワード")
-    @Valid(isNotNull=true, isNotBlank=true)
+    @Valid(isNotNull = true, isNotBlank = true)
     private String password;
 
     public String getEmail() {

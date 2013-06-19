@@ -13,14 +13,20 @@ public class SearchCommand extends Command {
 	@Override
 	public void doGet() throws ServletException, IOException {
 		RecipeModel model = new RecipeModel();
-		model.searchRecipes(request);
+		boolean succeed = model.searchRecipes(request);
+		if (!succeed) {
+		    flashMessage.addMessage(model.getFlashMessage());
+		}
 		render();
 	}
 
 	@Override
 	public void doPost() throws ServletException, IOException {
 		RecipeModel model = new RecipeModel();
-		model.searchRecipes(request);
+		boolean succeed = model.searchRecipes(request);
+		if (!succeed) {
+		    flashMessage.addMessage(model.getFlashMessage());
+		}
 		render();
 	}
 }

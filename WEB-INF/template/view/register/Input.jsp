@@ -31,7 +31,7 @@
                 <label class="control-label" for="password-confirm">パスワード(確認用)</label>
                 <div class="controls">
                     <input type="password" class="input-middle" id="password-confirm" name="password-confirm" placeholder="password" required>
-                    <p class="help-block">半角英数字のみ、8文字以上</p>
+                    <p class="help-block">半角英数記号のみ8文字以上、全てを1回以上利用すること</p>
                 </div>
               </div>
               <div class="control-group">

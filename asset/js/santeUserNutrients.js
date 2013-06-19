@@ -34,7 +34,7 @@ if (!window.santeUserNutrients) santeUserNutrients = {};
 			santeUserNutrients.interface.showDate(weekAgo);
 
 			$.ajax({
-				url: "http://localhost:8080/sante/api/user/GetChartSource",
+				url: "/sante/api/user/GetChartSource",
 				data: "weekAgo=" + weekAgo,
 				async: true,
 				dataType: "json",

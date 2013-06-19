@@ -84,20 +84,17 @@ public final class SanteUtils {
 	 */
 	public static InsufficientNutrients getInsufficientNutrients(int userId) {
 		double[] balances = getNutrientBalances(userId, 0);
+		if (balances == null) {
+		      return getDefaultNutrients();
+		}
+
 		// 値が空ならば肉と野菜を返す
 		boolean allZero = true;
 		for (double item : balances) {
 			allZero = Double.isNaN(item) && allZero;
 		}
 		if (allZero) {
-			NutrientDao nutrientDao = new NutrientDao();
-			InsufficientNutrients nutrients = new InsufficientNutrients();
-			nutrients.setPrimaryKey(3);
-			nutrients.setSecondKey(5);
-			nutrients.setPrimaryNutrientName(nutrientDao.selectById(3).getLogicalName());
-			nutrients.setSecondaryNutrientName(nutrientDao.selectById(5).getLogicalName());
-			nutrientDao.close();
-			return nutrients;
+		    return getDefaultNutrients();
 		}
 
 		// 最も不足している栄養素2種を取得
@@ -135,6 +132,17 @@ public final class SanteUtils {
 		nutrients.setSecondaryNutrientName(secondaryNutrientName);
 
 		return nutrients;
+	}
+	
+	private static InsufficientNutrients getDefaultNutrients() {
+            NutrientDao nutrientDao = new NutrientDao();
+            InsufficientNutrients nutrients = new InsufficientNutrients();
+            nutrients.setPrimaryKey(3);
+            nutrients.setSecondKey(5);
+            nutrients.setPrimaryNutrientName(nutrientDao.selectById(3).getLogicalName());
+            nutrients.setSecondaryNutrientName(nutrientDao.selectById(5).getLogicalName());
+            nutrientDao.close();
+            return nutrients;
 	}
 
 	/**

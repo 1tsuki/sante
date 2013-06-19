@@ -57,7 +57,7 @@ public class TestDataManager {
     		testDataManager = new TestDataManager(
                     TestDataManager.getWebInfPath(),
                     "oracle.jdbc.driver.OracleDriver",
-                    "jdbc:oracle:thin:@192.168.150.132:1521:XE",
+                    "jdbc:oracle:thin:@localhost:1521:XE",
                     "sante",
                     "password",
                     "sante");

@@ -34,7 +34,12 @@ public class RecipeModel extends BaseModel {
 	 */
 	public boolean showDetail(HttpServletRequest request) {
 		// レシピID取得
-		int recipeId = Integer.parseInt(request.getParameter("recipe_id"));
+	        int recipeId = 0;
+	        try {
+	            recipeId = Integer.parseInt(request.getParameter("recipe_id"));
+	        } catch(NumberFormatException e) {
+	            recipeId = 0;
+	        }
 		if (recipeId == 0) {
 			flashMessage.addMessage("該当するレシピは存在しませんでした");
 			flashMessage.setMessageType(Type.WARNING);
@@ -88,7 +93,12 @@ public class RecipeModel extends BaseModel {
 			NutrientDao nutrientDao = new NutrientDao();
 			NutrientVo nutrient = nutrientDao.selectById(query.getNutrientId());
 			nutrientDao.close();
-			request.setAttribute("query", nutrient.getLogicalName() + "を使った");
+			if (nutrient == null) {
+			    flashMessage.addMessage("指定された食材分類は存在しません");
+			    flashMessage.setMessageType(Type.WARNING);
+			} else {
+			    request.setAttribute("query", nutrient.getLogicalName() + "を使った");
+			}
 		} else if (StringUtils.isNotEmpty(query.getMaterialName())) {
 			// 素材名検索
 			RecipeDao dao = new RecipeDao();

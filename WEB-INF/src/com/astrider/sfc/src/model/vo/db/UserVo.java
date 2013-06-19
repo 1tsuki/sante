@@ -16,7 +16,7 @@ public class UserVo extends BaseVo {
 	@Valid(isNotNull = true, isNotBlank = true, isMaxLength = true, maxLength = 8)
 	private int userId;
 	@Column(physic = "user_name", logic = "ユーザー名")
-	@Valid(isNotNull = true, isNotBlank = true, isMaxLength = true, maxLength = 64, isRegexp = true, regexp = "[0-9a-zA-Z]+")
+	@Valid(isNotNull = true, isNotBlank = true, isMaxLength = true, maxLength = 32, isRegexp = true, regexp = "^[0-9a-zA-Z]+$")
 	private String userName;
 	@Column(physic = "email", logic = "メールアドレス")
 	@Valid(isNotNull = true, isNotBlank = true, isMaxLength = true, maxLength = 128)

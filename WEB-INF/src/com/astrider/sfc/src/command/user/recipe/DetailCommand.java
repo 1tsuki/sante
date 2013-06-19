@@ -6,6 +6,7 @@ import javax.servlet.ServletException;
 
 import com.astrider.sfc.app.annotation.Title;
 import com.astrider.sfc.app.lib.Command;
+import com.astrider.sfc.app.lib.FlashMessage.Type;
 import com.astrider.sfc.src.model.RecipeModel;
 import com.astrider.sfc.src.model.UserModel;
 
@@ -17,7 +18,9 @@ public class DetailCommand extends Command {
 		boolean succeed = recipeModel.showDetail(request);
 		if (!succeed) {
 			flashMessage.addMessage(recipeModel.getFlashMessage());
-			redirect("/user/Index");
+			flashMessage.setMessageType(Type.WARNING);
+			redirect("/user/recipe/Search");
+			return;
 		}
 
 		UserModel userModel = new UserModel();

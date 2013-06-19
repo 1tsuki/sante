@@ -5,6 +5,7 @@ import javax.servlet.http.HttpSession;
 
 import com.astrider.sfc.app.lib.AuthUtils;
 import com.astrider.sfc.app.lib.Mapper;
+import com.astrider.sfc.app.lib.Validator;
 import com.astrider.sfc.app.model.BaseModel;
 import com.astrider.sfc.src.model.dao.UserDao;
 import com.astrider.sfc.src.model.vo.db.UserVo;
@@ -15,6 +16,11 @@ public class AuthModel extends BaseModel {
 		// 入力情報取得
 		Mapper<LoginFormVo> mapper = new Mapper<LoginFormVo>();
 		LoginFormVo loginForm = mapper.fromHttpRequest(request);
+		Validator<LoginFormVo> validator = new Validator<LoginFormVo>(loginForm);
+		if (!validator.valid()) {
+		    flashMessage.addMessage(validator.getFlashMessage());
+		    return false;
+		}
 		String password = loginForm.getPassword();
 
 		// emailに対応するuserVoを取得

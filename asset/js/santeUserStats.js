@@ -4,7 +4,7 @@ if(!window.santeUserStats) santeUserStats = {};
 	santeUserStats.interface = {
 		"exec": function() {
 			$.ajax({
-				url: "http://localhost:8080/sante/api/user/GetStats",
+				url: "/sante/api/user/GetStats",
 				async: true,
 				dataType: "json",
 				success: function(data) {
