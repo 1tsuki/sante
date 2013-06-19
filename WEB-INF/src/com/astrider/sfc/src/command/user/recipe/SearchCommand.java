@@ -15,7 +15,7 @@ public class SearchCommand extends Command {
 		RecipeModel model = new RecipeModel();
 		boolean succeed = model.searchRecipes(request);
 		if (!succeed) {
-		    flashMessage.addMessage(model.getFlashMessage());
+			flashMessage.addMessage(model.getFlashMessage());
 		}
 		render();
 	}
@@ -25,7 +25,7 @@ public class SearchCommand extends Command {
 		RecipeModel model = new RecipeModel();
 		boolean succeed = model.searchRecipes(request);
 		if (!succeed) {
-		    flashMessage.addMessage(model.getFlashMessage());
+			flashMessage.addMessage(model.getFlashMessage());
 		}
 		render();
 	}

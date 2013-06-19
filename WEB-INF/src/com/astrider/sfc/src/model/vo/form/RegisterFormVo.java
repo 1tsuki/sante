@@ -8,16 +8,16 @@ public class RegisterFormVo extends BaseVo {
 	private static final long serialVersionUID = -7366649426401452317L;
 
 	@Column(physic = "username", logic = "ユーザー名")
-	@Valid(isNotNull = true, isNotBlank = true, isMaxLength = true, maxLength = 32, isRegexp=true, regexp="^[a-zA-Z0-9]+$")
+	@Valid(isNotNull = true, isNotBlank = true, isMaxLength = true, maxLength = 32, isRegexp = true, regexp = "^[a-zA-Z0-9]+$")
 	private String userName;
 	@Column(physic = "email", logic = "メールアドレス")
 	@Valid(isNotNull = true, isNotBlank = true, isMaxLength = true, maxLength = 128, isEmail = true)
 	private String email;
 	@Column(physic = "password", logic = "パスワード")
-	@Valid(isNotNull = true, isNotBlank = true, isMinLength = true, isRegexp = true, minLength = 8, regexp="^(?=.*[0-9])(?=.*[a-zA-Z])(?=.*\\p{Punct})(?=\\S+$).{8,}$")
+	@Valid(isNotNull = true, isNotBlank = true, isMinLength = true, isRegexp = true, minLength = 8, regexp = "^(?=.*[0-9])(?=.*[a-zA-Z])(?=.*\\p{Punct})(?=\\S+$).{8,}$")
 	private String password;
 	@Column(physic = "password-confirm", logic = "パスワード(確認用)")
-	@Valid(isNotNull = true, isNotBlank = true, isMinLength = true, isRegexp = true, minLength = 8, regexp="^(?=.*[0-9])(?=.*[a-zA-Z])(?=.*\\p{Punct})(?=\\S+$).{8,}$")
+	@Valid(isNotNull = true, isNotBlank = true, isMinLength = true, isRegexp = true, minLength = 8, regexp = "^(?=.*[0-9])(?=.*[a-zA-Z])(?=.*\\p{Punct})(?=\\S+$).{8,}$")
 	private String passwordConfirm;
 	@Column(physic = "male", logic = "性別")
 	private boolean male;

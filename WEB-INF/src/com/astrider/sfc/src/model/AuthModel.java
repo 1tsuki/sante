@@ -18,8 +18,8 @@ public class AuthModel extends BaseModel {
 		LoginFormVo loginForm = mapper.fromHttpRequest(request);
 		Validator<LoginFormVo> validator = new Validator<LoginFormVo>(loginForm);
 		if (!validator.valid()) {
-		    flashMessage.addMessage(validator.getFlashMessage());
-		    return false;
+			flashMessage.addMessage(validator.getFlashMessage());
+			return false;
 		}
 		String password = loginForm.getPassword();
 
