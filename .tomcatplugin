@@ -5,7 +5,7 @@
     <reloadable>true</reloadable>
     <redirectLogger>false</redirectLogger>
     <updateXml>true</updateXml>
-    <warLocation></warLocation>
+    <warLocation>D:\Users\01002552\Desktop\sante.war</warLocation>
     <extraInfo></extraInfo>
     <webPath>sante</webPath>
 </tomcatProjectProperties>
