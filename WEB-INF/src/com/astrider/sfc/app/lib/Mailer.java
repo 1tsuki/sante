@@ -13,6 +13,8 @@ import javax.mail.internet.MimeMessage;
 import javax.mail.internet.MimeMultipart;
 import javax.mail.internet.MimeUtility;
 
+import static com.astrider.sfc.ApplicationContext.*;
+
 /**
  * メール送信用ヘルパークラス.
  * 
@@ -85,9 +87,6 @@ public class Mailer {
 	}
 
 	private Mail mail;
-	private static final String FROM = "noreply@sante.com";
-	private static final String MAIL_HOST = "localhost";
-	private static final String MAIL_PORT = "25";
 
 	/**
 	 * 標準送信元アドレスを利用するコンストラクタ.
@@ -97,7 +96,7 @@ public class Mailer {
 	 * @param 本文
 	 */
 	public Mailer(String to, String subject, String body) {
-		mail = new Mail(FROM, to, subject, body);
+		mail = new Mail(MAIL_FROM, to, subject, body);
 	}
 
 	/**
@@ -147,7 +146,7 @@ public class Mailer {
 		toList[0] = new InternetAddress(mail.getTo());
 
 		msg.setRecipients(Message.RecipientType.TO, toList);
-		msg.setFrom(new InternetAddress(FROM));
+		msg.setFrom(new InternetAddress(MAIL_FROM));
 		msg.setSubject(encode(mail.getSubject()));
 
 		MimeMultipart multipart = new MimeMultipart();

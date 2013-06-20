@@ -4,12 +4,12 @@ import java.util.ArrayList;
 
 import javax.servlet.http.HttpServletRequest;
 
-import com.astrider.sfc.app.lib.AuthUtils;
+import com.astrider.sfc.app.lib.BaseModel;
 import com.astrider.sfc.app.lib.Mailer;
 import com.astrider.sfc.app.lib.Mapper;
 import com.astrider.sfc.app.lib.Validator;
 import com.astrider.sfc.app.lib.FlashMessage.Type;
-import com.astrider.sfc.app.model.BaseModel;
+import com.astrider.sfc.app.lib.util.AuthUtils;
 import com.astrider.sfc.src.helper.SanteUtils;
 import com.astrider.sfc.src.helper.SanteUtils.InsufficientNutrients;
 import com.astrider.sfc.src.model.dao.UserDao;
@@ -51,14 +51,12 @@ public class UserModel extends BaseModel {
 		Validator<ChangePasswordFormVo> validator = new Validator<ChangePasswordFormVo>(form);
 		if (!validator.valid()) {
 			flashMessage.addMessage(validator.getFlashMessage());
-			flashMessage.setMessageType(Type.WARNING);
 			return false;
 		}
 		
 		// 入力パスワード不一致
 		if (!form.getNewPassword().equals(form.getNewPasswordConfirm())) {
 			flashMessage.addMessage("新しいパスワードが一致しませんでした");
-			flashMessage.setMessageType(Type.WARNING);
 			return false;
 		}
 
@@ -66,14 +64,12 @@ public class UserModel extends BaseModel {
 		UserVo loginUser = SanteUtils.getLoginUser(request);
 		if (loginUser == null) {
 			flashMessage.addMessage("不正なアクセス");
-			flashMessage.setMessageType(Type.WARNING);
 			return false;
 		}
 
 		// 認証パスワード不一致
 		if (!AuthUtils.verify(form.getCurrentPassword(), loginUser.getAuthToken())) {
 			flashMessage.addMessage("入力されたパスワードが間違っています");
-			flashMessage.setMessageType(Type.WARNING);
 			return false;
 		}
 
@@ -92,7 +88,6 @@ public class UserModel extends BaseModel {
 		Mailer mailer = new Mailer(loginUser.getEmail(), subject, body);
 		if (!mailer.send()) {
 			flashMessage.addMessage("メールの送信に失敗しました");
-			flashMessage.setMessageType(Type.WARNING);
 			userDao.close();
 			return false;
 		}

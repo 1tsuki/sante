@@ -14,25 +14,25 @@ import javax.servlet.http.HttpSession;
 
 import com.astrider.sfc.app.lib.FlashMessage;
 import com.astrider.sfc.src.model.vo.db.UserVo;
+import static com.astrider.sfc.ApplicationContext.*;
 
 /**
  * @author Itsuki Sakitsu /User以下接続時にログイン済みか否かを確認する
  */
 public class LoginFilter implements Filter {
-	private static final String UNKNOWN_PATH = "/Unknown";
-
 	@Override
 	public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws IOException,
 			ServletException {
 		try {
 			HttpSession session = ((HttpServletRequest) request).getSession();
 
-			UserVo user = (UserVo) session.getAttribute("loginUser");
+			UserVo user = (UserVo) session.getAttribute(SESSION_USER);
 			if (user == null) {
 				FlashMessage flashMessage = new FlashMessage();
 				flashMessage.addMessage("指定されたURLに接続するにはログインが必要です");
-				session.setAttribute("flashMessage", flashMessage);
-				String target = ((HttpServletRequest) request).getContextPath() + UNKNOWN_PATH;
+				session.setAttribute(SESSION_FLASH_MESSAGE, flashMessage);
+
+				String target = ((HttpServletRequest) request).getContextPath() + PAGE_UNKNOWN;
 				((HttpServletResponse) response).sendRedirect(target);
 			} else {
 				chain.doFilter(request, response);

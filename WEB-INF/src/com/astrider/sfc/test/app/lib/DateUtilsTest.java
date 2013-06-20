@@ -6,7 +6,7 @@ import java.util.Calendar;
 
 import org.junit.Test;
 
-import com.astrider.sfc.app.lib.DateUtils;
+import com.astrider.sfc.app.lib.util.DateUtils;
 
 public class DateUtilsTest {
 

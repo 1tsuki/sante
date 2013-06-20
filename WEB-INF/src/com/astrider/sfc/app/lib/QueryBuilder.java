@@ -8,7 +8,6 @@ import java.util.HashMap;
 
 import com.astrider.sfc.app.annotation.Column;
 import com.astrider.sfc.app.annotation.Table;
-import com.astrider.sfc.app.model.BaseVo;
 
 /**
  * QueryBuilder.

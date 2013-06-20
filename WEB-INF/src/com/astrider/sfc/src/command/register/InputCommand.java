@@ -9,6 +9,7 @@ import com.astrider.sfc.app.lib.Command;
 
 @Title("新規登録")
 public class InputCommand extends Command {
+
 	@Override
 	public void doGet() throws ServletException, IOException {
 		render();

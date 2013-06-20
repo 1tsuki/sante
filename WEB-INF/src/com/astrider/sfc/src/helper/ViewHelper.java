@@ -7,8 +7,9 @@ import javax.servlet.http.HttpSession;
 import javax.servlet.jsp.PageContext;
 
 import com.astrider.sfc.app.lib.FlashMessage;
-import com.astrider.sfc.app.lib.StringUtils;
+import com.astrider.sfc.app.lib.util.StringUtils;
 import com.astrider.sfc.src.model.vo.db.UserVo;
+import static com.astrider.sfc.ApplicationContext.*;
 
 /**
  * ViewHelper.
@@ -36,7 +37,7 @@ public class ViewHelper {
 	 * @return ログイン成否
 	 */
 	public boolean isLoggedIn() {
-		UserVo user = (UserVo) session.getAttribute("loginUser");
+		UserVo user = (UserVo) session.getAttribute(SESSION_USER);
 		return user != null;
 	}
 
@@ -60,8 +61,8 @@ public class ViewHelper {
 	 */
 	public void getCssPath() {
 		StringBuilder sb = new StringBuilder();
-		sb.append("/asset/css");
-		String replaced = request.getServletPath().replace("/WEB-INF/template/view", "").replace(".jsp", "");
+		sb.append(CSS_BASEPATH);
+		String replaced = request.getServletPath().replace(VIEW_BASEPATH, "").replace(".jsp", "");
 		String[] splitted = replaced.split("/");
 		for (int i = 0; i < splitted.length; i++) {
 			String item = splitted[i].toLowerCase();
@@ -81,7 +82,7 @@ public class ViewHelper {
 	public void getTitle() {
 		StringBuilder sb = new StringBuilder();
 		sb.append(context.getServletContext().getServletContextName());
-		String pageTitle = (String) request.getAttribute("pageTitle");
+		String pageTitle = (String) request.getAttribute(SESSION_PAGE_TITLE);
 		if (StringUtils.isNotEmpty(pageTitle)) {
 			sb.append(" | ");
 			sb.append(pageTitle);
@@ -95,8 +96,8 @@ public class ViewHelper {
 	 * /indexの場合のみ背景画像を表示.
 	 */
 	public void showBackgroundImage() {
-		String replaced = request.getServletPath().replace("/WEB-INF/template/view/", "").replace(".jsp", "");
-		if (replaced.equals("Index")) {
+		String replaced = request.getServletPath().replace(VIEW_BASEPATH, "").replace(".jsp", "");
+		if (replaced.equals(PAGE_INDEX)) {
 			print("<img alt=\"背景画像\" src=");
 			getPath("/asset/img/topimage.jpg");
 			print(" class=\"background-image\">");
@@ -107,7 +108,9 @@ public class ViewHelper {
 	 * FlashMessageとして表示.
 	 */
 	public void getFlashMessages() {
-		FlashMessage flashMessage = (FlashMessage) session.getAttribute("flashMessage");
+		FlashMessage flashMessage = (FlashMessage) session.getAttribute(SESSION_FLASH_MESSAGE);
+		session.removeAttribute(SESSION_FLASH_MESSAGE);
+
 		if (flashMessage != null && flashMessage.hasMessage()) {
 			print("<div id='flash-messages' class='" + flashMessage.getMessageType().toString().toLowerCase() + "'>");
 			print("<ul>");
@@ -117,7 +120,6 @@ public class ViewHelper {
 			print("</ul>");
 			print("<a href='#' onClick='$(\"#flash-messages\").hide()'>x</a>");
 			print("</div>");
-			session.removeAttribute("flashMessage");
 		}
 	}
 

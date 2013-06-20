@@ -5,13 +5,14 @@ import java.util.ArrayList;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
-import com.astrider.sfc.app.lib.MathUtils;
+import com.astrider.sfc.app.lib.util.MathUtils;
 import com.astrider.sfc.src.model.dao.NutrientDao;
 import com.astrider.sfc.src.model.dao.RecipeDao;
 import com.astrider.sfc.src.model.dao.WeeklyLogDao;
 import com.astrider.sfc.src.model.vo.db.RecipeVo;
 import com.astrider.sfc.src.model.vo.db.UserVo;
 import com.astrider.sfc.src.model.vo.db.WeeklyLogVo;
+import static com.astrider.sfc.ApplicationContext.*;
 
 /**
  * 汎用ヘルパークラス.
@@ -20,8 +21,6 @@ import com.astrider.sfc.src.model.vo.db.WeeklyLogVo;
  * 
  */
 public final class SanteUtils {
-	private static final int NUT_COUNT = 11;
-
 	/**
 	 * @author astrider
 	 *         <p>
@@ -69,7 +68,7 @@ public final class SanteUtils {
 
 	public static UserVo getLoginUser(HttpServletRequest request) {
 		HttpSession session = request.getSession();
-		UserVo user = (UserVo) session.getAttribute("loginUser");
+		UserVo user = (UserVo) session.getAttribute(SESSION_USER);
 		return user;
 	}
 
@@ -165,7 +164,7 @@ public final class SanteUtils {
 		double ingestedAverage = MathUtils.getAverage(ingested);
 		double desiredAverage = MathUtils.getAverage(desired);
 		double coefficient = ingestedAverage / desiredAverage;
-		for (int i = 0; i < NUT_COUNT; i++) {
+		for (int i = 0; i < SANTE_NUTRIENT_COUNT; i++) {
 			// 丸め処理
 			int limit = (int) (desired[i] * coefficient);
 			if (limit < ingested[i]) {
@@ -176,8 +175,8 @@ public final class SanteUtils {
 		// 栄養バランスを再計算
 		ingestedAverage = MathUtils.getAverage(ingested);
 		desiredAverage = MathUtils.getAverage(desired);
-		double[] items = new double[NUT_COUNT];
-		for (int j = 0; j < NUT_COUNT; j++) {
+		double[] items = new double[SANTE_NUTRIENT_COUNT];
+		for (int j = 0; j < SANTE_NUTRIENT_COUNT; j++) {
 			double desiredDiff = (desired[j] - desiredAverage) / desiredAverage;
 			double ingestedDiff = (ingested[j] - ingestedAverage) / ingestedAverage;
 			double diff = (ingestedDiff - desiredDiff) / 2 + 0.5;
@@ -211,7 +210,7 @@ public final class SanteUtils {
 	 * @return 栄養素別目標摂取量
 	 */
 	public static int[] getDesiredNutrients() {
-		int[] desired = new int[NUT_COUNT];
+		int[] desired = new int[SANTE_NUTRIENT_COUNT];
 		NutrientDao nutrientDao = new NutrientDao();
 		for (int i = 1; i < desired.length; i++) {
 			desired[i] = nutrientDao.selectById(i + 1).getDailyRequiredAmount();

@@ -7,8 +7,8 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.HashMap;
 
+import com.astrider.sfc.app.lib.BaseDao;
 import com.astrider.sfc.app.lib.Mapper;
-import com.astrider.sfc.app.model.BaseDao;
 import com.astrider.sfc.src.model.vo.db.MaterialQuantityVo;
 import com.astrider.sfc.src.model.vo.db.RecipeVo;
 import com.astrider.sfc.src.model.vo.db.StepVo;

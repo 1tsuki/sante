@@ -9,7 +9,7 @@ import java.sql.ResultSet;
 import javax.servlet.http.HttpServletRequest;
 
 import com.astrider.sfc.app.annotation.Column;
-import com.astrider.sfc.app.model.BaseVo;
+import com.astrider.sfc.app.lib.util.StringUtils;
 
 /**
  * O/R Mapper.

@@ -9,8 +9,8 @@ import java.util.ArrayList;
 
 import javax.servlet.http.HttpServletRequest;
 
+import com.astrider.sfc.app.lib.BaseModel;
 import com.astrider.sfc.app.lib.Mailer;
-import com.astrider.sfc.app.model.BaseModel;
 import com.astrider.sfc.src.helper.SanteUtils;
 import com.astrider.sfc.src.helper.SanteUtils.InsufficientNutrients;
 import com.astrider.sfc.src.model.dao.CookLogDao;
@@ -26,6 +26,7 @@ import com.astrider.sfc.src.model.vo.db.RecipeNutAmountsVo;
 import com.astrider.sfc.src.model.vo.db.RecipeVo;
 import com.astrider.sfc.src.model.vo.db.UserStatsVo;
 import com.astrider.sfc.src.model.vo.db.UserVo;
+import static com.astrider.sfc.ApplicationContext.*;
 
 /**
  * 内部ツール関連Model
@@ -146,7 +147,7 @@ public class InternalModel extends BaseModel {
 		MaterialDao materialDao = null;
 		try {
 			materialDao = new MaterialDao();
-			File csv = new File("/Users/astrider/Documents/workspace/recruit/sante/WEB-INF/test-data/materials.csv");
+			File csv = new File(SANTE_MATERIALS_CSV);
 			BufferedReader br = new BufferedReader(new FileReader(csv));
 			String line = "";
 			int recipeId = -1;
@@ -221,7 +222,7 @@ public class InternalModel extends BaseModel {
 					sb.append("https://");
 					sb.append(request.getServerName());
 					sb.append(request.getContextPath());
-					sb.append("/user/recipe/Detail?recipe_id=");
+					sb.append(PAGE_USER_RECIPE_DETAIL + "?recipe_id=");
 					sb.append(recipe.getRecipeId());
 					sb.append("\n");
 				}
@@ -229,7 +230,7 @@ public class InternalModel extends BaseModel {
 				sb.append("https://");
 				sb.append(request.getServerName());
 				sb.append(request.getContextPath());
-				sb.append("/use/recipe/Search\n\n");
+				sb.append(PAGE_USER_RECIPE_SEARCH + "\n\n");
 				sb.append("----------\n");
 				sb.append("sante運営事務局");
 				String title = "【sante】本日のおすすめレシピ";

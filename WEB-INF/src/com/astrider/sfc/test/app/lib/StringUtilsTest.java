@@ -4,7 +4,7 @@ import static org.junit.Assert.*;
 
 import org.junit.Test;
 
-import com.astrider.sfc.app.lib.StringUtils;
+import com.astrider.sfc.app.lib.util.StringUtils;
 
 public class StringUtilsTest {
 

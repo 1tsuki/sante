@@ -9,6 +9,7 @@ import com.astrider.sfc.app.lib.Command;
 
 @Title("日別食事ログ")
 public class DailyCommand extends Command {
+
 	@Override
 	public void doGet() throws ServletException, IOException {
 	}

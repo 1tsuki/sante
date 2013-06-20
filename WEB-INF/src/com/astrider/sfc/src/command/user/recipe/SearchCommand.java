@@ -10,23 +10,22 @@ import com.astrider.sfc.src.model.RecipeModel;
 
 @Title("レシピ検索")
 public class SearchCommand extends Command {
+
 	@Override
 	public void doGet() throws ServletException, IOException {
 		RecipeModel model = new RecipeModel();
-		boolean succeed = model.searchRecipes(request);
-		if (!succeed) {
-			flashMessage.addMessage(model.getFlashMessage());
-		}
+		model.searchRecipes(request);
+		flashMessage.addMessage(model.getFlashMessage());
+
 		render();
 	}
 
 	@Override
 	public void doPost() throws ServletException, IOException {
 		RecipeModel model = new RecipeModel();
-		boolean succeed = model.searchRecipes(request);
-		if (!succeed) {
-			flashMessage.addMessage(model.getFlashMessage());
-		}
+		model.searchRecipes(request);
+		flashMessage.addMessage(model.getFlashMessage());
+
 		render();
 	}
 }

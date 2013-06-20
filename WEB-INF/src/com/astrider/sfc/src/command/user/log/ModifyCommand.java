@@ -9,6 +9,7 @@ import com.astrider.sfc.app.lib.Command;
 
 @Title("食事ログ編集")
 public class ModifyCommand extends Command {
+
 	@Override
 	public void doGet() throws ServletException, IOException {
 	}

@@ -3,7 +3,7 @@
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
 <%@ page import="java.util.*"%>
-<%@ page import="com.astrider.sfc.app.lib.StringUtils"%>
+<%@ page import="com.astrider.sfc.app.lib.util.StringUtils"%>
 <%@ page import="com.astrider.sfc.src.model.vo.db.*"%>
 <%@ page import="com.astrider.sfc.src.model.vo.form.*"%>
 <%@ page import="com.astrider.sfc.src.helper.ViewHelper"%>

@@ -1,9 +1,10 @@
 package com.astrider.sfc.src.helper;
 
-import com.astrider.sfc.app.lib.MathUtils;
+import com.astrider.sfc.app.lib.util.MathUtils;
 import com.astrider.sfc.src.model.dao.WeeklyLogDao;
 import com.astrider.sfc.src.model.vo.db.MealLogVo;
 import com.astrider.sfc.src.model.vo.db.WeeklyLogVo;
+import static com.astrider.sfc.ApplicationContext.*;
 
 /**
  * 週間ログ周辺のUtil集.
@@ -11,8 +12,6 @@ import com.astrider.sfc.src.model.vo.db.WeeklyLogVo;
  * @author astrider
  */
 public final class WeeklyLogUtils {
-	private static final int NUT_COUNT = 11;
-
 	/**
 	 * @param userId
 	 * @return 最新のWeeklyLogVo
@@ -67,7 +66,7 @@ public final class WeeklyLogUtils {
 		}
 
 		// 差の二乗検定
-		double[] diffs = new double[NUT_COUNT];
+		double[] diffs = new double[SANTE_NUTRIENT_COUNT];
 		for (int j = 0; j < ingested.length; j++) {
 			diffs[j] = 0;
 			if (desired[j] != 0) {

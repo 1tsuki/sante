@@ -5,7 +5,7 @@ import java.sql.Date;
 import com.astrider.sfc.app.annotation.Column;
 import com.astrider.sfc.app.annotation.Table;
 import com.astrider.sfc.app.annotation.Valid;
-import com.astrider.sfc.app.model.BaseVo;
+import com.astrider.sfc.app.lib.BaseVo;
 import com.astrider.sfc.src.model.vo.form.RegisterFormVo;
 
 @Table("users")

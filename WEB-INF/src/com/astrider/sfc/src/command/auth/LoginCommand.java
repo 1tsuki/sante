@@ -5,20 +5,22 @@ import java.io.IOException;
 import javax.servlet.ServletException;
 
 import com.astrider.sfc.app.lib.Command;
-import com.astrider.sfc.app.lib.FlashMessage.Type;
 import com.astrider.sfc.src.model.AuthModel;
 
+import static com.astrider.sfc.ApplicationContext.*;
+
 public class LoginCommand extends Command {
+
 	@Override
 	public void doPost() throws ServletException, IOException {
-		AuthModel model = new AuthModel();
-		boolean succeed = model.authLogin(request);
+		AuthModel authModel = new AuthModel();
+		boolean succeed = authModel.authLogin(request);
+		flashMessage.addMessage(authModel.getFlashMessage());
+
 		if (succeed) {
-			redirect("/user/Index");
+			redirect(PAGE_USER_INDEX);
 		} else {
-			flashMessage.addMessage(model.getFlashMessage());
-			flashMessage.setMessageType(Type.WARNING);
-			redirect("/Index");
+			redirect(PAGE_INDEX);
 		}
 	}
 }

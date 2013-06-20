@@ -47,6 +47,10 @@
 	               src="<% v.getPath(recipe.getImageUrl()); %>"></div>
 	            <div class="recipe-name-wrapper"><span class="recipe-name"><c:out value="${recipe.recipeName}"/></span></div>
 	            <div class="recipe-info-wrapper">
+                  <div class="recipe-esttime-wrapper">
+                    <span class="recipe-esttime-label">調理時間</span>
+                    <span class="recipe-esttime"><c:out value="${recipe.estimatedTime}" />分</span>
+                  </div>
 	              <div class="recipe-materials-wrapper">
 	                <span class="recipe-materials-label">材料一覧</span>
 	                <span class="recipe-materials">
@@ -55,10 +59,6 @@
 	                       <c:if test="${not status.last}">,</c:if>
 	                   </c:forEach>
 	                </span>
-	              </div>
-	              <div class="recipe-esttime-wrapper">
-	                <span class="recipe-esttime-label">調理時間</span>
-	                <span class="recipe-esttime"><c:out value="${recipe.estimatedTime}" />分</span>
 	              </div>
 	            </div>
 	          </a>

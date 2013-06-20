@@ -5,10 +5,9 @@ import java.util.HashMap;
 
 import javax.servlet.http.HttpServletRequest;
 
+import com.astrider.sfc.app.lib.BaseModel;
 import com.astrider.sfc.app.lib.Mapper;
-import com.astrider.sfc.app.lib.StringUtils;
-import com.astrider.sfc.app.lib.FlashMessage.Type;
-import com.astrider.sfc.app.model.BaseModel;
+import com.astrider.sfc.app.lib.util.StringUtils;
 import com.astrider.sfc.src.helper.SanteUtils;
 import com.astrider.sfc.src.model.dao.NutrientDao;
 import com.astrider.sfc.src.model.dao.RecipeDao;
@@ -43,7 +42,6 @@ public class RecipeModel extends BaseModel {
 		}
 		if (recipeId == 0) {
 			flashMessage.addMessage("該当するレシピは存在しませんでした");
-			flashMessage.setMessageType(Type.WARNING);
 			return false;
 		}
 
@@ -52,7 +50,6 @@ public class RecipeModel extends BaseModel {
 		RecipeVo recipe = recipeDao.selectByRecipeId(recipeId);
 		if (recipe == null) {
 			flashMessage.addMessage("該当するレシピは存在しませんでした");
-			flashMessage.setMessageType(Type.WARNING);
 			return false;
 		}
 
@@ -99,7 +96,6 @@ public class RecipeModel extends BaseModel {
 			nutrientDao.close();
 			if (nutrient == null) {
 				flashMessage.addMessage("指定された食材分類は存在しません");
-				flashMessage.setMessageType(Type.WARNING);
 			} else {
 				request.setAttribute("query", nutrient.getLogicalName() + "を使った");
 			}

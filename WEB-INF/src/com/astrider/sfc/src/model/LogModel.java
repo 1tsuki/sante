@@ -2,10 +2,10 @@ package com.astrider.sfc.src.model;
 
 import javax.servlet.http.HttpServletRequest;
 
+import com.astrider.sfc.app.lib.BaseModel;
 import com.astrider.sfc.app.lib.Mapper;
 import com.astrider.sfc.app.lib.Validator;
 import com.astrider.sfc.app.lib.FlashMessage.Type;
-import com.astrider.sfc.app.model.BaseModel;
 import com.astrider.sfc.src.helper.SanteUtils;
 import com.astrider.sfc.src.helper.WeeklyLogUtils;
 import com.astrider.sfc.src.model.dao.CookLogDao;
@@ -38,7 +38,6 @@ public class LogModel extends BaseModel {
 		UserVo user = SanteUtils.getLoginUser(request);
 		if (user == null) {
 			flashMessage.addMessage("ログインユーザーが確認できませんでした");
-			flashMessage.setMessageType(Type.WARNING);
 			return false;
 		}
 
@@ -58,7 +57,6 @@ public class LogModel extends BaseModel {
 		CookLogDao cookLogDao = new CookLogDao();
 		if (!cookLogDao.insert(cookLog)) {
 			flashMessage.addMessage("調理履歴の登録に失敗しました");
-			flashMessage.setMessageType(Type.WARNING);
 			return false;
 		}
 
@@ -79,7 +77,6 @@ public class LogModel extends BaseModel {
 		boolean succeed = mealNutAmountsDao.insertFromRecipeNutAmounts(user.getUserId(), cookLog.getRecipeId());
 		if (!succeed) {
 			flashMessage.addMessage("食事別栄養素の挿入に失敗しました");
-			flashMessage.setMessageType(Type.WARNING);
 			return false;
 		}
 		MealLogVo mealNutAmounts = mealNutAmountsDao.selectNewestByUserId(user.getUserId());
@@ -95,6 +92,8 @@ public class LogModel extends BaseModel {
 		userStatsDao.update(userStats);
 		userStatsDao.close();
 
+		flashMessage.addMessage("調理完了おめでとうございます！");
+		flashMessage.setMessageType(Type.INFO);
 		return true;
 	}
 

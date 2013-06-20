@@ -10,6 +10,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import static com.astrider.sfc.ApplicationContext.*;
 
 /**
  * Command.
@@ -21,7 +22,6 @@ import javax.servlet.http.HttpSession;
  *         </p>
  */
 public abstract class Command {
-	protected static final String VIEW_BASEPATH = "/WEB-INF/template/view";
 	protected HttpServletRequest request;
 	protected HttpServletResponse response;
 	protected ServletContext context;
@@ -133,9 +133,10 @@ public abstract class Command {
 		flashMessage = new FlashMessage();
 
 		HttpSession session = request.getSession();
-		FlashMessage passedMessages = (FlashMessage) session.getAttribute("flashMessage");
+		FlashMessage passedMessages = (FlashMessage) session.getAttribute(SESSION_FLASH_MESSAGE);
 		if (passedMessages != null) {
 			flashMessage.addMessage(passedMessages);
+			flashMessage.setMessageType(passedMessages.getMessageType());
 		}
 	}
 
@@ -144,6 +145,6 @@ public abstract class Command {
 	 */
 	private void registerFlashMessage() throws IOException {
 		HttpSession session = request.getSession();
-		session.setAttribute("flashMessage", flashMessage);
+		session.setAttribute(SESSION_FLASH_MESSAGE, flashMessage);
 	}
 }

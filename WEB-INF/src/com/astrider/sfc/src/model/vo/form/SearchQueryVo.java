@@ -1,7 +1,7 @@
 package com.astrider.sfc.src.model.vo.form;
 
 import com.astrider.sfc.app.annotation.Column;
-import com.astrider.sfc.app.model.BaseVo;
+import com.astrider.sfc.app.lib.BaseVo;
 
 public class SearchQueryVo extends BaseVo {
 	private static final long serialVersionUID = 5770282629300515850L;

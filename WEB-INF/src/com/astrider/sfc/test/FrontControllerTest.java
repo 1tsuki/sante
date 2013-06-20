@@ -14,8 +14,8 @@ import javax.servlet.http.HttpSession;
 
 import org.junit.Test;
 
-import com.astrider.sfc.FrontController;
 import com.astrider.sfc.app.lib.Command;
+import com.astrider.sfc.app.lib.FrontController;
 import com.astrider.sfc.src.command.IndexCommand;
 
 public class FrontControllerTest {

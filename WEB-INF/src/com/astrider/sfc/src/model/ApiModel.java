@@ -4,7 +4,7 @@ import java.util.ArrayList;
 
 import javax.servlet.http.HttpServletRequest;
 
-import com.astrider.sfc.app.model.BaseModel;
+import com.astrider.sfc.app.lib.BaseModel;
 import com.astrider.sfc.src.helper.SanteUtils;
 import com.astrider.sfc.src.helper.WeeklyLogUtils;
 import com.astrider.sfc.src.model.dao.NutrientDao;

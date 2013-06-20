@@ -6393,13 +6393,13 @@ h2 {
   box-sizing: border-box;
   display: inline;
   float: left;
-  width: 23.809523809523807%;
+  width: 32.142857142857146%;
   margin: 0 0.5952380952380952%;
   *zoom: 1;
   border-radius: 8px;
   -webkit-border-radius: 8px;
   -moz-border-radius: 8px;
-  height: 150px;
+  height: 200px;
   background-color: #e5e5e5;
   margin-bottom: 10px;
 }
@@ -6591,7 +6591,7 @@ h2 {
   -webkit-border-radius: 8px;
   -moz-border-radius: 8px;
   display: block;
-  line-height: 150px;
+  line-height: 200px;
   text-decoration: none;
   color: white;
   background-color: #f3a01b;

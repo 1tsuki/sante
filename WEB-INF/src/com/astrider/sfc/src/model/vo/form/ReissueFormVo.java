@@ -2,7 +2,7 @@ package com.astrider.sfc.src.model.vo.form;
 
 import com.astrider.sfc.app.annotation.Column;
 import com.astrider.sfc.app.annotation.Valid;
-import com.astrider.sfc.app.model.BaseVo;
+import com.astrider.sfc.app.lib.BaseVo;
 
 public class ReissueFormVo extends BaseVo {
 	private static final long serialVersionUID = -4783791931695707781L;

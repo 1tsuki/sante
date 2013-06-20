@@ -3,7 +3,7 @@ package com.astrider.sfc.test.src.model.vo;
 
 import com.astrider.sfc.app.annotation.Column;
 import com.astrider.sfc.app.annotation.Valid;
-import com.astrider.sfc.app.model.BaseVo;
+import com.astrider.sfc.app.lib.BaseVo;
 
 public class TestVo extends BaseVo {
     private static final long serialVersionUID = -9085422334962612284L;

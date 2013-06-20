@@ -7,7 +7,7 @@ import java.util.regex.Pattern;
 
 import org.junit.Test;
 
-import com.astrider.sfc.app.lib.AuthUtils;
+import com.astrider.sfc.app.lib.util.AuthUtils;
 
 public class AuthUtilsTest {
 	@Test

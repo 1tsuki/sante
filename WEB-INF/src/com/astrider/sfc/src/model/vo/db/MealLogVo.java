@@ -4,7 +4,7 @@ import java.sql.Date;
 
 import com.astrider.sfc.app.annotation.Column;
 import com.astrider.sfc.app.annotation.Table;
-import com.astrider.sfc.app.model.BaseVo;
+import com.astrider.sfc.app.lib.BaseVo;
 
 @Table("meal_nut_amounts")
 public class MealLogVo extends BaseVo {

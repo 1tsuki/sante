@@ -17,9 +17,8 @@ public class FlashMessage implements Serializable {
 	public enum Type {
 		INFO, WARNING;
 	}
-
 	private ArrayList<String> flashMessages = new ArrayList<String>();
-	private Type messageType = Type.INFO;
+	private Type messageType = Type.WARNING;
 
 	public FlashMessage() {
 	}
@@ -39,9 +38,11 @@ public class FlashMessage implements Serializable {
 	}
 
 	public void addMessage(FlashMessage addingObj) {
-		setMessageType(addingObj.getMessageType());
-		ArrayList<String> messages = addingObj.getMessages();
-		addMessage(messages);
+		if (0 < addingObj.size()) {
+			setMessageType(addingObj.getMessageType());
+			ArrayList<String> messages = addingObj.getMessages();
+			addMessage(messages);
+		}
 	}
 
 	public ArrayList<String> getMessages() {

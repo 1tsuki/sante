@@ -6,18 +6,20 @@ import java.net.URLEncoder;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
-import com.astrider.sfc.app.lib.AuthUtils;
+import com.astrider.sfc.app.lib.BaseModel;
 import com.astrider.sfc.app.lib.Mailer;
 import com.astrider.sfc.app.lib.Mapper;
-import com.astrider.sfc.app.lib.StringUtils;
 import com.astrider.sfc.app.lib.Validator;
-import com.astrider.sfc.app.model.BaseModel;
+import com.astrider.sfc.app.lib.FlashMessage.Type;
+import com.astrider.sfc.app.lib.util.AuthUtils;
+import com.astrider.sfc.app.lib.util.StringUtils;
 import com.astrider.sfc.src.model.dao.UserDao;
 import com.astrider.sfc.src.model.dao.UserStatsDao;
 import com.astrider.sfc.src.model.vo.db.UserStatsVo;
 import com.astrider.sfc.src.model.vo.db.UserVo;
 import com.astrider.sfc.src.model.vo.form.ConfirmEmailVo;
 import com.astrider.sfc.src.model.vo.form.RegisterFormVo;
+import static com.astrider.sfc.ApplicationContext.*;
 
 /**
  * ユーザー登録関連Model.
@@ -72,7 +74,7 @@ public class RegisterModel extends BaseModel {
 			sb.append(user.getUserName() + "様\n\n");
 			sb.append("この度はsanteに仮登録いただきありがとうございます。\n");
 			sb.append("以下のURLをクリックすることによって本登録が完了いたします。\n");
-			sb.append("http://" + request.getServerName() + request.getContextPath() + "/register/ConfirmEmail");
+			sb.append("http://" + request.getServerName() + request.getContextPath() + PAGE_REGISTER_CONFIRMEMAIL);
 			sb.append("?email=" + URLEncoder.encode(user.getEmail(), "UTF-8"));
 			sb.append("&token=" + URLEncoder.encode(user.getEmailToken(), "UTF-8"));
 			body = sb.toString();
@@ -94,7 +96,9 @@ public class RegisterModel extends BaseModel {
 		
 		userDao.commit();
 		userDao.close();
-
+		
+		flashMessage.addMessage("お客様のメールアドレスに仮登録完了メールが送信されました。メール記載のリンクから本登録手続きを完了してください。");
+		flashMessage.setMessageType(Type.INFO);
 		return true;
 	}
 
@@ -111,7 +115,6 @@ public class RegisterModel extends BaseModel {
 		// 引数の整合性確認
 		Validator<ConfirmEmailVo> validator = new Validator<ConfirmEmailVo>(vo);
 		if (!validator.valid()) {
-			System.out.println("invalid request");
 			flashMessage.addMessage(validator.getFlashMessage());
 			return false;
 		}
@@ -144,7 +147,7 @@ public class RegisterModel extends BaseModel {
 
 		// sessionをログイン済みに
 		HttpSession session = request.getSession();
-		session.setAttribute("loginUser", user);
+		session.setAttribute(SESSION_USER, user);
 
 		return true;
 	}

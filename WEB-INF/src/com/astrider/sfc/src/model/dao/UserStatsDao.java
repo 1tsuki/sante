@@ -5,8 +5,8 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
+import com.astrider.sfc.app.lib.BaseDao;
 import com.astrider.sfc.app.lib.Mapper;
-import com.astrider.sfc.app.model.BaseDao;
 import com.astrider.sfc.src.model.vo.db.UserStatsVo;
 
 public class UserStatsDao extends BaseDao {

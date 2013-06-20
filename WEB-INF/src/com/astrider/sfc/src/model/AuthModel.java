@@ -3,17 +3,18 @@ package com.astrider.sfc.src.model;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
-import com.astrider.sfc.app.lib.AuthUtils;
 import com.astrider.sfc.app.lib.FlashMessage.Type;
+import com.astrider.sfc.app.lib.util.AuthUtils;
+import com.astrider.sfc.app.lib.util.StringUtils;
+import com.astrider.sfc.app.lib.BaseModel;
 import com.astrider.sfc.app.lib.Mailer;
 import com.astrider.sfc.app.lib.Mapper;
-import com.astrider.sfc.app.lib.StringUtils;
 import com.astrider.sfc.app.lib.Validator;
-import com.astrider.sfc.app.model.BaseModel;
 import com.astrider.sfc.src.model.dao.UserDao;
 import com.astrider.sfc.src.model.vo.db.UserVo;
 import com.astrider.sfc.src.model.vo.form.LoginFormVo;
 import com.astrider.sfc.src.model.vo.form.ReissueFormVo;
+import static com.astrider.sfc.ApplicationContext.*;
 
 public class AuthModel extends BaseModel {
 	public boolean authLogin(HttpServletRequest request) {
@@ -57,13 +58,15 @@ public class AuthModel extends BaseModel {
 
 		// ログイン成功
 		HttpSession session = request.getSession();
-		session.setAttribute("loginUser", user);
+		session.setAttribute(SESSION_USER, user);
 		return true;
 	}
 
 	public boolean logout(HttpServletRequest request) {
 		HttpSession session = request.getSession();
 		session.invalidate();
+		flashMessage.addMessage("ログアウトを実行しました");
+		flashMessage.setMessageType(Type.INFO);
 		return true;
 	}
 
@@ -74,7 +77,6 @@ public class AuthModel extends BaseModel {
 		Validator<ReissueFormVo> validator = new Validator<ReissueFormVo>(form);
 		if (!validator.valid()) {
 			flashMessage.addMessage(validator.getFlashMessage());
-			flashMessage.setMessageType(Type.WARNING);
 			return false;
 		}
 
@@ -83,7 +85,6 @@ public class AuthModel extends BaseModel {
 		UserVo user = userDao.selectByEmail(form.getEmail());
 		if (user == null) {
 			flashMessage.addMessage("ご指定のメールアドレスで登録されたアカウントは存在しませんでした");
-			flashMessage.setMessageType(Type.WARNING);
 			userDao.close();
 			return false;
 		}
@@ -105,7 +106,6 @@ public class AuthModel extends BaseModel {
 		Mailer mailer = new Mailer(user.getEmail(), subject, body);
 		if (!mailer.send()) {
 			flashMessage.addMessage("メールの送信に失敗しました");
-			flashMessage.setMessageType(Type.WARNING);
 			userDao.close();
 			return false;
 		}
