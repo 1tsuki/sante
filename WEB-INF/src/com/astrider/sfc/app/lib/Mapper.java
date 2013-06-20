@@ -161,7 +161,7 @@ public class Mapper<T extends BaseVo> {
 			if (t == boolean.class || t == Boolean.class)
 				f.set(vo, Boolean.valueOf(value));
 		} catch (NumberFormatException e) {
-			e.printStackTrace();
+			// do nothing
 		} catch (IllegalArgumentException e) {
 			e.printStackTrace();
 		} catch (IllegalAccessException e) {
