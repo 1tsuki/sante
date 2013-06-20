@@ -1,0 +1,154 @@
+@import '../../import/base.less';
+
+h1 {
+	.h-decoration(@font-large);
+}
+
+.recommended-recipes {
+	.column(12);
+	.control {
+		.column(12);
+		position: relative
+		;
+		.sort-menu {
+			.column(4);
+			.push(8);
+			position: absolute;
+			top: -70px;
+
+			.sort {
+				.column(6);
+				.round();
+				text-align: center;
+				display: inline-block;
+				height: 40px;
+				line-height: 40px;
+				color: #FFFFFF;
+				.background-gradient(@blue);
+
+				&:hover {
+					.background-gradient(darken(@blue, 5%));
+				}
+			}
+		}
+
+		.search {
+			.column(12);
+			height: 30px;
+			input[type="search"] {
+				.column(5);
+			}
+			input[type="submit"] {
+				.column(2);
+			}
+		}
+
+		.materials {
+			.column(12);
+			margin: 10px 0;
+			>span {
+				.column(3);
+				font-weight: bold;
+			}
+
+			.material-list {
+				.column(9);
+				.material {
+					color: #0000FF;
+				}
+				.selected {
+					color: #000000;
+					font-weight: bold;
+				}
+			}
+
+		}
+	}
+
+	.recipes {
+		.column(12);
+		.recipe {
+			height: 150px;
+			border-top: 1px solid #555555;
+			border-bottom: 1px solid @border-color;
+
+			>p {
+				text-align: center;
+				line-height: 150px;
+				font-size: @font-large;
+			}
+
+			a {
+				display: block;
+				.column(8);
+				height: 100%;
+				width: 100%;
+				margin: 0;
+				text-decoration: none;
+				overflow: hidden;
+				color: #000000;
+
+				.recipe-image-wrapper {
+					.column(4);
+					overflow: hidden;
+					img {
+						margin-left: 0px;
+						height: 100%;
+						padding: 5px;
+					}
+				}
+
+				.recipe-name-wrapper {
+					.column(8);
+					.recipe-name {
+						font-size: @font-large;
+						font-weight: bold;
+						margin: 0;
+					}
+				}
+
+				.recipe-info-wrapper {
+					.column(4);
+					.recipe-materials-wrapper {
+						.column(12);
+						.recipe-materials-label {
+							.column(2);
+							font-size: @font-small;
+							font-weight: bold;
+						}
+
+						.recipe-materials {
+							.column(10);
+							font-size: @font-small;
+						}
+					}
+
+					.recipe-esttime-wrapper {
+						.column(12);
+						.recipe-esttime-label {
+							.column(2);
+							font-size: @font-small;
+							font-weight: bold;
+						}
+						.recipe-esttime {
+							.column(10);
+							font-size: @font-small;
+						}
+					}
+				}
+
+				.recipe-canvas-wrapper {
+					.column(4);
+					canvas {
+						width: 100px;
+						height: 100px;
+					}
+				}
+
+				&:hover {
+					background-color: darken(@main-color, 5%);
+				}
+			}
+		}
+	}
+}

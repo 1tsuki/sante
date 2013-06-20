@@ -50,6 +50,9 @@
         <c:if test="${ isLoggedIn }" >
         <section id="header-upper">
           <div class="header-inner">
+            <div class ="header-userinfo">
+              <span>ようこそ、<c:out value="${loginUser.userName}" />さん</span>
+            </div>
             <div class ="header-logout">
               <a href="<%v.getPath("/auth/Logout");%>">ログアウト</a>
               <!-- <a href="#">設定</a> -->

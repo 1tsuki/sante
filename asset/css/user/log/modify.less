@@ -1,0 +1,41 @@
+@import '../../import/base.less';
+
+h1 {
+	.h-decoration(@font-large);
+}
+
+h2 {
+	.h-decoration(@font-medium);
+}
+
+.modify {
+	.graph {
+		.column(12);
+		canvas {
+			display: block;
+			margin: 0 auto;
+			width: 400px;
+			height: 200px;
+		}
+	}
+
+	.fields-wrapper {
+		.column(12);
+		.fields {
+			.column(6);
+
+			input {
+				width: 80%;
+			}
+
+			span {
+				margin-left: 5px;
+				text-align: center;
+			}
+
+			.submit {
+				.pull-right;
+			}
+		}
+	}
+}
