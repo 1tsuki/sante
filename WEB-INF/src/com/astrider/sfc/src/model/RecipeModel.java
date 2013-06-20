@@ -1,6 +1,7 @@
 package com.astrider.sfc.src.model;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -84,11 +85,14 @@ public class RecipeModel extends BaseModel {
 		SearchQueryVo query = mapper.fromHttpRequest(request);
 
 		ArrayList<RecipeVo> recipes = null;
+		HashMap<Integer, ArrayList<MaterialQuantityVo>> materials = null;
 		if (0 < query.getNutrientId()) {
 			// 栄養素検索
 			RecipeDao recipeDao = new RecipeDao();
 			recipes = recipeDao.selectByNutrientId(query.getNutrientId());
+			materials = recipeDao.selectMaterialListByRecipeList(recipes);
 			recipeDao.close();
+			
 			request.setAttribute("materialId", query.getNutrientId());
 			NutrientDao nutrientDao = new NutrientDao();
 			NutrientVo nutrient = nutrientDao.selectById(query.getNutrientId());
@@ -101,18 +105,23 @@ public class RecipeModel extends BaseModel {
 			}
 		} else if (StringUtils.isNotEmpty(query.getMaterialName())) {
 			// 素材名検索
-			RecipeDao dao = new RecipeDao();
-			recipes = dao.selectByMaterialName(query.getMaterialName());
-			dao.close();
+			RecipeDao recipeDao = new RecipeDao();
+			recipes = recipeDao.selectByMaterialName(query.getMaterialName());
+			materials = recipeDao.selectMaterialListByRecipeList(recipes);
+			recipeDao.close();
 			request.setAttribute("materialName", query.getMaterialName());
 			request.setAttribute("query", query.getMaterialName() + "を使った");
 		} else {
 			// おすすめレシピ取得
+			RecipeDao recipeDao = new RecipeDao();
 			recipes = SanteUtils.getRecommendedRecipes(user.getUserId(), 10);
+			materials = recipeDao.selectMaterialListByRecipeList(recipes);
+			recipeDao.close();
 			request.setAttribute("query", "おすすめ");
 		}
 
 		request.setAttribute("recipes", recipes);
+		request.setAttribute("materials", materials);
 		return true;
 	}
 }

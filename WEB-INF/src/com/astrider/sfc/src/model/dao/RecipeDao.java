@@ -5,6 +5,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.HashMap;
 
 import com.astrider.sfc.app.lib.Mapper;
 import com.astrider.sfc.app.model.BaseDao;
@@ -240,5 +241,53 @@ public class RecipeDao extends BaseDao {
 			}
 		}
 		return recipeIds;
+	}
+	
+	public HashMap<Integer, ArrayList<MaterialQuantityVo>> selectMaterialListByRecipeList(ArrayList<RecipeVo> recipes) {
+		HashMap<Integer, ArrayList<MaterialQuantityVo>> materialList = new HashMap<Integer, ArrayList<MaterialQuantityVo>>();
+		PreparedStatement pstmt = null;
+		
+		try {
+			StringBuilder sb = new StringBuilder();
+			sb.append("SELECT * FROM recipe_material_quantities WHERE recipe_id IN (");
+			for (int i = 0; i < recipes.size();) {
+				sb.append("?");
+				if (++i < recipes.size()) {
+					sb.append(",");
+				}
+			}
+			sb.append(")");
+			
+			pstmt = con.prepareStatement(sb.toString());
+			
+			for (int j = 0; j < recipes.size(); j++) {
+				pstmt.setObject(j + 1, recipes.get(j).getRecipeId());
+			}
+			
+			ResultSet rs = pstmt.executeQuery();
+			while (rs.next()) {
+				Mapper<MaterialQuantityVo> mapper = new Mapper<MaterialQuantityVo>();
+				MaterialQuantityVo material = mapper.fromResultSet(rs);
+				
+				ArrayList<MaterialQuantityVo> materials = materialList.get(material.getRecipeId());
+				if (materials == null) {
+					materials = new ArrayList<MaterialQuantityVo>();
+				}
+				materials.add(material);
+				materialList.put(material.getRecipeId(), materials);
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			try {
+				if (pstmt != null) {
+					pstmt.close();
+				}
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+		}
+		
+		return materialList;
 	}
 }

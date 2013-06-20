@@ -10,9 +10,9 @@
     <div class="login-wrapper"></div>
     <div class="login-input">
         <form action="<% v.getPath("/auth/Login"); %>" method="post">
-            <div class="column12"><input type="email" name="email" placeholder="登録メールアドレス" required></div>
-            <div class="column8"><input type="password" name="password" placeholder="パスワード" required></div>
-            <div class="column4"><input type="submit" value="ログイン" class="btn btn-primary"></div>
+            <div class="login-email"><input type="email" name="email" placeholder="メールアドレス" required></div>
+            <div class="login-password"><input type="password" name="password" placeholder="パスワード" required></div>
+            <div class="login-submit"><input type="submit" value="ログイン" class="btn btn-primary"></div>
         </form>
         <div class="login-reissue"><span><a href="<% v.getPath("/auth/Reissue"); %>">パスワードを忘れた方はこちら</a></span></div>
     </div>
