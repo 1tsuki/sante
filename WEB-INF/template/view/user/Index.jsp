@@ -18,6 +18,7 @@
             <dl><dt>自炊回数</dt><dd id="total-cooked">--回</dd></dl>
             <dl><dt>連続自炊日数</dt><dd id="consecutively-cooked">--日</dd></dl>
             <dl><dt>栄養バランス</dt><dd id="nutrients-balance">--%</dd></dl>
+            <button onClick="location.reload();">更新</button>
         </div>
         <canvas class="pie-graph"></canvas>
         <div class="nutrient-modifier">
