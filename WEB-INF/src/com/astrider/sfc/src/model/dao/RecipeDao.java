@@ -82,8 +82,11 @@ public class RecipeDao extends BaseDao {
 		PreparedStatement pstmt = null;
 
 		try {
-			String sql = "SELECT * FROM recipes WHERE recipe_id IN (SELECT DISTINCT recipe_id FROM RECIPE_MATERIALS WHERE material_name LIKE ?)";
-			pstmt = con.prepareStatement(sql);
+			StringBuilder sb = new StringBuilder();
+			sb.append("SELECT * FROM recipes WHERE recipe_id IN ");
+			sb.append("(SELECT DISTINCT recipe_id FROM RECIPE_MATERIALS WHERE material_name LIKE ?) ");
+			sb.append("AND rownum between 1 and 20");
+			pstmt = con.prepareStatement(sb.toString());
 			pstmt.setString(1, "%" + materialName + "%");
 			ResultSet rs = pstmt.executeQuery();
 			while (rs.next()) {
@@ -111,8 +114,11 @@ public class RecipeDao extends BaseDao {
 		PreparedStatement pstmt = null;
 
 		try {
-			String sql = "SELECT * FROM recipes WHERE recipe_id IN (SELECT DISTINCT recipe_id FROM RECIPE_MATERIAL_QUANTITIES WHERE nutrient_id = ?)";
-			pstmt = con.prepareStatement(sql);
+			StringBuilder sb = new StringBuilder();
+			sb.append("SELECT * FROM recipes WHERE recipe_id IN ");
+			sb.append("(SELECT DISTINCT recipe_id FROM RECIPE_MATERIAL_QUANTITIES WHERE nutrient_id = ?) ");
+			sb.append("AND rownum between 1 and 20");
+			pstmt = con.prepareStatement(sb.toString());
 			pstmt.setInt(1, nutrientId);
 			ResultSet rs = pstmt.executeQuery();
 			Mapper<RecipeVo> mapper = new Mapper<RecipeVo>();
@@ -166,7 +172,7 @@ public class RecipeDao extends BaseDao {
 		PreparedStatement pstmt = null;
 
 		try {
-			String sql = "SELECT * FROM RECIPE_MATERIAL_QUANTITIES WHERE nutrient_id = ?";
+			String sql = "SELECT * FROM RECIPE_MATERIAL_QUANTITIES WHERE nutrient_id = ? ORDER BY quantity";
 			pstmt = con.prepareStatement(sql);
 			pstmt.setInt(1, nutrientId);
 			ResultSet rs = pstmt.executeQuery();
@@ -194,7 +200,7 @@ public class RecipeDao extends BaseDao {
 		PreparedStatement pstmt = null;
 
 		try {
-			String sql = "SELECT * FROM steps WHERE recipe_id = ? ORDER BY STEP";
+			String sql = "SELECT * FROM steps WHERE recipe_id = ? ORDER BY step";
 			pstmt = con.prepareStatement(sql);
 			pstmt.setInt(1, recipeId);
 			ResultSet rs = pstmt.executeQuery();
@@ -257,6 +263,7 @@ public class RecipeDao extends BaseDao {
 				}
 			}
 			sb.append(")");
+			sb.append(" ORDER BY nutrient_id");
 			
 			pstmt = con.prepareStatement(sb.toString());
 			
