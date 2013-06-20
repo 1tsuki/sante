@@ -1,5 +1,6 @@
 package com.astrider.sfc.src.model.vo.form;
 
+import com.astrider.sfc.app.annotation.Valid;
 import com.astrider.sfc.app.annotation.Column;
 import com.astrider.sfc.app.lib.BaseVo;
 
@@ -9,6 +10,7 @@ public class SearchQueryVo extends BaseVo {
 	@Column(physic = "material_name", logic = "素材名")
 	private String materialName;
 	@Column(physic = "nutrient_id", logic = "素材ID")
+	@Valid(isNotNull = true, isMin = true, isMax = true, min = 1, max = 11)
 	private int nutrientId;
 
 	public String getMaterialName() {

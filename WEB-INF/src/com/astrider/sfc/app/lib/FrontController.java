@@ -91,7 +91,7 @@ public class FrontController extends HttpServlet {
 			command = commandClass.newInstance();
 		} catch (Exception e) {
 			try {
-				commandClass = Class.forName(FALLBACK_COMMAND).asSubclass(Command.class);
+				commandClass = Class.forName(BASE_COMMAND_PATH + "." + FALLBACK_COMMAND).asSubclass(Command.class);
 				command = commandClass.newInstance();
 			} catch (ClassNotFoundException e1) {
 				e1.printStackTrace();
