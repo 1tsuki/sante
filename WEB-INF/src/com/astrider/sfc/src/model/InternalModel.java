@@ -12,6 +12,7 @@ import javax.servlet.http.HttpServletRequest;
 import com.astrider.sfc.app.lib.Mailer;
 import com.astrider.sfc.app.model.BaseModel;
 import com.astrider.sfc.src.helper.SanteUtils;
+import com.astrider.sfc.src.helper.SanteUtils.InsufficientNutrients;
 import com.astrider.sfc.src.model.dao.CookLogDao;
 import com.astrider.sfc.src.model.dao.MaterialDao;
 import com.astrider.sfc.src.model.dao.RecipeDao;
@@ -203,14 +204,34 @@ public class InternalModel extends BaseModel {
 		for (UserVo user : users) {
 			if (user.isAvailable()) {
 				ArrayList<RecipeVo> recipes = SanteUtils.getRecommendedRecipes(user.getUserId(), 4);
+				InsufficientNutrients nutrients = SanteUtils.getInsufficientNutrients(user.getUserId());
 				StringBuilder sb = new StringBuilder();
+				
+				sb.append(user.getUserName() + "様\n\n");
+				sb.append("santeが本日のおすすめレシピをお届けします。\n");
+				sb.append(user.getUserName() + "様に不足している栄養素は\n\n");
+				sb.append(" ・" + nutrients.getPrimaryNutrientName() + "\n");
+				sb.append(" ・" + nutrients.getSecondaryNutrientName() + "\n\n");
+				sb.append("と判断されました。その条件に合致するレシピは下記の通りです。\n\n");
+				
+				// レシピリンク出力
 				for (RecipeVo recipe : recipes) {
+					sb.append(recipe.getRecipeName());
+					sb.append("\n");
+					sb.append("https://");
 					sb.append(request.getServerName());
 					sb.append(request.getContextPath());
 					sb.append("/user/recipe/Detail?recipe_id=");
 					sb.append(recipe.getRecipeId());
 					sb.append("\n");
 				}
+				sb.append("\nその他お勧めレシピはこちらからお探しいただけます。\n");
+				sb.append("https://");
+				sb.append(request.getServerName());
+				sb.append(request.getContextPath());
+				sb.append("/use/recipe/Search\n\n");
+				sb.append("----------\n");
+				sb.append("sante運営事務局");
 				String title = "【sante】本日のおすすめレシピ";
 				String body = sb.toString();
 				Mailer mailer = new Mailer(user.getEmail(), title, body);
