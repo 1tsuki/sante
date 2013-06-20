@@ -125,11 +125,42 @@ h3 {
 				width: 300px;
 			}
 
-			.bar-graph {
+			.nutrient-modifier {
 				position: absolute;
-				bottom: 0px;
+				bottom: 55px;
 				width: 100%;
-				height: 100px;
+
+				.title {
+					.column(1);
+					span {
+						font-size: @font-large;
+					}
+				}
+
+				.nutrient {
+					.column(1);
+					display: inline-block;
+					float: left;
+
+					span {
+						display: block;
+						text-align: center;
+					}
+
+					button {
+						width: 20px;
+						.btn();
+						.btn-mini();
+					}
+
+					.plus {
+						.btn-primary();
+					}
+
+					.minus {
+						.btn-info();
+					}
+				}
 			}
 		}
 	}

@@ -2,7 +2,7 @@ if(!window.santeUserStats) santeUserStats = {};
 
 (function(w, $) {
 	santeUserStats.interface = {
-		"exec": function() {
+		update: function() {
 			$.ajax({
 				url: "/sante/api/user/GetStats",
 				async: true,
@@ -21,9 +21,9 @@ if(!window.santeUserStats) santeUserStats = {};
 				}
 			});
 		}
-	}
+	};
 })(window, jQuery);
 
 $(document).ready(function() {
-	santeUserStats.interface.exec();
+	santeUserStats.interface.update();
 });

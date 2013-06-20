@@ -5735,11 +5735,455 @@ h3 {
   height: 300px;
   width: 300px;
 }
-#wrapper .status .status-contents .bar-graph {
+#wrapper .status .status-contents .nutrient-modifier {
   position: absolute;
-  bottom: 0px;
+  bottom: 55px;
   width: 100%;
-  height: 100px;
+}
+#wrapper .status .status-contents .nutrient-modifier .title {
+  -moz-box-sizing: border-box;
+  -webkit-box-sizing: border-box;
+  box-sizing: border-box;
+  display: inline;
+  float: left;
+  width: 7.142857142857142%;
+  margin: 0 0.5952380952380952%;
+  *zoom: 1;
+}
+#wrapper .status .status-contents .nutrient-modifier .title:after {
+  clear: both;
+}
+#wrapper .status .status-contents .nutrient-modifier .title:after {
+  clear: both;
+}
+#wrapper .status .status-contents .nutrient-modifier .title:before,
+#wrapper .status .status-contents .nutrient-modifier .title:after {
+  content: "";
+  display: table;
+}
+#wrapper .status .status-contents .nutrient-modifier .title:after {
+  clear: both;
+}
+#wrapper .status .status-contents .nutrient-modifier .title:after {
+  clear: both;
+}
+#wrapper .status .status-contents .nutrient-modifier .title:before,
+#wrapper .status .status-contents .nutrient-modifier .title:after {
+  content: "";
+  display: table;
+}
+#wrapper .status .status-contents .nutrient-modifier .title:after {
+  clear: both;
+}
+#wrapper .status .status-contents .nutrient-modifier .title:before,
+#wrapper .status .status-contents .nutrient-modifier .title:after {
+  content: "";
+  display: table;
+}
+#wrapper .status .status-contents .nutrient-modifier .title:after {
+  clear: both;
+}
+#wrapper .status .status-contents .nutrient-modifier .title:before,
+#wrapper .status .status-contents .nutrient-modifier .title:after {
+  content: "";
+  display: table;
+}
+#wrapper .status .status-contents .nutrient-modifier .title:after {
+  clear: both;
+}
+#wrapper .status .status-contents .nutrient-modifier .title:after {
+  clear: both;
+}
+#wrapper .status .status-contents .nutrient-modifier .title:after {
+  clear: both;
+}
+#wrapper .status .status-contents .nutrient-modifier .title:after {
+  clear: both;
+}
+#wrapper .status .status-contents .nutrient-modifier .title:before,
+#wrapper .status .status-contents .nutrient-modifier .title:after {
+  content: "";
+  display: table;
+}
+#wrapper .status .status-contents .nutrient-modifier .title:after {
+  clear: both;
+}
+#wrapper .status .status-contents .nutrient-modifier .title:after {
+  clear: both;
+}
+#wrapper .status .status-contents .nutrient-modifier .title:before,
+#wrapper .status .status-contents .nutrient-modifier .title:after {
+  content: "";
+  display: table;
+}
+#wrapper .status .status-contents .nutrient-modifier .title:after {
+  clear: both;
+}
+#wrapper .status .status-contents .nutrient-modifier .title:before,
+#wrapper .status .status-contents .nutrient-modifier .title:after {
+  content: "";
+  display: table;
+}
+#wrapper .status .status-contents .nutrient-modifier .title:after {
+  clear: both;
+}
+#wrapper .status .status-contents .nutrient-modifier .title:before,
+#wrapper .status .status-contents .nutrient-modifier .title:after {
+  content: "";
+  display: table;
+}
+#wrapper .status .status-contents .nutrient-modifier .title:after {
+  clear: both;
+}
+#wrapper .status .status-contents .nutrient-modifier .title:after {
+  clear: both;
+}
+#wrapper .status .status-contents .nutrient-modifier .title:after {
+  clear: both;
+}
+#wrapper .status .status-contents .nutrient-modifier .title:after {
+  clear: both;
+}
+#wrapper .status .status-contents .nutrient-modifier .title:before,
+#wrapper .status .status-contents .nutrient-modifier .title:after {
+  content: "";
+  display: table;
+}
+#wrapper .status .status-contents .nutrient-modifier .title:after {
+  clear: both;
+}
+#wrapper .status .status-contents .nutrient-modifier .title:after {
+  clear: both;
+}
+#wrapper .status .status-contents .nutrient-modifier .title:before,
+#wrapper .status .status-contents .nutrient-modifier .title:after {
+  content: "";
+  display: table;
+}
+#wrapper .status .status-contents .nutrient-modifier .title:after {
+  clear: both;
+}
+#wrapper .status .status-contents .nutrient-modifier .title:before,
+#wrapper .status .status-contents .nutrient-modifier .title:after {
+  content: "";
+  display: table;
+}
+#wrapper .status .status-contents .nutrient-modifier .title:after {
+  clear: both;
+}
+#wrapper .status .status-contents .nutrient-modifier .title:before,
+#wrapper .status .status-contents .nutrient-modifier .title:after {
+  content: "";
+  display: table;
+}
+#wrapper .status .status-contents .nutrient-modifier .title:after {
+  clear: both;
+}
+#wrapper .status .status-contents .nutrient-modifier .title:after {
+  clear: both;
+}
+#wrapper .status .status-contents .nutrient-modifier .title:after {
+  clear: both;
+}
+#wrapper .status .status-contents .nutrient-modifier .title:after {
+  clear: both;
+}
+#wrapper .status .status-contents .nutrient-modifier .title:before,
+#wrapper .status .status-contents .nutrient-modifier .title:after {
+  content: "";
+  display: table;
+}
+#wrapper .status .status-contents .nutrient-modifier .title:after {
+  clear: both;
+}
+#wrapper .status .status-contents .nutrient-modifier .title:after {
+  clear: both;
+}
+#wrapper .status .status-contents .nutrient-modifier .title:before,
+#wrapper .status .status-contents .nutrient-modifier .title:after {
+  content: "";
+  display: table;
+}
+#wrapper .status .status-contents .nutrient-modifier .title:after {
+  clear: both;
+}
+#wrapper .status .status-contents .nutrient-modifier .title:before,
+#wrapper .status .status-contents .nutrient-modifier .title:after {
+  content: "";
+  display: table;
+}
+#wrapper .status .status-contents .nutrient-modifier .title:after {
+  clear: both;
+}
+#wrapper .status .status-contents .nutrient-modifier .title:before,
+#wrapper .status .status-contents .nutrient-modifier .title:after {
+  content: "";
+  display: table;
+}
+#wrapper .status .status-contents .nutrient-modifier .title:after {
+  clear: both;
+}
+#wrapper .status .status-contents .nutrient-modifier .title:after {
+  clear: both;
+}
+#wrapper .status .status-contents .nutrient-modifier .title span {
+  font-size: 20px;
+}
+#wrapper .status .status-contents .nutrient-modifier .nutrient {
+  -moz-box-sizing: border-box;
+  -webkit-box-sizing: border-box;
+  box-sizing: border-box;
+  display: inline;
+  width: 7.142857142857142%;
+  margin: 0 0.5952380952380952%;
+  *zoom: 1;
+  display: inline-block;
+  float: left;
+}
+#wrapper .status .status-contents .nutrient-modifier .nutrient:after {
+  clear: both;
+}
+#wrapper .status .status-contents .nutrient-modifier .nutrient:after {
+  clear: both;
+}
+#wrapper .status .status-contents .nutrient-modifier .nutrient:before,
+#wrapper .status .status-contents .nutrient-modifier .nutrient:after {
+  content: "";
+  display: table;
+}
+#wrapper .status .status-contents .nutrient-modifier .nutrient:after {
+  clear: both;
+}
+#wrapper .status .status-contents .nutrient-modifier .nutrient:after {
+  clear: both;
+}
+#wrapper .status .status-contents .nutrient-modifier .nutrient:before,
+#wrapper .status .status-contents .nutrient-modifier .nutrient:after {
+  content: "";
+  display: table;
+}
+#wrapper .status .status-contents .nutrient-modifier .nutrient:after {
+  clear: both;
+}
+#wrapper .status .status-contents .nutrient-modifier .nutrient:before,
+#wrapper .status .status-contents .nutrient-modifier .nutrient:after {
+  content: "";
+  display: table;
+}
+#wrapper .status .status-contents .nutrient-modifier .nutrient:after {
+  clear: both;
+}
+#wrapper .status .status-contents .nutrient-modifier .nutrient:before,
+#wrapper .status .status-contents .nutrient-modifier .nutrient:after {
+  content: "";
+  display: table;
+}
+#wrapper .status .status-contents .nutrient-modifier .nutrient:after {
+  clear: both;
+}
+#wrapper .status .status-contents .nutrient-modifier .nutrient:after {
+  clear: both;
+}
+#wrapper .status .status-contents .nutrient-modifier .nutrient:after {
+  clear: both;
+}
+#wrapper .status .status-contents .nutrient-modifier .nutrient:after {
+  clear: both;
+}
+#wrapper .status .status-contents .nutrient-modifier .nutrient:before,
+#wrapper .status .status-contents .nutrient-modifier .nutrient:after {
+  content: "";
+  display: table;
+}
+#wrapper .status .status-contents .nutrient-modifier .nutrient:after {
+  clear: both;
+}
+#wrapper .status .status-contents .nutrient-modifier .nutrient:after {
+  clear: both;
+}
+#wrapper .status .status-contents .nutrient-modifier .nutrient:before,
+#wrapper .status .status-contents .nutrient-modifier .nutrient:after {
+  content: "";
+  display: table;
+}
+#wrapper .status .status-contents .nutrient-modifier .nutrient:after {
+  clear: both;
+}
+#wrapper .status .status-contents .nutrient-modifier .nutrient:before,
+#wrapper .status .status-contents .nutrient-modifier .nutrient:after {
+  content: "";
+  display: table;
+}
+#wrapper .status .status-contents .nutrient-modifier .nutrient:after {
+  clear: both;
+}
+#wrapper .status .status-contents .nutrient-modifier .nutrient:before,
+#wrapper .status .status-contents .nutrient-modifier .nutrient:after {
+  content: "";
+  display: table;
+}
+#wrapper .status .status-contents .nutrient-modifier .nutrient:after {
+  clear: both;
+}
+#wrapper .status .status-contents .nutrient-modifier .nutrient:after {
+  clear: both;
+}
+#wrapper .status .status-contents .nutrient-modifier .nutrient:after {
+  clear: both;
+}
+#wrapper .status .status-contents .nutrient-modifier .nutrient:after {
+  clear: both;
+}
+#wrapper .status .status-contents .nutrient-modifier .nutrient:before,
+#wrapper .status .status-contents .nutrient-modifier .nutrient:after {
+  content: "";
+  display: table;
+}
+#wrapper .status .status-contents .nutrient-modifier .nutrient:after {
+  clear: both;
+}
+#wrapper .status .status-contents .nutrient-modifier .nutrient:after {
+  clear: both;
+}
+#wrapper .status .status-contents .nutrient-modifier .nutrient:before,
+#wrapper .status .status-contents .nutrient-modifier .nutrient:after {
+  content: "";
+  display: table;
+}
+#wrapper .status .status-contents .nutrient-modifier .nutrient:after {
+  clear: both;
+}
+#wrapper .status .status-contents .nutrient-modifier .nutrient:before,
+#wrapper .status .status-contents .nutrient-modifier .nutrient:after {
+  content: "";
+  display: table;
+}
+#wrapper .status .status-contents .nutrient-modifier .nutrient:after {
+  clear: both;
+}
+#wrapper .status .status-contents .nutrient-modifier .nutrient:before,
+#wrapper .status .status-contents .nutrient-modifier .nutrient:after {
+  content: "";
+  display: table;
+}
+#wrapper .status .status-contents .nutrient-modifier .nutrient:after {
+  clear: both;
+}
+#wrapper .status .status-contents .nutrient-modifier .nutrient:after {
+  clear: both;
+}
+#wrapper .status .status-contents .nutrient-modifier .nutrient:after {
+  clear: both;
+}
+#wrapper .status .status-contents .nutrient-modifier .nutrient:after {
+  clear: both;
+}
+#wrapper .status .status-contents .nutrient-modifier .nutrient:before,
+#wrapper .status .status-contents .nutrient-modifier .nutrient:after {
+  content: "";
+  display: table;
+}
+#wrapper .status .status-contents .nutrient-modifier .nutrient:after {
+  clear: both;
+}
+#wrapper .status .status-contents .nutrient-modifier .nutrient:after {
+  clear: both;
+}
+#wrapper .status .status-contents .nutrient-modifier .nutrient:before,
+#wrapper .status .status-contents .nutrient-modifier .nutrient:after {
+  content: "";
+  display: table;
+}
+#wrapper .status .status-contents .nutrient-modifier .nutrient:after {
+  clear: both;
+}
+#wrapper .status .status-contents .nutrient-modifier .nutrient:before,
+#wrapper .status .status-contents .nutrient-modifier .nutrient:after {
+  content: "";
+  display: table;
+}
+#wrapper .status .status-contents .nutrient-modifier .nutrient:after {
+  clear: both;
+}
+#wrapper .status .status-contents .nutrient-modifier .nutrient:before,
+#wrapper .status .status-contents .nutrient-modifier .nutrient:after {
+  content: "";
+  display: table;
+}
+#wrapper .status .status-contents .nutrient-modifier .nutrient:after {
+  clear: both;
+}
+#wrapper .status .status-contents .nutrient-modifier .nutrient:after {
+  clear: both;
+}
+#wrapper .status .status-contents .nutrient-modifier .nutrient span {
+  display: block;
+  text-align: center;
+}
+#wrapper .status .status-contents .nutrient-modifier .nutrient button {
+  width: 20px;
+  background-color: #f7f7f7;
+  background-image: -moz-linear-gradient(top, #ffffff, #f7f7f7);
+  background-image: -webkit-gradient(linear, 0 0, 0 100%, from(#ffffff), to(#f7f7f7));
+  background-image: -webkit-linear-gradient(top, lighten #ffffff, #f7f7f7);
+  background-image: -o-linear-gradient(top, #ffffff, #f7f7f7);
+  background-image: linear-gradient(to bottom, #ffffff, #f7f7f7);
+  background-repeat: repeat-x;
+  color: #ffffff;
+  text-shadow: 0 -1px 0 rgba(0, 0, 0, 0.25);
+  border-color: #f0f0f0 #f0f0f0 #e0e0e0;
+  color: #636363;
+  display: inline-block;
+  *display: inline;
+  padding: 4px 12px;
+  margin-bottom: 0;
+  *margin-left: .3em;
+  font-size: 14px;
+  line-height: 20px;
+  text-align: center;
+  text-shadow: 0 1px 1px rgba(255, 255, 255, 0.75);
+  text-decoration: none;
+  vertical-align: middle;
+  cursor: pointer;
+  border: 1px solid #cccccc;
+  *border: 0;
+  border-bottom-color: #b3b3b3;
+  -webkit-border-radius: 4px;
+  -moz-border-radius: 4px;
+  border-radius: 4px;
+  *zoom: 1;
+  -webkit-box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.2), 0 1px 2px rgba(0, 0, 0, 0.05);
+  -moz-box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.2), 0 1px 2px rgba(0, 0, 0, 0.05);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.2), 0 1px 2px rgba(0, 0, 0, 0.05);
+  padding: 0 6px;
+  font-size: 10.5px;
+  -webkit-border-radius: 3px;
+  -moz-border-radius: 3px;
+  border-radius: 3px;
+}
+#wrapper .status .status-contents .nutrient-modifier .nutrient .plus {
+  background-color: #f3a01b;
+  background-image: -moz-linear-gradient(top, #f4a62a, #f3a01b);
+  background-image: -webkit-gradient(linear, 0 0, 0 100%, from(#f4a62a), to(#f3a01b));
+  background-image: -webkit-linear-gradient(top, lighten #f4a62a, #f3a01b);
+  background-image: -o-linear-gradient(top, #f4a62a, #f3a01b);
+  background-image: linear-gradient(to bottom, #f4a62a, #f3a01b);
+  background-repeat: repeat-x;
+  color: #ffffff;
+  text-shadow: 0 -1px 0 rgba(0, 0, 0, 0.25);
+  border-color: #f29a0d #f29a0d #d6870b;
+}
+#wrapper .status .status-contents .nutrient-modifier .nutrient .minus {
+  background-color: #4ebbdb;
+  background-image: -moz-linear-gradient(top, #5bc0de, #4ebbdb);
+  background-image: -webkit-gradient(linear, 0 0, 0 100%, from(#5bc0de), to(#4ebbdb));
+  background-image: -webkit-linear-gradient(top, lighten #5bc0de, #4ebbdb);
+  background-image: -o-linear-gradient(top, #5bc0de, #4ebbdb);
+  background-image: linear-gradient(to bottom, #5bc0de, #4ebbdb);
+  background-repeat: repeat-x;
+  color: #ffffff;
+  text-shadow: 0 -1px 0 rgba(0, 0, 0, 0.25);
+  border-color: #42b6d9 #42b6d9 #2aabd2;
 }
 #wrapper .tips {
   -moz-box-sizing: border-box;

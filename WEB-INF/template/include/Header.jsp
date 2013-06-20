@@ -8,10 +8,10 @@
 <%@ page import="com.astrider.sfc.src.model.vo.form.*"%>
 <%@ page import="com.astrider.sfc.src.helper.ViewHelper"%>
 
-<%	
-    request.setCharacterEncoding("UTF-8");
-    ViewHelper v = new ViewHelper(pageContext, session, request);
-    pageContext.setAttribute("isLoggedIn", v.isLoggedIn());
+<%
+  request.setCharacterEncoding("UTF-8");
+  ViewHelper v = new ViewHelper(pageContext, session, request);
+  pageContext.setAttribute("isLoggedIn", v.isLoggedIn());
 %>
 
 <!DOCTYPE html>
@@ -28,17 +28,17 @@
     <script type="text/javascript" src="<% v.getPath("/asset/js/santeUserNutrients.js"); %>"></script>
     <script type="text/javascript" src="<% v.getPath("/asset/js/santeFillMaterials.js"); %>"></script>
     <script type="text/javascript">
-	    $(document).ready(function() {
-	        // prepare for pieGraph
-	        var params = ["乳", "卵", "肉", "豆", "菜", "果", "藻", "米", "芋", "油", "糖"];
-	        santePieGraph.interface.init(".pie-graph", params);
-	        santePieGraph.interface.setSize($('.pie-graph').width(), $('.pie-graph').height());
-	        santePieGraph.interface.setAuxlineNum(10);
-	        santePieGraph.interface.draw();
-	
-	        // exec usernutrients
-	        santeUserNutrients.interface.exec();
-	      });
+      $(document).ready(function() {
+        // prepare for pieGraph
+        var params = ["乳", "卵", "肉", "豆", "菜", "果", "藻", "米", "芋", "油", "糖"];
+        santePieGraph.interface.init(".pie-graph", params);
+        santePieGraph.interface.setSize($('.pie-graph').width(), $('.pie-graph').height());
+        santePieGraph.interface.setAuxlineNum(10);
+        santePieGraph.interface.draw();
+
+        // exec usernutrients
+        santeUserNutrients.interface.update();
+      });
     </script>
     </c:if>
   </head>
@@ -65,7 +65,7 @@
             <div class="header-logo">
               <a href="<%v.getPath("/Index");%>">sante</a><p>-自炊を楽しむすべての人に、手軽で健康的な料理生活を-</p>
             </div>
-            
+
             <nav class="header-control">
             <c:if test="${ isLoggedIn }" >
               <ul>
@@ -81,6 +81,6 @@
       </c:if>
       <div id="header-lower-dummy"></div>
     </header>
-    
+
     <div id="wrapper">
       <% v.getFlashMessages(); %>

@@ -1,8 +1,10 @@
 package com.astrider.sfc.src.helper;
 
 import com.astrider.sfc.app.lib.util.MathUtils;
+import com.astrider.sfc.src.model.dao.UserStatsDao;
 import com.astrider.sfc.src.model.dao.WeeklyLogDao;
 import com.astrider.sfc.src.model.vo.db.MealLogVo;
+import com.astrider.sfc.src.model.vo.db.UserStatsVo;
 import com.astrider.sfc.src.model.vo.db.WeeklyLogVo;
 import static com.astrider.sfc.ApplicationContext.*;
 
@@ -80,6 +82,12 @@ public final class WeeklyLogUtils {
 		WeeklyLogDao weeklyLogDao = new WeeklyLogDao();
 		weeklyLogDao.update(weekLog);
 		weeklyLogDao.close();
+
+		UserStatsDao userStatsDao = new UserStatsDao();
+		UserStatsVo userStats = userStatsDao.selectByUserId(userId);
+		userStats.setNutrientsBalance(weekLog.getTotalBalance());
+		userStatsDao.update(userStats);
+		userStatsDao.close();
 	}
 
 	private static void joinValues(WeeklyLogVo week, MealLogVo meal) {

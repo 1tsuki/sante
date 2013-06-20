@@ -121,10 +121,10 @@ public class ApiModel extends BaseModel {
 
 		WeeklyLogDao weeklyLogDao = new WeeklyLogDao();
 		WeeklyLogVo weeklyLog = weeklyLogDao.selectCurrentWeek(user.getUserId());
-		System.out.println(form.getNutrientId() + " " + form.getAmount());
 		addNutrientToAmountById(weeklyLog, form.getNutrientId(), form.getAmount());
 		weeklyLogDao.update(weeklyLog);
 		weeklyLogDao.close();
+		WeeklyLogUtils.updateCurrentTotalBalance(user.getUserId());
 		
 		request.setAttribute("success", true);
 		return true;

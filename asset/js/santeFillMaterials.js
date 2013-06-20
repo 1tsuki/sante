@@ -9,7 +9,7 @@ if(!window.santeFillMaterials) santeFillMaterials = {};
 			if(values.length != colors.length) return;
 
 			for(var i=0; i<keys.length; i++) {
-				if(values[i] < 0.5) $(keys[i]).addClass("material-" + colors[i] + "-dark");
+				if(values[i] < 0.45) $(keys[i]).addClass("material-" + colors[i] + "-dark");
 			}
 		}
 	};

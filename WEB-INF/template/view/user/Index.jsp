@@ -4,25 +4,15 @@
 <section class="status">
     <nav class="status-nav">
         <ul>
-            <li><a href="#" onClick="santeUserNutrients.interface.exec(0)">今週</a></li>
-            <li><a href="#" onClick="santeUserNutrients.interface.exec(1)">1週前</a></li>
-            <li><a href="#" onClick="santeUserNutrients.interface.exec(2)">2週前</a></li>
-            <li><a href="#" onClick="santeUserNutrients.interface.exec(3)">3週前</a></li>
+            <li><a href="#" onClick="santeUserNutrients.interface.update(0)">今週</a></li>
+            <li><a href="#" onClick="santeUserNutrients.interface.update(1)">1週前</a></li>
+            <li><a href="#" onClick="santeUserNutrients.interface.update(2)">2週前</a></li>
+            <li><a href="#" onClick="santeUserNutrients.interface.update(3)">3週前</a></li>
         </ul>
     </nav>
     <div class="status-contents">
         <div class="calendar">
             <span class="today">日付</span>
-            <!-- <span class="title">自炊履歴</span>
-            <ul>
-                <li class="cooked">SUN</li>
-                <li>MON</li>
-                <li class="cooked">TUE</li>
-                <li class="cooked">WED</li>
-                <li>THU</li>
-                <li class="cooked">FRI</li>
-                <li>SAT</li>
-            </ul> -->
         </div>
         <div class="status-counter">
             <dl><dt>自炊回数</dt><dd id="total-cooked">--回</dd></dl>
@@ -30,6 +20,66 @@
             <dl><dt>栄養バランス</dt><dd id="nutrients-balance">--%</dd></dl>
         </div>
         <canvas class="pie-graph"></canvas>
+        <div class="nutrient-modifier">
+            <div class="title">
+                <span>調整</span>
+            </div>
+            <div class="nutrient">
+                <span>乳</span>
+                <button class="plus" onClick="santeUserNutrients.interface.addNutrient(1, 50);">+</button>
+                <button class="minus" onClick="santeUserNutrients.interface.addNutrient(1, -50);">-</button>
+            </div>
+            <div class="nutrient">
+                <span>卵</span>
+                <button class="plus" onClick="santeUserNutrients.interface.addNutrient(2, 50);">+</button>
+                <button class="minus" onClick="santeUserNutrients.interface.addNutrient(2, -50);">-</button>
+            </div>
+            <div class="nutrient">
+                <span>肉</span>
+                <button class="plus" onClick="santeUserNutrients.interface.addNutrient(3, 50);">+</button>
+                <button class="minus" onClick="santeUserNutrients.interface.addNutrient(3, -50);">-</button>
+            </div>
+            <div class="nutrient">
+                <span>豆</span>
+                <button class="plus" onClick="santeUserNutrients.interface.addNutrient(4, 50);">+</button>
+                <button class="minus" onClick="santeUserNutrients.interface.addNutrient(4, -50);">-</button>
+            </div>
+            <div class="nutrient">
+                <span>菜</span>
+                <button class="plus" onClick="santeUserNutrients.interface.addNutrient(5, 50);">+</button>
+                <button class="minus" onClick="santeUserNutrients.interface.addNutrient(5, -50);">-</button>
+            </div>
+            <div class="nutrient">
+                <span>果</span>
+                <button class="plus" onClick="santeUserNutrients.interface.addNutrient(6, 50);">+</button>
+                <button class="minus" onClick="santeUserNutrients.interface.addNutrient(6, -50);">-</button>
+            </div>
+            <div class="nutrient">
+                <span>藻</span>
+                <button class="plus" onClick="santeUserNutrients.interface.addNutrient(7, 50);">+</button>
+                <button class="minus" onClick="santeUserNutrients.interface.addNutrient(7, -50);">-</button>
+            </div>
+            <div class="nutrient">
+                <span>米</span>
+                <button class="plus" onClick="santeUserNutrients.interface.addNutrient(8, 50);">+</button>
+                <button class="minus" onClick="santeUserNutrients.interface.addNutrient(8, -50);">-</button>
+            </div>
+            <div class="nutrient">
+                <span>芋</span>
+                <button class="plus" onClick="santeUserNutrients.interface.addNutrient(9, 50);">+</button>
+                <button class="minus" onClick="santeUserNutrients.interface.addNutrient(9, -50);">-</button>
+            </div>
+            <div class="nutrient">
+                <span>油</span>
+                <button class="plus" onClick="santeUserNutrients.interface.addNutrient(10, 10);">+</button>
+                <button class="minus" onClick="santeUserNutrients.interface.addNutrient(10, -10);">-</button>
+            </div>
+            <div class="nutrient">
+                <span>糖</span>
+                <button class="plus" onClick="santeUserNutrients.interface.addNutrient(11, 5);">+</button>
+                <button class="minus" onClick="santeUserNutrients.interface.addNutrient(11, -5);">-</button>
+            </div>
+        </div>
     </div>
 </section>
 

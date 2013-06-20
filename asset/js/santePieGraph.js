@@ -93,7 +93,7 @@ if (!window.santePieGraph) santePieGraph = {};
 			ctx.beginPath();
 			ctx.arc(centerX, centerY, radius, 0, pi*2, false);
 			ctx.closePath();
-		},
+		}
 	};
 
 	var privateMethods = {
@@ -172,7 +172,7 @@ if (!window.santePieGraph) santePieGraph = {};
 
 		drawItem: function(item, key) {
 			if(isNaN(item) || item <= 0) {
-                return;
+				return;
 			}
 			setTimeout(privateMethods.drawItemValue, 100, item, key, 0);
 		},
@@ -181,7 +181,6 @@ if (!window.santePieGraph) santePieGraph = {};
 			if (item[key] <= 0 || item*auxlineNum <= counter || auxlineNum <= counter) {
 				return;
 			}
-            
 			var startAngle = radOffset + radDiv*key;
 			var endAngle = radOffset + radDiv*(key + 1);
 			var length = radius/auxlineNum;

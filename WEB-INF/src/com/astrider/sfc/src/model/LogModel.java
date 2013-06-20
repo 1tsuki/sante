@@ -15,7 +15,6 @@ import com.astrider.sfc.src.model.vo.db.CookLogVo;
 import com.astrider.sfc.src.model.vo.db.MealLogVo;
 import com.astrider.sfc.src.model.vo.db.UserStatsVo;
 import com.astrider.sfc.src.model.vo.db.UserVo;
-import com.astrider.sfc.src.model.vo.db.WeeklyLogVo;
 import com.astrider.sfc.src.model.vo.form.CookCompleteVo;
 
 /**
@@ -70,6 +69,8 @@ public class LogModel extends BaseModel {
 				userStats.setMaxConsecutivelyCooked(userStats.getConsecutivelyCooked());
 			}
 		}
+		userStatsDao.update(userStats);
+		userStatsDao.close();
 		cookLogDao.close();
 
 		// 食事別栄養素ログ挿入
@@ -85,12 +86,6 @@ public class LogModel extends BaseModel {
 		// 週別栄養素ログ更新
 		WeeklyLogUtils.addMealToCurrentLog(user.getUserId(), mealNutAmounts);
 		WeeklyLogUtils.updateCurrentTotalBalance(user.getUserId());
-
-		// totalBalance更新
-		WeeklyLogVo weekLog = WeeklyLogUtils.getCurrentLog(user.getUserId());
-		userStats.setNutrientsBalance(weekLog.getTotalBalance());
-		userStatsDao.update(userStats);
-		userStatsDao.close();
 
 		flashMessage.addMessage("調理完了おめでとうございます！");
 		flashMessage.setMessageType(Type.INFO);
