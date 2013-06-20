@@ -14,7 +14,7 @@
             <div class="column8"><input type="password" name="password" placeholder="パスワード" required></div>
             <div class="column4"><input type="submit" value="ログイン" class="btn btn-primary"></div>
         </form>
-        <div class="login-reissue"><span><a href="<% v.getPath("/Reissue"); %>">パスワードを忘れた方はこちら</a></span></div>
+        <div class="login-reissue"><span><a href="<% v.getPath("/auth/Reissue"); %>">パスワードを忘れた方はこちら</a></span></div>
     </div>
     <div class="login-register">
         <span><a href="<% v.getPath("/register/Input"); %>" class="btn btn-info">新規登録する</a></span>
