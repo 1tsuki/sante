@@ -27,6 +27,7 @@ public final class WeeklyLogUtils {
 			weeklyLog = new WeeklyLogVo();
 			weeklyLog.setUserId(userId);
 			weeklyLogDao.insert(weeklyLog);
+			weeklyLog = weeklyLogDao.selectCurrentWeek(userId);
 		}
 		weeklyLogDao.close();
 		return weeklyLog;
