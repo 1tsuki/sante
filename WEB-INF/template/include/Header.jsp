@@ -54,8 +54,8 @@
               <span>ようこそ、<c:out value="${loginUser.userName}" />さん</span>
             </div>
             <div class ="header-logout">
-              <a href="<%v.getPath("/auth/Logout");%>">ログアウト</a>
-              <!-- <a href="#">設定</a> -->
+              <a href="<% v.getPath("/auth/Logout"); %>">ログアウト</a>
+              <a href="<% v.getPath("/user/profile/ChangePassword"); %>">設定</a>
             </div>
           </div>
         </section>

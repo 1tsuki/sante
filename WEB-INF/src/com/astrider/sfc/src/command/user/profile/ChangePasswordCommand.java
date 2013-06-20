@@ -1,13 +1,13 @@
-package com.astrider.sfc.src.command.auth;
+package com.astrider.sfc.src.command.user.profile;
 
 import java.io.IOException;
 
 import javax.servlet.ServletException;
 
 import com.astrider.sfc.app.lib.Command;
-import com.astrider.sfc.src.model.AuthModel;
+import com.astrider.sfc.src.model.UserModel;
 
-public class ReissueCommand extends Command {
+public class ChangePasswordCommand extends Command {
 	@Override
 	public void doGet() throws ServletException, IOException {
 		render();
@@ -15,9 +15,9 @@ public class ReissueCommand extends Command {
 	
 	@Override
 	public void doPost() throws ServletException, IOException {
-		AuthModel model = new AuthModel();
-		model.reissue(request);
-		flashMessage.addMessage(model.getFlashMessage());
+		UserModel userModel = new UserModel();
+		userModel.changePassword(request);
+		flashMessage.addMessage(userModel.getFlashMessage());
 		render();
 	}
 }

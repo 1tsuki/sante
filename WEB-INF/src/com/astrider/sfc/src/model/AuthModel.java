@@ -89,7 +89,7 @@ public class AuthModel extends BaseModel {
 		}
 
 		// set new password
-		String tmpPassword = StringUtils.getUniqueString().substring(0, 5);
+		String tmpPassword = StringUtils.getUniqueString().substring(0, 10);
 		user.setAuthToken(AuthUtils.encrypt(tmpPassword));
 		userDao.update(user, false);
 		
