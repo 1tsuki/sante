@@ -10,7 +10,6 @@ import com.astrider.sfc.app.annotation.Column;
 import com.astrider.sfc.app.annotation.Valid;
 import com.astrider.sfc.app.lib.FlashMessage.Type;
 import com.astrider.sfc.app.lib.util.StringUtils;
-
 /**
  * Validator
  * 
