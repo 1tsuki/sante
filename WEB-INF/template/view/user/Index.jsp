@@ -38,18 +38,20 @@
     <div class="recommends">
         <c:forEach var="recipe" items="${ recommendedRecipes }" varStatus="status">
             <% RecipeVo recipe = (RecipeVo) pageContext.getAttribute("recipe"); %>
-            <c:if test="${0 == status.index}">
-                <a class="recipe recipe-main" href="<% v.getPath("/user/recipe/Detail?recipe_id=" + recipe.getRecipeId()); %>">
+            <c:choose>
+                <c:when test="${0 == status.index}">
+                    <a class="recipe recipe-main" href="<% v.getPath("/user/recipe/Detail?recipe_id=" + recipe.getRecipeId()); %>">
+                        <img alt="料理名" src="<% v.getPath(((RecipeVo)pageContext.getAttribute("recipe")).getImageUrl()); %>">
+                        <h3><c:out value="${ recipe.recipeName }" /></h3>
+                    </a>
+                </c:when>
+                <c:otherwise>
+                    <a class="recipe" href="<% v.getPath("/user/recipe/Detail?recipe_id=" + recipe.getRecipeId()); %>">
                     <img alt="料理名" src="<% v.getPath(((RecipeVo)pageContext.getAttribute("recipe")).getImageUrl()); %>">
                     <h3><c:out value="${ recipe.recipeName }" /></h3>
                 </a>
-            </c:if>
-            <c:if test="${0 < status.index}">
-                <a class="recipe" href="<% v.getPath("/user/recipe/Detail?recipe_id=" + recipe.getRecipeId()); %>">
-                    <img alt="料理名" src="<% v.getPath(((RecipeVo)pageContext.getAttribute("recipe")).getImageUrl()); %>">
-                    <h3><c:out value="${ recipe.recipeName }" /></h3>
-                </a>
-            </c:if>
+                </c:otherwise>
+            </c:choose>
         </c:forEach>
     </div>
     <p>あなたの過去の調理履歴を参考に、体に不足しているであろう食材を中心としたレシピをピックアップしています。</p>

@@ -27,6 +27,7 @@ public final class ApplicationContext {
 	public static final String SESSION_SERVLET_PATH = "sfc-servletPath";
 	public static final String SESSION_PAGE_TITLE = "sfc-pageTitle";
 	public static final String SESSION_INVALID_PATH = "sfc-invalidPath";
+	public static final String SESSION_REGISTER_FORM = "sfc-registerForm";
 
 	// ページ名
 	public static final String PAGE_INDEX = "/Index";

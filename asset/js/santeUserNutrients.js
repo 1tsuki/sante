@@ -31,7 +31,7 @@ if (!window.santeUserNutrients) santeUserNutrients = {};
 		},
 
 		update: function(_weekAgo) {
-			if (typeof _weekAgo === 'undefined' || weekAgo < 0) _weekAgo = 0;
+			weekAgo = (typeof _weekAgo === 'undefined' || _weekAgo < 0) ? 0 : _weekAgo;
 			santeUserNutrients.interface.showDate();
 
 			$.ajax({

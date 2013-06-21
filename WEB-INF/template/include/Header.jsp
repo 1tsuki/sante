@@ -7,6 +7,7 @@
 <%@ page import="com.astrider.sfc.src.model.vo.db.*"%>
 <%@ page import="com.astrider.sfc.src.model.vo.form.*"%>
 <%@ page import="com.astrider.sfc.src.helper.ViewHelper"%>
+<%@ page import="static com.astrider.sfc.ApplicationContext.*"%>
 
 <%
   request.setCharacterEncoding("UTF-8");

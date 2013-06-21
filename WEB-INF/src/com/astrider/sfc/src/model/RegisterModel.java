@@ -37,6 +37,8 @@ public class RegisterModel extends BaseModel {
 		// フォーム情報取得
 		Mapper<RegisterFormVo> m = new Mapper<RegisterFormVo>();
 		RegisterFormVo registerForm = (RegisterFormVo) m.fromHttpRequest(request);
+		HttpSession session = request.getSession();
+		session.setAttribute(SESSION_REGISTER_FORM, registerForm);
 
 		// 汎用バリデーション
 		Validator<RegisterFormVo> validator = new Validator<RegisterFormVo>(registerForm);
@@ -99,6 +101,8 @@ public class RegisterModel extends BaseModel {
 		
 		flashMessage.addMessage("お客様のメールアドレスに仮登録完了メールが送信されました。メール記載のリンクから本登録手続きを完了してください。");
 		flashMessage.setMessageType(Type.INFO);
+		session.removeAttribute(SESSION_REGISTER_FORM);
+
 		return true;
 	}
 
