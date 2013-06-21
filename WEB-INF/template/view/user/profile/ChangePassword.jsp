@@ -27,7 +27,7 @@
                            <p class="help-block">半角英数記号のみ8文字以上、全てを1回以上利用すること</p>
                         </div>
                     </div>
-                    
+
                     <div class="form-actions">
                        <button type="reset" class="btn" tabindex="1">キャンセル</button>
                        <button type="submit" class="btn btn-primary" tabindex="2">変更する</button>

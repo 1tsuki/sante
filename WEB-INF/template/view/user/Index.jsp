@@ -25,12 +25,11 @@
 
 <section class="tips">
     <h2>今日の栄養状態</h2>
-    <p>　あなたの食事履歴から算出された不足食材は以下の2種類です。<br>
-        <ul>
-            <li><c:out value="${ nutrients.primaryNutrientName }" /></li>
-            <li><c:out value="${ nutrients.secondaryNutrientName }" /></li>
-        </ul>
-    </p>
+    <p>　あなたの食事履歴から算出された不足食材は以下の2種類です。</p>
+    <ul>
+        <li><c:out value="${ nutrients.primaryNutrientName }" /></li>
+        <li><c:out value="${ nutrients.secondaryNutrientName }" /></li>
+    </ul>
 </section>
 
 <section class="recommends-wrapper">

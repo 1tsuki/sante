@@ -55,6 +55,5 @@
     </section>
 </div>
 
-
 <%@ include file="/WEB-INF/template/include/Sidebar.jsp" %>
 <%@ include file="/WEB-INF/template/include/Footer.jsp" %>
