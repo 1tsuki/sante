@@ -1,6 +1,5 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ include file="/WEB-INF/template/include/Header.jsp" %>
-
 <section class="caption">
     <h1>santeへようこそ</h1>
     <p>まずは一週間！santeを使って無理なく、健康的な自炊生活を続けてみませんか？</p>

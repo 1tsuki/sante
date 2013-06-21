@@ -1,3 +1,4 @@
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html>
   <head>
@@ -19,7 +20,6 @@
         santePieGraph.interface.setSize($('.pie-graph').width(), $('.pie-graph').height());
         santePieGraph.interface.setAuxlineNum(10);
         santePieGraph.interface.draw();
-
         // exec usernutrients
         santeUserNutrients.interface.update();
       });

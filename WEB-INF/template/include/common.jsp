@@ -9,8 +9,6 @@
 <%@ page import="com.astrider.sfc.src.model.vo.form.*"%>
 <%@ page import="com.astrider.sfc.src.helper.ViewHelper"%>
 <%@ page import="static com.astrider.sfc.ApplicationContext.*"%>
-<%
-  request.setCharacterEncoding("UTF-8");
-  ViewHelper v = new ViewHelper(pageContext, session, request);
-  pageContext.setAttribute("isLoggedIn", v.isLoggedIn());
-%>
+<% request.setCharacterEncoding("UTF-8");
+   ViewHelper v = new ViewHelper(pageContext, session, request);
+   pageContext.setAttribute("isLoggedIn", v.isLoggedIn()); %>
