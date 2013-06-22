@@ -280,7 +280,14 @@ public class Validator<T extends BaseVo> {
 			if (f.get(vo) == null) {
 				valid = true;
 			} else {
-				int value = (Integer) f.get(vo);
+				double value = 0;
+				if (f.getType() == Integer.class) {
+					value = (Integer) f.get(vo);
+				} else if (f.getType() == Float.class) {
+					value = (Float) f.get(vo);
+				} else if (f.getType() == Double.class) {
+					value = (Double) f.get(vo);
+				}
 				valid = v.min() <= value;
 			}
 		} catch (IllegalArgumentException e) {
@@ -314,7 +321,14 @@ public class Validator<T extends BaseVo> {
 			if (f.get(vo) == null) {
 				valid = true;
 			} else {
-				int value = (Integer) f.get(vo);
+				double value = 0;
+				if (f.getType() == Integer.class) {
+					value = (Integer) f.get(vo);
+				} else if (f.getType() == Float.class) {
+					value = (Float) f.get(vo);
+				} else if (f.getType() == Double.class) {
+					value = (Double) f.get(vo);
+				}
 				valid = value <= v.max();
 			}
 		} catch (IllegalArgumentException e) {

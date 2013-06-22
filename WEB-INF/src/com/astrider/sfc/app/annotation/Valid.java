@@ -45,9 +45,9 @@ public @interface Valid {
 
 	int minLength() default 0;
 
-	int max() default 0;
+	double max() default 0;
 
-	int min() default 0;
+	double min() default 0;
 
 	String regexp() default "";
 }

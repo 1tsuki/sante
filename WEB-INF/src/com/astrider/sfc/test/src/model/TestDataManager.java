@@ -47,7 +47,7 @@ public class TestDataManager {
 	public static TestDataManager getInstance() throws Exception {
 		if (testDataManager == null) {
 			testDataManager = new TestDataManager(TestDataManager.getWebInfPath(), "oracle.jdbc.driver.OracleDriver",
-					"jdbc:oracle:thin:@localhost:1521:XE", "sante", "password", "sante");
+					"jdbc:oracle:thin:@192.168.150.2:1521:XE", "sante", "password", "sante");
 			testDataManager.loadTestDataInXLS(TEST_DATAFILE);
 		}
 		return testDataManager;
