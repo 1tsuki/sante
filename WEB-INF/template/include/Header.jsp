@@ -3,7 +3,7 @@
 <html>
   <head>
     <meta charset="UTF-8">
-    <meta name="keywords" content="健康,食育,レシピ,栄養,三色食品群,健康管理,食事管理,栄養管理">
+    <meta name="keywords" content="健康,食育,レシピ,健康レシピ,レシピ探し,おすすめレシピ,栄養,三色食品群,健康管理,食事管理,栄養管理">
     <meta name="description" content="santé(サンテ)は貴方の調理履歴を管理してくれるWebレシピ検索サービスです。食事履歴を参考に、あなたの体に合わせたおすすめレシピを毎日簡単に知ることができます。">
     <title><% v.getTitle(); %></title>
     <link href="<%v.getPath("/asset/css/normalize.css");%>" rel="stylesheet" type="text/css">

@@ -212,7 +212,7 @@ public final class SanteUtils {
 	public static int[] getDesiredNutrients() {
 		int[] desired = new int[SANTE_NUTRIENT_COUNT];
 		NutrientDao nutrientDao = new NutrientDao();
-		for (int i = 1; i < desired.length; i++) {
+		for (int i = 0; i < desired.length; i++) {
 			desired[i] = nutrientDao.selectById(i + 1).getDailyRequiredAmount();
 		}
 		nutrientDao.close();
