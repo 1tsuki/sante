@@ -81,12 +81,12 @@ public class ViewHelper {
 	 */
 	public void getTitle() {
 		StringBuilder sb = new StringBuilder();
-		sb.append(context.getServletContext().getServletContextName());
 		String pageTitle = (String) request.getAttribute(SESSION_PAGE_TITLE);
 		if (StringUtils.isNotEmpty(pageTitle)) {
 			sb.append(" | ");
 			sb.append(pageTitle);
 		}
+		sb.append(context.getServletContext().getServletContextName());
 
 		String title = sb.toString();
 		print(title);
