@@ -53,7 +53,7 @@ public class WeeklyLogDao extends BaseDao {
 		try {
 			StringBuilder sb = new StringBuilder();
 			sb.append("SELECT * FROM weekly_nut_amounts WHERE user_id = ? AND first_date BETWEEN ");
-			sb.append("(SELECT TRUNC(SYSDATE, 'Day') FROM dual) AND (SELECT TRUNC(SYSDATE+6 , 'Day') FROM dual)");
+			sb.append("(SELECT TRUNC(SYSDATE, 'Day') FROM dual) AND (SELECT TRUNC(SYSDATE+7 , 'Day') FROM dual)");
 			pstmt = con.prepareStatement(sb.toString());
 			pstmt.setInt(1, userId);
 			ResultSet rs = pstmt.executeQuery();
@@ -83,11 +83,11 @@ public class WeeklyLogDao extends BaseDao {
 			sb.append("SELECT * FROM weekly_nut_amounts WHERE user_id = ? AND first_date BETWEEN ");
 			if (0 < weekAgo) {
 				int start = -7 * weekAgo;
-				int end = start + 6;
+				int end = start + 7;
 				sb.append("(SELECT TRUNC(SYSDATE " + start + ", 'Day') FROM dual) AND ");
 				sb.append("(SELECT TRUNC(SYSDATE " + end + ", 'Day') FROM dual)");
 			} else {
-				sb.append("(SELECT TRUNC(SYSDATE, 'Day') FROM dual) AND (SELECT TRUNC(SYSDATE + 6, 'Day') FROM dual)");
+				sb.append("(SELECT TRUNC(SYSDATE, 'Day') FROM dual) AND (SELECT TRUNC(SYSDATE + 7, 'Day') FROM dual)");
 			}
 			pstmt = con.prepareStatement(sb.toString());
 			pstmt.setInt(1, userId);

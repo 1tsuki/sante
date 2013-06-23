@@ -163,7 +163,10 @@ if (!window.santePieGraph) santePieGraph = {};
 		},
 
 		drawItems: function() {
-			if (typeof items !== "undefined") {
+			if (typeof items === "undefined" || !items) {
+				privateMethods.drawErrorMessage();
+			} else {
+
 				for(var i=0; i<items.length; i++) {
 					privateMethods.drawItem(items[i], i);
 				}
@@ -189,6 +192,11 @@ if (!window.santePieGraph) santePieGraph = {};
 			draw.fan(startAngle, endAngle, innerRadius, length);
 			ctx.fill();
 			setTimeout(privateMethods.drawItemValue, timer, item, key, ++counter);
+		},
+
+		drawErrorMessage: function() {
+			ctx.fillStyle= "rgba(10,10,10,1)";
+			ctx.fillText("NO DATA", centerX, centerY);
 		}
 	};
 
