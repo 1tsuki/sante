@@ -11,4 +11,6 @@
 <%@ page import="static com.astrider.sfc.ApplicationContext.*"%>
 <% request.setCharacterEncoding("UTF-8");
    ViewHelper v = new ViewHelper(pageContext, session, request);
-   pageContext.setAttribute("isLoggedIn", v.isLoggedIn()); %>
+   pageContext.setAttribute("isLoggedIn", v.isLoggedIn());
+   pageContext.setAttribute("SESSION_USER", SESSION_USER); %>
+<c:set var="loginUser" value="${sessionScope[SESSION_USER]}" />

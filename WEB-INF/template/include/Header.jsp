@@ -35,6 +35,8 @@
         <section id="header-upper">
           <div class="header-inner">
             <div class ="header-userinfo">
+              <% pageContext.setAttribute("SESSION_USER", SESSION_USER); %>
+              <c:set var="loginUser" value="${sessionScope[SESSION_USER]}" />
               <span>ようこそ、<c:out value="${loginUser.userName}" />さん</span>
             </div>
             <div class ="header-logout">
@@ -49,7 +51,6 @@
             <div class="header-logo">
               <a href="<%v.getPath("/Index");%>">sante</a><p>-自炊を楽しむすべての人に、手軽で健康的な料理生活を-</p>
             </div>
-
             <nav class="header-control">
             <c:if test="${ isLoggedIn }" >
               <ul>
