@@ -76,7 +76,7 @@ public class RegisterModel extends BaseModel {
 			sb.append(user.getUserName() + "様\n\n");
 			sb.append("この度はsanteに仮登録いただきありがとうございます。\n");
 			sb.append("以下のURLをクリックすることによって本登録が完了いたします。\n");
-			sb.append("http://" + request.getServerName() + request.getContextPath() + PAGE_REGISTER_CONFIRMEMAIL);
+			sb.append("https://" + request.getServerName() + request.getContextPath() + PAGE_REGISTER_CONFIRMEMAIL);
 			sb.append("?email=" + URLEncoder.encode(user.getEmail(), "UTF-8"));
 			sb.append("&token=" + URLEncoder.encode(user.getEmailToken(), "UTF-8"));
 			body = sb.toString();
