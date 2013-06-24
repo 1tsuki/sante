@@ -26,7 +26,7 @@ if (!window.santeUserNutrients) santeUserNutrients = {};
 			var firstday = new Date(tmp.setDate(first));
 			var lastday = new Date(tmp.setDate(last));
 
-			var dayString = firstday.getMonth() + "/" + firstday.getDate() + "(日)<br>〜" + lastday.getMonth() + "/" + lastday.getDate() + "(土)";
+			var dayString = (firstday.getMonth() + 1) + "/" + firstday.getDate() + "(日)<br>〜" + (lastday.getMonth() + 1) + "/" + lastday.getDate() + "(土)";
 			$('.today').html(dayString);
 		},
 
