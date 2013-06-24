@@ -14,10 +14,10 @@
     </jsp-config>
 
     <!-- project descriptions -->
-    <display-name>sante
+    <display-name>santé
     </display-name>
     <description>
-        sante
+        健康管理レシピリコメンドサービス
     </description>
     <!-- end project descriptions -->
     <!-- system default -->
@@ -25,10 +25,6 @@
         <filter-name>LogFilter</filter-name>
         <filter-class>com.astrider.sfc.src.filter.LogFilter</filter-class>
     </filter>
-    <filter-mapping>
-        <filter-name>LogFilter</filter-name>
-        <url-pattern>/*</url-pattern>
-    </filter-mapping>
     <filter>
         <filter-name>LoginFilter</filter-name>
         <filter-class>com.astrider.sfc.src.filter.LoginFilter</filter-class>
@@ -46,6 +42,7 @@
         <url-pattern>*.css</url-pattern>
         <url-pattern>*.js</url-pattern>
         <url-pattern>*.jpg</url-pattern>
+        <url-pattern>*.gif</url-pattern>
         <url-pattern>*.less</url-pattern>
         <url-pattern>*.woff</url-pattern>
     </servlet-mapping>

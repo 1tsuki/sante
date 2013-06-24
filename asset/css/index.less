@@ -12,7 +12,7 @@
 		color: white;
 		text-shadow: 1px 1px 3px #000000;
 		font-size: @font-large;
-		margin-top: 50px;
+		margin-top: 30px;
 
 		h1 {
 			font-weight: bold;
@@ -100,18 +100,48 @@
 
 	.about {
 		.column(12);
-		.opacity(90);
+		.round();
+		background-color: darken(@main-color, 80%);
 		padding: 10px;
-		background-color: @main-color;
-		margin-top: 150px;
+		margin-top: 120px;
 		margin-bottom: 30px;
 
-		h2 {
-			.h-decoration();
+
+		.title {
+			.round();
+			.column(12);
+			.opacity(90);
+			margin: 5px;
+			background-color: @main-color;
+
+			h2 {
+				color: black;
+				padding: 0px 0px 0px 5px;
+			}
 		}
 
-		p {
+		.howto {
+			.round();
+			.column(4);
+			.opacity(90);
+			margin: 5px;
+			background-color: @main-color;
 			padding: 10px;
+			height: 170px;
+
+			h2 {
+				.h-decoration();
+				line-height: 24px;
+				vertical-align: middle;
+
+				&:before {
+					content: url(/sante/asset/img/check.jpg);
+				}
+			}
+
+			img {
+				float:left;
+			}
 		}
 	}
 }

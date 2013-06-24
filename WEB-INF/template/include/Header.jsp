@@ -51,7 +51,7 @@
         <section id="header-lower">
           <div class="header-inner">
             <div class="header-logo">
-              <a href="<%v.getPath("/Index");%>">sante</a><p>-自炊を楽しむすべての人に、手軽で健康的な料理生活を-</p>
+              <a href="<%v.getPath("/Index");%>">santé</a><p>-自炊を楽しむすべての人に、手軽に健康的な料理生活を-</p>
             </div>
             <nav class="header-control">
             <c:if test="${ isLoggedIn }" >
