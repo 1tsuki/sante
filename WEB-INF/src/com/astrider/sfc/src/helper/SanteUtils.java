@@ -153,7 +153,6 @@ public final class SanteUtils {
 	 *         </p>
 	 */
 	public static double[] getNutrientBalances(int userId, int weekAgo) {
-		// 現在の栄養摂取量と理想量を取得
 		int[] ingested = getIngestedNutrients(userId, weekAgo);
 		int[] desired = getDesiredNutrients();
 		if (ingested == null || desired == null) {
@@ -163,27 +162,22 @@ public final class SanteUtils {
 		// 理想割合から飛び抜けた値を丸める
 		double ingestedAverage = MathUtils.getAverage(ingested);
 		double desiredAverage = MathUtils.getAverage(desired);
-		double coefficient = ingestedAverage / desiredAverage;
-		for (int i = 0; i < SANTE_NUTRIENT_COUNT; i++) {
-			// 丸め処理
-			int limit = (int) (desired[i] * coefficient);
-			if (limit < ingested[i]) {
-				ingested[i] = limit;
+		// 係数を揃える
+		for (int i = 0; i < ingested.length; i++) {
+			double coefficient = desiredAverage / ingestedAverage;
+			ingested[i] = (int) (ingested[i] * coefficient);
+		}
+
+		// 差の二乗検定
+		double[] diffs = new double[SANTE_NUTRIENT_COUNT];
+		for (int j = 0; j < ingested.length; j++) {
+			diffs[j] = 0;
+			if (desired[j] != 0) {
+				diffs[j] = Math.sqrt(Math.pow(desired[j] - ingested[j], 2)) / desired[j];
 			}
 		}
 
-		// 栄養バランスを再計算
-		ingestedAverage = MathUtils.getAverage(ingested);
-		desiredAverage = MathUtils.getAverage(desired);
-		double[] items = new double[SANTE_NUTRIENT_COUNT];
-		for (int j = 0; j < SANTE_NUTRIENT_COUNT; j++) {
-			double desiredDiff = (desired[j] - desiredAverage) / desiredAverage;
-			double ingestedDiff = (ingested[j] - ingestedAverage) / ingestedAverage;
-			double diff = (ingestedDiff - desiredDiff) / 2 + 0.5;
-			items[j] = diff;
-		}
-
-		return items;
+		return diffs;
 	}
 
 	/**

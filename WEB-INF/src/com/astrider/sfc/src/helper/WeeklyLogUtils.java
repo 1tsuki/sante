@@ -6,7 +6,6 @@ import com.astrider.sfc.src.model.dao.WeeklyLogDao;
 import com.astrider.sfc.src.model.vo.db.MealLogVo;
 import com.astrider.sfc.src.model.vo.db.UserStatsVo;
 import com.astrider.sfc.src.model.vo.db.WeeklyLogVo;
-import static com.astrider.sfc.ApplicationContext.*;
 
 /**
  * 週間ログ周辺のUtil集.
@@ -56,25 +55,7 @@ public final class WeeklyLogUtils {
 	 *            </p>
 	 */
 	public static void updateCurrentTotalBalance(int userId) {
-		int[] ingested = SanteUtils.getIngestedNutrients(userId, 0);
-		int[] desired = SanteUtils.getDesiredNutrients();
-		double ingestedAverage = MathUtils.getAverage(ingested);
-		double desiredAverage = MathUtils.getAverage(desired);
-
-		// 係数を揃える
-		for (int i = 0; i < ingested.length; i++) {
-			double coefficient = desiredAverage / ingestedAverage;
-			ingested[i] = (int) (ingested[i] * coefficient);
-		}
-
-		// 差の二乗検定
-		double[] diffs = new double[SANTE_NUTRIENT_COUNT];
-		for (int j = 0; j < ingested.length; j++) {
-			diffs[j] = 0;
-			if (desired[j] != 0) {
-				diffs[j] = Math.sqrt(Math.pow(desired[j] - ingested[j], 2)) / desired[j];
-			}
-		}
+		double[] diffs = SanteUtils.getNutrientBalances(userId, 0);
 		double balance = (1 - MathUtils.getAverage(diffs)) * 100;
 
 		WeeklyLogVo weekLog = getCurrentLog(userId);
