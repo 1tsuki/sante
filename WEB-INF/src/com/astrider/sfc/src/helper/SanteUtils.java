@@ -171,10 +171,9 @@ public final class SanteUtils {
 		// 差の二乗検定
 		double[] diffs = new double[SANTE_NUTRIENT_COUNT];
 		for (int j = 0; j < ingested.length; j++) {
-			diffs[j] = 0;
+			diffs[j] = 1;
 			if (desired[j] != 0) {
 				diffs[j] = Math.sqrt(Math.pow(desired[j] - ingested[j], 2)) / desired[j];
-				System.out.println(diffs[j]);
 			}
 		}
 
