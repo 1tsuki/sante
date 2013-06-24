@@ -69,7 +69,7 @@ public class RegisterModel extends BaseModel {
 
 		// 仮登録メール　本文作成
 		String to = user.getEmail();
-		String subject = "仮登録メール";
+		String subject = "【sante】仮登録完了";
 		String body = "";
 		try {
 			StringBuilder sb = new StringBuilder();
