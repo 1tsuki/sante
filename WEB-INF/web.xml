@@ -12,7 +12,7 @@
             <trim-directive-whitespaces>true</trim-directive-whitespaces>
         </jsp-property-group>
     </jsp-config>
-    
+
     <!-- project descriptions -->
     <display-name>sante
     </display-name>
@@ -47,6 +47,7 @@
         <url-pattern>*.js</url-pattern>
         <url-pattern>*.jpg</url-pattern>
         <url-pattern>*.less</url-pattern>
+        <url-pattern>*.woff</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
         <servlet-name>FrontController</servlet-name>
