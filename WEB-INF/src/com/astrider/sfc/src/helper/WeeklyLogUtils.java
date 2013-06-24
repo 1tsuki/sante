@@ -75,7 +75,8 @@ public final class WeeklyLogUtils {
 				diffs[j] = Math.sqrt(Math.pow(desired[j] - ingested[j], 2)) / desired[j];
 			}
 		}
-		double balance = (1 - MathUtils.getAverage(diffs)) * 100;
+		double balance = Math.abs((1 - MathUtils.getAverage(diffs)) * 100);
+		
 
 		WeeklyLogVo weekLog = getCurrentLog(userId);
 		weekLog.setTotalBalance((int) balance);

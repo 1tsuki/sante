@@ -12,7 +12,7 @@ import com.astrider.sfc.app.lib.util.AuthUtils;
 public class AuthUtilsTest {
 	@Test
 	public void 暗号化後138文字の16進数半角英数字が出力されることを確認() {
-		String password = "password";
+		String password = "boot@123";
 		String salted = AuthUtils.encrypt(password);
 		Pattern pattern = Pattern.compile("[0-9a-f]{138}");
 		Matcher matcher = pattern.matcher(salted);
@@ -21,7 +21,7 @@ public class AuthUtilsTest {
 
 	@Test
 	public void 認証テスト() {
-		String password = "password";
+		String password = "boot@123";
 		String salted = AuthUtils.encrypt(password);
 		assertTrue(AuthUtils.verify(password, salted));
 	}
