@@ -174,6 +174,7 @@ public final class SanteUtils {
 			diffs[j] = 0;
 			if (desired[j] != 0) {
 				diffs[j] = Math.sqrt(Math.pow(desired[j] - ingested[j], 2)) / desired[j];
+				System.out.println(diffs[j]);
 			}
 		}
 

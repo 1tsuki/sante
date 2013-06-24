@@ -100,6 +100,10 @@ public class ApiModel extends BaseModel {
 		if (items == null) {
 			return returnFailStatus(request);
 		}
+		
+		for (int i = 0; i < items.length; i++) {
+			items[i] = items[i] / 2;
+		}
 
 		request.setAttribute("items", items);
 		request.setAttribute("success", true);
