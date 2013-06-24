@@ -56,7 +56,7 @@ public final class WeeklyLogUtils {
 	 */
 	public static void updateCurrentTotalBalance(int userId) {
 		double[] diffs = SanteUtils.getNutrientBalances(userId, 0);
-		double balance = (1 - MathUtils.getAverage(diffs)) * 100;
+		double balance = Math.abs((1 - MathUtils.getAverage(diffs)) * 100);
 
 		WeeklyLogVo weekLog = getCurrentLog(userId);
 		weekLog.setTotalBalance((int) balance);
