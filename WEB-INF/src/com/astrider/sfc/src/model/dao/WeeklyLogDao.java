@@ -99,7 +99,6 @@ public class WeeklyLogDao extends BaseDao {
 			} else {
 				sb.append("(SELECT TRUNC(SYSDATE, 'Day') FROM dual) AND (SELECT TRUNC(SYSDATE + 7, 'Day') FROM dual)");
 			}
-			System.out.println(sb.toString());
 			pstmt = con.prepareStatement(sb.toString());
 			pstmt.setInt(1, userId);
 			ResultSet rs = pstmt.executeQuery();
