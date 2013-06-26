@@ -84,11 +84,22 @@ public class WeeklyLogDao extends BaseDao {
 			if (0 < weekAgo) {
 				int start = -7 * weekAgo;
 				int end = start + 7;
-				sb.append("(SELECT TRUNC(SYSDATE " + start + ", 'Day') FROM dual) AND ");
-				sb.append("(SELECT TRUNC(SYSDATE " + end + ", 'Day') FROM dual)");
+				if (start != 0) {
+					sb.append("(SELECT TRUNC(SYSDATE " + start + ", 'Day') FROM dual) AND ");
+				} else {
+					sb.append("(SELECT TRUNC(SYSDATE, 'Day') FROM dual) AND ");
+				}
+				
+				if (end != 0) {
+					sb.append("(SELECT TRUNC(SYSDATE " + end + ", 'Day') FROM dual)");
+				} else {
+					sb.append("(SELECT TRUNC(SYSDATE, 'Day') FROM dual)");
+				}
+				
 			} else {
 				sb.append("(SELECT TRUNC(SYSDATE, 'Day') FROM dual) AND (SELECT TRUNC(SYSDATE + 7, 'Day') FROM dual)");
 			}
+			System.out.println(sb.toString());
 			pstmt = con.prepareStatement(sb.toString());
 			pstmt.setInt(1, userId);
 			ResultSet rs = pstmt.executeQuery();
